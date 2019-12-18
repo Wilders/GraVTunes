@@ -1,0 +1,5 @@
+composer.phar
+/vendor/*
+.idea/*
+src/config/database.ini
+composer.lock
