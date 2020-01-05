@@ -1,5 +1,135 @@
 {% extends "layouts/body-layout.twig" %}
 
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="public/assets/css/home.css">
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="public/assets/js/jquery-ui-1.12.1.min.js"></script>
+<script type="text/javascript" src="public/assets/js/home.js"></script>
+{% endblock %}
+
 {% block content %}
-    Test!
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand" href="#">GraVTunes</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="#home">Accueil
+                            <span class="sr-only">(actuel)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="#about">A propos</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="masthead" id="home">
+        <div class="container h-100">
+            <div class="row h-100 align-items-center">
+                <div class="col-12 text-center">
+                    <h1 class="display-1 font-weight-light text-white">GraVTunes</h1>
+                    <p class="lead text-white">Créez votre vinyle personnalisé!</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="showcase" id="about">
+        <div class="container-fluid p-0">
+            <div class="row no-gutters">
+                <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('public/assets/media/images/home5.jpg');"></div>
+                <div class="col-lg-6 order-lg-1 my-auto showcase-text">
+                    <h2>Lorem Ipsum</h2>
+                    <p class="lead mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin id interdum sem. Maecenas tristique et nibh eu convallis. Donec tristique et erat et maximus. Aenean mattis a quam vel faucibus.</p>
+                </div>
+            </div>
+            <div class="row no-gutters">
+                <div class="col-lg-6 text-white showcase-img" style="background-image: url('public/assets/media/images/home3.jpg');"></div>
+                <div class="col-lg-6 my-auto showcase-text">
+                    <h2>Curabitur sodales euismod</h2>
+                    <p class="lead mb-0">Suspendisse pretium aliquam ipsum nec condimentum. In ut risus sit amet mauris finibus efficitur eu sit amet ligula. Sed lobortis id nisl eget mattis. Aliquam interdum pretium est ac imperdiet. </p>
+                </div>
+            </div>
+            <div class="row no-gutters">
+                <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('public/assets/media/images/home2.jpg');"></div>
+                <div class="col-lg-6 order-lg-1 my-auto showcase-text">
+                    <h2>Vestibulum dignissim tincidunt</h2>
+                    <p class="lead mb-0">Curabitur id tincidunt ligula. Pellentesque porta, arcu cursus ornare blandit, lectus sem cursus tellus, eu tristique augue est a eros. Pellentesque quis sagittis odio.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="call-to-action text-white text-center">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-9 mx-auto">
+                    <h2 class="mb-4">Commencez dès maintenant la création de votre vinyle!</h2>
+                </div>
+                <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+                    <form>
+                        <div class="form-row">
+                            <div class="col-12 col-md-6 mb-2 mb-md-0">
+                                <button type="submit" class="btn btn-block btn-lg btn-primary">Se connecter</button>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <button type="submit" class="btn btn-block btn-lg btn-primary">S'inscrire!</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 h-100 text-center text-lg-left my-auto">
+                    <ul class="list-inline mb-2">
+                        <li class="list-inline-item">
+                            <a href="#">A propos</a>
+                        </li>
+                        <li class="list-inline-item">&sdot;</li>
+                        <li class="list-inline-item">
+                            <a href="#">Contact</a>
+                        </li>
+                        <li class="list-inline-item">&sdot;</li>
+                        <li class="list-inline-item">
+                            <a href="#">Conditions d'utilisation</a>
+                        </li>
+                    </ul>
+                    <p class="text-muted small mb-4 mb-lg-0">&copy; GraVTunes. Tous droits reservé.</p>
+                </div>
+                <div class="col-lg-6 h-100 text-center text-lg-right my-auto">
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item mr-3">
+                            <a href="#">
+                                <i class="fab fa-facebook fa-2x fa-fw"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item mr-3">
+                            <a href="#">
+                                <i class="fab fa-twitter-square fa-2x fa-fw"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="#">
+                                <i class="fab fa-instagram fa-2x fa-fw"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
 {% endblock %}
