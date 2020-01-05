@@ -1,0 +1,9 @@
+RewriteEngine On
+
+RewriteRule ^sql(/.*|)$ - [NC,F]
+RewriteRule ^app(/.*|)$ - [NC,F]
+RewriteRule ^vendor(/.*|)$ - [NC,F]
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.php [QSA,L]

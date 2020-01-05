@@ -1,0 +1,40 @@
+{
+    "name": "s3b_s02/gravtunes_web",
+    "type": "project",
+    "description": "Projet tutoré @IUT-NC 2019",
+    "authors": [
+        {
+            "name": "Jules Sayer",
+            "email": "jules.sayer@protonmail.com",
+            "role": "Developer"
+        },
+        {
+            "name": "Anthony Pernot",
+            "email": "anthony.pernot9@etu.univ-lorraine.fr",
+            "role": "Developer"
+        },
+        {
+            "name": "Nathan Chevalier",
+            "email": "nathan.chevalier2@etu.univ-lorraine.fr",
+            "role": "Developer"
+        },
+        {
+            "name": "Loïc Tardieu",
+            "email": "loic.tardieu1@etu.univ-lorraine.fr",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "slim/slim": "^3.12",
+        "slim/flash": "^0.4.0",
+        "slim/twig-view": "^2.5",
+        "illuminate/database": "^6.8",
+        "dflydev/fig-cookies": "^2.0",
+        "php": "^7.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    }
+}
