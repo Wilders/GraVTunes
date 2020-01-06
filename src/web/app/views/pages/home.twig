@@ -26,6 +26,13 @@
                     <li class="nav-item">
                         <a class="nav-link js-scroll-trigger" href="#about">A propos</a>
                     </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Espace membre</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{{ path_for("login") }}">Connexion</a>
+                            <a class="dropdown-item" href="{{ path_for("register") }}">Inscription</a>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -79,10 +86,10 @@
                     <form>
                         <div class="form-row">
                             <div class="col-12 col-md-6 mb-2 mb-md-0">
-                                <button type="submit" class="btn btn-block btn-lg btn-primary">Se connecter</button>
+                                <a href="{{ path_for("login") }}" class="btn btn-block btn-lg btn-primary">Se connecter</a>
                             </div>
                             <div class="col-12 col-md-6">
-                                <button type="submit" class="btn btn-block btn-lg btn-primary">S'inscrire!</button>
+                                <a href="{{ path_for("register") }}" class="btn btn-block btn-lg btn-primary">S'inscrire!</a>
                             </div>
                         </div>
                     </form>

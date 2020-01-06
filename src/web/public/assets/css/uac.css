@@ -1,0 +1,75 @@
+html,body {
+    height: 100%;
+}
+
+body {
+    background-color: #f7f9fb;
+    font-size: 14px;
+}
+
+.uac .brand {
+    width: 90px;
+    height: 90px;
+    overflow: hidden;
+    border-radius: 50%;
+    margin: 40px auto;
+    box-shadow: 0 4px 8px rgba(0,0,0,.05);
+    position: relative;
+    z-index: 1;
+}
+
+.uac .brand img {
+    width: 100%;
+}
+
+.uac .card-wrapper {
+    width: 400px;
+}
+
+.uac .card {
+    border-color: transparent;
+    box-shadow: 0 4px 8px rgba(0,0,0,.05);
+}
+
+.uac .card.fat {
+    padding: 10px;
+}
+
+.uac .card .card-title {
+    margin-bottom: 30px;
+}
+
+.uac .form-control {
+    border-width: 2.3px;
+}
+
+.uac .form-group label {
+    width: 100%;
+}
+
+.uac .btn.btn-block {
+    padding: 12px 10px;
+}
+
+.uac .footer {
+    margin: 40px 0;
+    color: #888;
+    text-align: center;
+}
+
+@media screen and (max-width: 425px) {
+    .uac .card-wrapper {
+        width: 90%;
+        margin: 0 auto;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .uac .card.fat {
+        padding: 0;
+    }
+
+    .uac .card.fat .card-body {
+        padding: 15px;
+    }
+}

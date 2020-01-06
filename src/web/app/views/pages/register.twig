@@ -1,0 +1,75 @@
+{% extends "layouts/body-layout.twig" %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/uac.css">
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/uac.js"></script>
+{% endblock %}
+
+{% block content %}
+    <section class="uac h-100">
+        <div class="container h-100">
+            <div class="row justify-content-md-center h-100">
+                <div class="card-wrapper">
+                    <div class="brand">
+                        <img src="{{ base_url() }}/public/assets/media/images/logo.png" alt="logo">
+                    </div>
+                    <div class="card fat">
+                        <div class="card-body">
+                            <h4 class="card-title">Inscription</h4>
+                            <form method="POST" class="uac-validation" novalidate="">
+                                <div class="form-group">
+                                    <label for="name">Nom</label>
+                                    <input id="name" type="text" class="form-control" name="name" required autofocus>
+                                    <div class="invalid-feedback">
+                                        Quel est votre jolie nom?
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email">Adresse e-mail</label>
+                                    <input id="email" type="email" class="form-control" name="email" required>
+                                    <div class="invalid-feedback">
+                                        Adresse e-mail invalide
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="password">Mot de passe</label>
+                                    <input id="password" type="password" class="form-control" name="password" required data-eye>
+                                    <div class="invalid-feedback">
+                                        Mot de passe requis
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="custom-checkbox custom-control">
+                                        <input type="checkbox" name="agree" id="agree" class="custom-control-input" required="">
+                                        <label for="agree" class="custom-control-label">J'accepte les <a href="#">conditions d'utilisation</a></label>
+                                        <div class="invalid-feedback">
+                                            Vous devez accepter nos conditions d'utilisation
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group m-0">
+                                    <button type="submit" class="btn btn-primary btn-block">
+                                        S'inscrire
+                                    </button>
+                                </div>
+                                <div class="mt-4 text-center">
+                                    Vous avez déjà un compte? <a href="{{ path_for("login") }}">Connectez-vous!</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="footer">
+                        Copyright &copy; 2020 &mdash; GraVTunes
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

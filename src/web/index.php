@@ -2,6 +2,7 @@
 
 use app\config\Database;
 use app\controllers\HomeController;
+use app\controllers\UserController;
 use app\extensions\TwigMessages;
 use Slim\App;
 use Slim\Flash\Messages;
@@ -70,5 +71,11 @@ $container['flash'] = function () {
 
 // Home
 $app->get('/', HomeController::class . ':showHome')->setName('home');
+
+// Users
+$app->get('/uac/login', UserController::class . ':showLogin')->setName('login');
+$app->get('/uac/register', UserController::class . ':showRegister')->setName('register');
+$app->get('/uac/forgot', UserController::class . ':showForgot')->setName('forgot');
+$app->get('/uac/reset', UserController::class . ':showReset')->setName('reset');
 
 $app->run();
