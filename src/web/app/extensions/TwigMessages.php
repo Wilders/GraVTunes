@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Extensions;
+namespace app\extensions;
 
 use Slim\Flash\Messages;
 use Twig\Extension\AbstractExtension;

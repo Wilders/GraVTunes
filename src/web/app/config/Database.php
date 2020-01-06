@@ -1,5 +1,5 @@
 <?php
-namespace App\Config;
+namespace app\config;
 
 use Exception;
 use Illuminate\Database\Capsule\Manager as DB;

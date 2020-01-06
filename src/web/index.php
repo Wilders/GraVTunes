@@ -1,8 +1,8 @@
 <?php
 
-use App\Config\Database;
-use App\Controllers\HomeController;
-use App\extensions\TwigMessages;
+use app\config\Database;
+use app\controllers\HomeController;
+use app\extensions\TwigMessages;
 use Slim\App;
 use Slim\Flash\Messages;
 use Slim\Http\Environment;
