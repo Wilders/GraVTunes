@@ -13,8 +13,7 @@ use Slim\Http\Response;
 class HomeController extends Controller {
 
     /**
-     * Appel home.phtml, permet d'afficher les accueils
-     * et les messages flash.
+     * Appel home.twig
      *
      * @param Request $request
      * @param Response $response
