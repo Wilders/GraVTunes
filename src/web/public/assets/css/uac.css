@@ -23,7 +23,7 @@ body {
 }
 
 .uac .card-wrapper {
-    width: 400px;
+    width: 600px;
 }
 
 .uac .card {
@@ -40,7 +40,7 @@ body {
 }
 
 .uac .form-control {
-    border-width: 2.3px;
+    border-width: 2px;
 }
 
 .uac .form-group label {
