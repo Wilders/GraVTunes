@@ -27,7 +27,7 @@ En insérant:
 
 ## Utilisation
 
-Lancez un serveur XAMP, importez la BDD (fichier **sql/dump.sql**) et connectez-vous sur le site.
+Lancez un serveur XAMP, importez la BDD (fichier **sql/gravtunes.sql**) et connectez-vous sur le site.
 
 ## Technologies
 
