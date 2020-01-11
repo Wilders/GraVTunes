@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  mer. 08 jan. 2020 à 16:46
+-- Généré le :  sam. 11 jan. 2020 à 14:08
 -- Version du serveur :  10.4.6-MariaDB
 -- Version de PHP :  7.3.9
 
@@ -212,6 +212,7 @@ CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `pseudo` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(320) COLLATE utf8_unicode_ci NOT NULL,
+  `mdp` varchar(320) COLLATE utf8_unicode_ci NOT NULL,
   `nom` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
   `prenom` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
   `adresse` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -222,9 +223,9 @@ CREATE TABLE `users` (
 -- Déchargement des données de la table `users`
 --
 
-INSERT INTO `users` (`id`, `pseudo`, `email`, `nom`, `prenom`, `adresse`, `role`) VALUES
-(1, 'totoprnt', 'anthony.pernot@hotmail.fr', 'PERNOT', 'Anthony', '8 rue Lothaire II', 2),
-(2, 'lapins54', 'maxoulegendre@hotmail.fr', 'LEGENDRE', 'Maxens', '10 rue Villers 54000 Nancy', 1);
+INSERT INTO `users` (`id`, `pseudo`, `email`, `mdp`, `nom`, `prenom`, `adresse`, `role`) VALUES
+(1, 'totoprnt', 'anthony.pernot@hotmail.fr', '', 'PERNOT', 'Anthony', '8 rue Lothaire II', 2),
+(2, 'lapins54', 'maxoulegendre@hotmail.fr', '', 'LEGENDRE', 'Maxens', '10 rue Villers 54000 Nancy', 1);
 
 -- --------------------------------------------------------
 
