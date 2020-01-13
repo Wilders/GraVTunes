@@ -19,7 +19,7 @@ En insérant:
 | :------------:|:----------------:|:-------------------------:|
 | driver        | mysql            | Driver de votre SGBD      |
 | host          | localhost        | Hôte de votre BDD         |
-| database      | mywishlist       | Nom de votre BDD          |
+| database      | gravtunes        | Nom de votre BDD          |
 | username      | root             | Nom d'user de votre BDD   |
 | password      | root             | Mot de passe de votre BDD |
 | charset       | utf8             | Méthode d'encodage        |
