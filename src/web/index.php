@@ -15,36 +15,21 @@ session_start();
 
 require_once(__DIR__ . '/vendor/autoload.php');
 
-/**
- * Connexion à la base de donnée
- */
 try {
     Database::connect();
 } catch (Exception $e) {
     die($e->getMessage());
 }
 
-/**
- * Affichage des erreurs en détail
- */
 $config = [
     'settings' => [
         'displayErrorDetails' => 1,
     ],
 ];
 
-/**
- * Instanciation de Slim
- */
 $app = new App($config);
 $container = $app->getContainer();
 
-
-/**
- * Paramétrage du container avec Twig
- * @param $container
- * @return Twig
- */
 $container['view'] = function ($container) {
 
     $view = new Twig(__DIR__ . '/app/views', [
@@ -56,26 +41,24 @@ $container['view'] = function ($container) {
     return $view;
 };
 
-/**
- * Paramétrage du container avec Slim Flash Messages
- * @return Messages
- */
 $container['flash'] = function () {
     return new Messages();
 };
-
-
-/**
- * Routes
- */
 
 // Home
 $app->get('/', HomeController::class . ':showHome')->setName('home');
 
 // Users
-$app->get('/uac/login', UserController::class . ':showLogin')->setName('login');
-$app->get('/uac/register', UserController::class . ':showRegister')->setName('register');
-$app->get('/uac/forgot', UserController::class . ':showForgot')->setName('forgot');
-$app->get('/uac/reset', UserController::class . ':showReset')->setName('reset');
+$app->get('/uac/login', UserController::class . ':showLogin')->setName('showLogin');
+$app->post('/uac/login', UserController::class . ':login')->setName('login');
+
+$app->get('/uac/register', UserController::class . ':showRegister')->setName('showRegister');
+$app->post('/uac/register', UserController::class . ':register')->setName('register');
+
+$app->get('/uac/forgot', UserController::class . ':showForgot')->setName('showForgot');
+$app->post('/uac/register', UserController::class . ':forgot')->setName('forgot');
+
+$app->get('/uac/reset', UserController::class . ':showReset')->setName('showReset');
+$app->post('/uac/reset', UserController::class . ':reset')->setName('reset');
 
 $app->run();

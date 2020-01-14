@@ -21,7 +21,7 @@
                     <div class="card fat">
                         <div class="card-body">
                             <h4 class="card-title">Inscription</h4>
-                            <form method="POST" class="uac-validation" novalidate="">
+                            <form method="POST" class="uac-validation" novalidate="" action="{{ path_for("register") }}">
                                 <div class="form-group form-row">
                                     <div class="col">
                                         <label for="name">Nom</label>
@@ -101,7 +101,7 @@
                                     </button>
                                 </div>
                                 <div class="mt-4 text-center">
-                                    Vous avez déjà un compte? <a href="{{ path_for("login") }}">Connectez-vous!</a>
+                                    Vous avez déjà un compte? <a href="{{ path_for("showLogin") }}">Connectez-vous!</a>
                                 </div>
                             </form>
                         </div>

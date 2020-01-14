@@ -29,8 +29,8 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Espace membre</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="{{ path_for("login") }}">Connexion</a>
-                            <a class="dropdown-item" href="{{ path_for("register") }}">Inscription</a>
+                            <a class="dropdown-item" href="{{ path_for("showLogin") }}">Connexion</a>
+                            <a class="dropdown-item" href="{{ path_for("showRegister") }}">Inscription</a>
                         </div>
                     </li>
                 </ul>
@@ -86,10 +86,10 @@
                     <form>
                         <div class="form-row">
                             <div class="col-12 col-md-6 mb-2 mb-md-0">
-                                <a href="{{ path_for("login") }}" class="btn btn-block btn-lg btn-primary">Se connecter</a>
+                                <a href="{{ path_for("showLogin") }}" class="btn btn-block btn-lg btn-primary">Se connecter</a>
                             </div>
                             <div class="col-12 col-md-6">
-                                <a href="{{ path_for("register") }}" class="btn btn-block btn-lg btn-primary">S'inscrire!</a>
+                                <a href="{{ path_for("showRegister") }}" class="btn btn-block btn-lg btn-primary">S'inscrire!</a>
                             </div>
                         </div>
                     </form>
