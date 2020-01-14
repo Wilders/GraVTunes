@@ -56,9 +56,11 @@ $app->get('/uac/register', UserController::class . ':showRegister')->setName('sh
 $app->post('/uac/register', UserController::class . ':register')->setName('register');
 
 $app->get('/uac/forgot', UserController::class . ':showForgot')->setName('showForgot');
-$app->post('/uac/register', UserController::class . ':forgot')->setName('forgot');
+$app->post('/uac/forgot', UserController::class . ':forgot')->setName('forgot');
 
 $app->get('/uac/reset', UserController::class . ':showReset')->setName('showReset');
 $app->post('/uac/reset', UserController::class . ':reset')->setName('reset');
+
+$app->get('/app/account', UserController::class . ':showReset')->setName('showAccount');
 
 $app->run();

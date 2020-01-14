@@ -30,6 +30,7 @@
         "slim/twig-view": "^2.5",
         "illuminate/database": "^6.8",
         "dflydev/fig-cookies": "^2.0",
+        "algolia/algoliasearch-client-php": "^2.5",
         "php": "^7.2"
     },
     "autoload": {
