@@ -2,7 +2,6 @@
 
 namespace app\controllers;
 
-use Algolia\AlgoliaSearch\PlacesClient;
 use app\exceptions\AuthException;
 use app\models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -68,7 +67,7 @@ class UserController extends Controller {
             $name = filter_var($request->getParsedBodyParam('name'), FILTER_SANITIZE_STRING);
             $forename = filter_var($request->getParsedBodyParam('forename'), FILTER_SANITIZE_STRING);
             $pseudo = filter_var($request->getParsedBodyParam('pseudo'), FILTER_SANITIZE_STRING);
-            $address = filter_var($request->getParsedBodyParam('pseudo'), FILTER_SANITIZE_STRING);
+            $address = filter_var($request->getParsedBodyParam('address'), FILTER_SANITIZE_STRING);
             $email = filter_var($request->getParsedBodyParam('email'), FILTER_SANITIZE_EMAIL);
             $password = filter_var($request->getParsedBodyParam('password'), FILTER_SANITIZE_STRING);
             $password_conf = filter_var($request->getParsedBodyParam('password_conf'), FILTER_SANITIZE_STRING);
@@ -82,12 +81,6 @@ class UserController extends Controller {
             if (User::where('email', '=', $email)->exists()) throw new AuthException("Cet email est déjà utilisée.", "showRegister");
             if ($password != $password_conf) throw new AuthException("La confirmation du mot de passe n'est pas bonne", "showRegister");
 
-            /*
-            $places = PlacesClient::create("pl9PD12018HM", "704d2512bc08b4d8aab0c98210e77958");
-
-            $result = $places->search('Paris');
-            die(var_dump($result));
-            */
             $user = new User();
             $user->nom = $name;
             $user->prenom = $forename;

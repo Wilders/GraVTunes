@@ -4,7 +4,11 @@
         apiKey: '453998c55cdfd38bb7a2571688e88339',
         container: document.querySelector('#address')
     }).configure({
-        type: 'address'
+        language: 'fr',
+        type: 'address',
+        countries: 'fr,lu,be,ad,mc',
+        hitsPerPage: 2,
+        aroundLatLngViaIP: true
     });
 
     var $address = document.querySelector('#address-value')
