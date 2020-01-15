@@ -3,6 +3,7 @@
 use app\config\Database;
 use app\controllers\HomeController;
 use app\controllers\UserController;
+use app\controllers\ValidatorController;
 use app\extensions\TwigMessages;
 use Slim\App;
 use Slim\Flash\Messages;
@@ -49,6 +50,8 @@ $container['flash'] = function () {
 $app->get('/', HomeController::class . ':showHome')->setName('home');
 
 // Users
+$app->get('/uac/validator', ValidatorController::class . ':validator')->setName('validator');
+
 $app->get('/uac/login', UserController::class . ':showLogin')->setName('showLogin');
 $app->post('/uac/login', UserController::class . ':login')->setName('login');
 
