@@ -1,5 +1,4 @@
 let timer1, timer2, timer3, timer4, timer5, timer6;
-const finishTyping = 1000;
 let pseudo = document.getElementById('pseudo');
 let pseudoFeedback = document.getElementById('pseudoFeedback');
 let forename = document.getElementById('forename');
@@ -12,60 +11,44 @@ let password = document.getElementById('password');
 let passwordFeedback = document.getElementById('passwordFeedback');
 let password_conf = document.getElementById('password_conf');
 let password_confFeedback = document.getElementById('password_confFeedback');
-let meter = document.getElementById('password-strength-meter');
-let security = document.getElementById('password-security');
-let icon = document.getElementById('icon');
-const strength = {
-    0: {text: 'Très faible', color: 'darkred'},
-    1: {text: 'Faible', color: 'orangered'},
-    2: {text: 'Moyen', color: 'orange'},
-    3: {text: 'Fort', color: 'yellowgreen'},
-    4: {text: 'Très fort', color: 'limegreen'}
-};
 
 pseudo.addEventListener('input', function () {
     clearTimeout(timer1);
     pseudo.className = 'form-control is-pending';
     pseudo.setCustomValidity('');
-    timer1 = setTimeout(checkPseudo, finishTyping);
+    timer1 = setTimeout(checkPseudo, 1000);
 });
 name.addEventListener('input', function () {
     clearTimeout(timer2);
     name.className = 'form-control is-pending';
     name.setCustomValidity('');
-    timer2 = setTimeout(checkName, finishTyping);
+    timer2 = setTimeout(checkName, 1000);
 });
 forename.addEventListener('input', function () {
     clearTimeout(timer3);
     forename.className = 'form-control is-pending';
     forename.setCustomValidity('');
-    timer3 = setTimeout(checkForename, finishTyping);
+    timer3 = setTimeout(checkForename, 1000);
 });
 email.addEventListener('input', function () {
     clearTimeout(timer4);
     email.className = 'form-control is-pending';
     email.setCustomValidity('');
-    timer4 = setTimeout(checkEmail, finishTyping);
+    timer4 = setTimeout(checkEmail, 1000);
 });
 password.addEventListener('input', function () {
     clearTimeout(timer5);
-    meter.style.display = this.value ? 'inline' : 'none';
-    meter.value = zxcvbn(this.value).score;
-    security.style.display = this.value ? 'block' : 'none';
-    security.innerText = 'Niveau de sécurité : ' + strength[meter.value].text;
-    security.style.color = strength[meter.value].color;
     password.className = 'form-control is-pending';
     password.setCustomValidity('');
     password_conf.className = 'form-control';
     password_conf.setCustomValidity('');
-    timer5 = setTimeout(checkPassword, finishTyping);
-    timer5 = setTimeout(checkConfirm, finishTyping);
+    timer5 = setTimeout(checkPassword, 1000);
 });
 password_conf.addEventListener('input', function () {
     clearTimeout(timer6);
     password_conf.className = 'form-control is-pending';
     password_conf.setCustomValidity('');
-    timer6 = setTimeout(checkConfirm, finishTyping);
+    timer6 = setTimeout(checkConfirm, 1000);
 });
 
 function checkPassword() {
