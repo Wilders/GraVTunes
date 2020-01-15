@@ -72,10 +72,10 @@ class UserController extends Controller {
             $password = filter_var($request->getParsedBodyParam('password'), FILTER_SANITIZE_STRING);
             $password_conf = filter_var($request->getParsedBodyParam('password_conf'), FILTER_SANITIZE_STRING);
 
-            if (is_null($request->getParsedBodyParam('agree'))) throw new AuthException("Votre pseudo doit contenir entre 2 et 35 caractères.", "showRegister");
-            if (mb_strlen($pseudo, 'utf8') < 2 || mb_strlen($pseudo, 'utf8') > 35) throw new AuthException("Votre pseudo doit contenir entre 2 et 35 caractères.", "showRegister");
-            if (mb_strlen($name, 'utf8') < 2 || mb_strlen($name, 'utf8') > 50) throw new AuthException("Votre nom doit contenir entre 2 et 50 caractères.", "showRegister");
-            if (mb_strlen($forename, 'utf8') < 2 || mb_strlen($forename, 'utf8') > 50) throw new AuthException("Votre prénom doit contenir entre 2 et 50 caractères.", "showRegister");
+            if (is_null($request->getParsedBodyParam('agree'))) throw new AuthException("Vous devez accépter les conditions d'utilisation.", "showRegister");
+            if (mb_strlen($pseudo, 'utf8') < 3 || mb_strlen($pseudo, 'utf8') > 35) throw new AuthException("Votre pseudo doit contenir entre 3 et 35 caractères.", "showRegister");
+            if (mb_strlen($name, 'utf8') < 3 || mb_strlen($name, 'utf8') > 50) throw new AuthException("Votre nom doit contenir entre 3 et 50 caractères.", "showRegister");
+            if (mb_strlen($forename, 'utf8') < 3 || mb_strlen($forename, 'utf8') > 50) throw new AuthException("Votre prénom doit contenir entre 3 et 50 caractères.", "showRegister");
             if (mb_strlen($password, 'utf8') < 8) throw new AuthException("Votre mot de passe doit contenir au moins 8 caractères", "showRegister");
             if (User::where('pseudo', '=', $pseudo)->exists()) throw new AuthException("Ce pseudo est déjà pris.", "showRegister");
             if (User::where('email', '=', $email)->exists()) throw new AuthException("Cet email est déjà utilisée.", "showRegister");
