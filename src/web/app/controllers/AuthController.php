@@ -19,6 +19,12 @@ class AuthController extends Controller {
         return $response;
     }
 
+    public function logout(Request $request, Response $response, array $args): Response {
+        Auth::logout();
+        $response = $response->withRedirect($this->router->pathFor('home'));
+        return $response;
+    }
+
     public function login(Request $request, Response $response, array $args): Response {
         try {
             $login = filter_var($request->getParsedBodyParam('id'), FILTER_SANITIZE_STRING);
