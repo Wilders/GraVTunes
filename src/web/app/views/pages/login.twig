@@ -19,6 +19,16 @@
                     <div class="card fat">
                         <div class="card-body">
                             <h4 class="card-title">Connexion</h4>
+                            {% for msg in flash('error') %}
+                                <ul class="alert alert-danger">
+                                        {{ msg }}
+                                </ul>
+                            {% endfor %}
+                            {% for msg in flash('success') %}
+                                <ul class="alert alert-success">
+                                    {{ msg }}
+                                </ul>
+                            {% endfor %}
                             <form method="POST" class="uac-validation" novalidate="" action="{{ path_for("login") }}">
                                 <div class="form-group">
                                     <label for="id">Identifiant</label>

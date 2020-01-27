@@ -87,6 +87,11 @@
                     <div class="card fat">
                         <div class="card-body">
                             <h4 class="card-title">Inscription</h4>
+                            {% for msg in flash('error') %}
+                                <ul class="alert alert-danger">
+                                    {{ msg }}
+                                </ul>
+                            {% endfor %}
                             <form method="POST" class="uac-validation" action="{{ path_for("register") }}" novalidate>
                                 <div class="form-group form-row">
                                     <div class="col">
@@ -128,7 +133,7 @@
 
                                 <div class="form-group">
                                     <label for="address">Adresse</label>
-                                    <input id="address" type="search" class="form-control" name="address" required>
+                                    <input id="address" type="search" class="form-control" name="address" value="{{ oldData.address }}" required>
                                     <div class="invalid-feedback" id="addressFeedback">
                                         Votre adresse est indispensable
                                     </div>
