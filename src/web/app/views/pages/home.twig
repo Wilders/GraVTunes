@@ -27,11 +27,20 @@
                         <a class="nav-link js-scroll-trigger" href="#about">A propos</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Espace membre</a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="{{ path_for("showLogin") }}">Connexion</a>
-                            <a class="dropdown-item" href="{{ path_for("showRegister") }}">Inscription</a>
-                        </div>
+                        {% if auth.check %}
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ auth.user.pseudo }}</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{{ path_for("showAccount") }}">Mon compte</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ path_for("logout") }}">Déconnexion</a>
+                            </div>
+                        {% else %}
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Espace membre</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{{ path_for("showLogin") }}">Connexion</a>
+                                <a class="dropdown-item" href="{{ path_for("showRegister") }}">Inscription</a>
+                            </div>
+                        {% endif %}
                     </li>
                 </ul>
             </div>
@@ -85,12 +94,18 @@
                 <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
                     <form>
                         <div class="form-row">
+                            {% if auth.check %}
+                                <div class="col-12">
+                                    <a href="{{ path_for("showAccount") }}" class="btn btn-block btn-lg btn-primary">Accéder à GraVTunes</a>
+                                </div>
+                            {% else %}
                             <div class="col-12 col-md-6 mb-2 mb-md-0">
                                 <a href="{{ path_for("showLogin") }}" class="btn btn-block btn-lg btn-primary">Se connecter</a>
                             </div>
                             <div class="col-12 col-md-6">
                                 <a href="{{ path_for("showRegister") }}" class="btn btn-block btn-lg btn-primary">S'inscrire!</a>
                             </div>
+                            {% endif %}
                         </div>
                     </form>
                 </div>

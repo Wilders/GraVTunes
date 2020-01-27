@@ -1,8 +1,9 @@
 <?php
 
 use app\config\Database;
+use app\controllers\Auth;
 use app\controllers\HomeController;
-use app\controllers\UserController;
+use app\controllers\AuthController;
 use app\controllers\ValidatorController;
 use app\extensions\TwigCsrf;
 use app\extensions\TwigMessages;
@@ -16,9 +17,9 @@ use Slim\Http\Uri;
 use Slim\Views\Twig;
 use Slim\Views\TwigExtension;
 
-session_start();
-
 require_once(__DIR__ . '/vendor/autoload.php');
+
+session_start();
 
 try {
     Database::connect();
@@ -46,9 +47,13 @@ $container['flash'] = function () {
 };
 
 $container['view'] = function ($container) {
-
     $view = new Twig(__DIR__ . '/app/views', [
         'cache' => false
+    ]);
+
+    $view->getEnvironment()->addGlobal('auth', [
+        'check' => Auth::check(),
+        'user' => Auth::user()
     ]);
 
     $view->addExtension(new TwigExtension($container->router, Uri::createFromEnvironment(new Environment($_SERVER))));
@@ -66,18 +71,20 @@ $app->get('/', HomeController::class . ':showHome')->setName('home');
 // Users
 $app->get('/uac/validator', ValidatorController::class . ':validator')->setName('validator');
 
-$app->get('/uac/login', UserController::class . ':showLogin')->setName('showLogin');
-$app->post('/uac/login', UserController::class . ':login')->setName('login');
+$app->get('/uac/login', AuthController::class . ':showLogin')->setName('showLogin');
+$app->post('/uac/login', AuthController::class . ':login')->setName('login');
 
-$app->get('/uac/register', UserController::class . ':showRegister')->setName('showRegister');
-$app->post('/uac/register', UserController::class . ':register')->setName('register');
+$app->get('/uac/register', AuthController::class . ':showRegister')->setName('showRegister');
+$app->post('/uac/register', AuthController::class . ':register')->setName('register');
 
-$app->get('/uac/forgot', UserController::class . ':showForgot')->setName('showForgot');
-$app->post('/uac/forgot', UserController::class . ':forgot')->setName('forgot');
+$app->get('/uac/logout', AuthController::class . ':logout')->setName('logout');
 
-$app->get('/uac/reset', UserController::class . ':showReset')->setName('showReset');
-$app->post('/uac/reset', UserController::class . ':reset')->setName('reset');
+$app->get('/uac/forgot', AuthController::class . ':showForgot')->setName('showForgot');
+$app->post('/uac/forgot', AuthController::class . ':forgot')->setName('forgot');
 
-$app->get('/app/account', UserController::class . ':showReset')->setName('showAccount');
+$app->get('/uac/reset', AuthController::class . ':showReset')->setName('showReset');
+$app->post('/uac/reset', AuthController::class . ':reset')->setName('reset');
+
+$app->get('/app/account', AuthController::class . ':showReset')->setName('showAccount');
 
 $app->run();

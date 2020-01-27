@@ -30,8 +30,4 @@ abstract class Controller {
             return $this->container->{$property};
         }
     }
-
-    protected function isConnected() {
-        return isset($_SESSION['user']);
-    }
 }
