@@ -1,0 +1,3 @@
+Lien utile pour comprendre le fonctionnement HTML/CSS + gestion des évènements en JS :
+
+https://developer.mozilla.org/fr/docs/Apprendre/JavaScript/Client-side_web_APIs/Video_and_audio_APIs
