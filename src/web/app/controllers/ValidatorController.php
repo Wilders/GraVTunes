@@ -9,6 +9,7 @@ use Slim\Http\Response;
 
 /**
  * Class ValidatorController
+ * @author Jules Sayer <jules.sayer@protonmail.com>
  * @package app\controllers
  */
 class ValidatorController extends Controller {
