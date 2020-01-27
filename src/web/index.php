@@ -4,10 +4,12 @@ use app\config\Database;
 use app\controllers\HomeController;
 use app\controllers\UserController;
 use app\controllers\ValidatorController;
+use app\extensions\TwigCsrf;
 use app\extensions\TwigMessages;
 use app\middlewares\CsrfMiddleware;
 use app\middlewares\OldInputMiddleware;
 use Slim\App;
+use Slim\Csrf\Guard;
 use Slim\Flash\Messages;
 use Slim\Http\Environment;
 use Slim\Http\Uri;
@@ -33,6 +35,16 @@ $config = [
 $app = new App($config);
 $container = $app->getContainer();
 
+$container['csrf'] = function () {
+    $guard = new Guard();
+    $guard->setPersistentTokenMode(true);
+    return $guard;
+};
+
+$container['flash'] = function () {
+    return new Messages();
+};
+
 $container['view'] = function ($container) {
 
     $view = new Twig(__DIR__ . '/app/views', [
@@ -41,6 +53,7 @@ $container['view'] = function ($container) {
 
     $view->addExtension(new TwigExtension($container->router, Uri::createFromEnvironment(new Environment($_SERVER))));
     $view->addExtension(new TwigMessages(new Messages()));
+    $view->addExtension(new TwigCsrf($container->csrf));
     return $view;
 };
 
