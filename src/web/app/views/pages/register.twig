@@ -96,14 +96,14 @@
                                 <div class="form-group form-row">
                                     <div class="col">
                                         <label for="name">Nom</label>
-                                        <input id="name" type="text" class="form-control" name="name" required autofocus>
+                                        <input id="name" type="text" class="form-control" name="name" value="{{ oldData.name }}" required autofocus>
                                         <div class="invalid-feedback" id="nameFeedback">
                                             Votre nom est indispensable
                                         </div>
                                     </div>
                                     <div class="col">
                                         <label for="forename">Prénom</label>
-                                        <input id="forename" type="text" class="form-control" name="forename" required>
+                                        <input id="forename" type="text" class="form-control" name="forename" value="{{ oldData.forename }}" required>
                                         <div class="invalid-feedback" id="forenameFeedback">
                                             Votre prénom est indispensable
                                         </div>
@@ -168,7 +168,7 @@
 
                                 <div class="form-group">
                                     <div class="custom-checkbox custom-control">
-                                        <input type="checkbox" name="agree" id="agree" class="custom-control-input" required="">
+                                        <input type="checkbox" name="agree" id="agree" class="custom-control-input" required>
                                         <label for="agree" class="custom-control-label">J'accepte les <a href="#">conditions d'utilisation</a></label>
                                         <div class="invalid-feedback" id="agreeFeedback">
                                             Vous devez accepter nos conditions d'utilisation

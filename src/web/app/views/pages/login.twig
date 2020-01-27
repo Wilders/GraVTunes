@@ -32,7 +32,7 @@
                             <form method="POST" class="uac-validation" novalidate="" action="{{ path_for("login") }}">
                                 <div class="form-group">
                                     <label for="id">Identifiant</label>
-                                    <input id="id" type="text" class="form-control" name="id" required autofocus>
+                                    <input id="id" type="text" class="form-control" name="id" value="{{ oldData.id }}" required autofocus>
                                     <div class="invalid-feedback">
                                         Votre identifiant est indispensable
                                     </div>

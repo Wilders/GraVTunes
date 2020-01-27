@@ -5,6 +5,8 @@ use app\controllers\HomeController;
 use app\controllers\UserController;
 use app\controllers\ValidatorController;
 use app\extensions\TwigMessages;
+use app\middlewares\CsrfMiddleware;
+use app\middlewares\OldInputMiddleware;
 use Slim\App;
 use Slim\Flash\Messages;
 use Slim\Http\Environment;
@@ -42,9 +44,8 @@ $container['view'] = function ($container) {
     return $view;
 };
 
-$container['flash'] = function () {
-    return new Messages();
-};
+$app->add(new OldInputMiddleware($container));
+$app->add($container->csrf);
 
 // Home
 $app->get('/', HomeController::class . ':showHome')->setName('home');
