@@ -18,7 +18,7 @@ class UserController extends Controller {
     public function showLogin(Request $request, Response $response, array $args): Response {
         try {
             if ($this->isConnected()) throw new AuthException("Vous êtes déjà connecté", "showAccount");
-            $this->render($response, 'pages/login.twig');
+            $this->view->render($response, 'pages/login.twig');
         } catch (AuthException $e) {
             $this->flash->addMessage('error', $e->getMessage());
             $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
@@ -34,7 +34,7 @@ class UserController extends Controller {
             $password = filter_var($request->getParsedBodyParam('password'), FILTER_SANITIZE_STRING);
 
             $user = User::where('pseudo', '=', $login)->orWhere('email', '=', $login)->firstOrFail();
-            if (!password_verify($password, $user->password)) throw new AuthException('Votre mot de passe est incorrect', "showLogin");
+            if (!password_verify($password, $user->password)) throw new AuthException('Votre mot de passe est incorrect.', "showLogin");
 
             $_SESSION['user'] = $user;
 
@@ -52,7 +52,7 @@ class UserController extends Controller {
     public function showRegister(Request $request, Response $response, array $args): Response {
         try {
             if ($this->isConnected()) throw new AuthException("Vous êtes déjà inscrit", "showAccount");
-            $this->render($response, 'pages/register.twig');
+            $this->view->render($response, 'pages/register.twig');
         } catch (AuthException $e) {
             $this->flash->addMessage('error', $e->getMessage());
             $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
@@ -76,10 +76,10 @@ class UserController extends Controller {
             if (mb_strlen($pseudo, 'utf8') < 3 || mb_strlen($pseudo, 'utf8') > 35) throw new AuthException("Votre pseudo doit contenir entre 3 et 35 caractères.", "showRegister");
             if (mb_strlen($name, 'utf8') < 3 || mb_strlen($name, 'utf8') > 50) throw new AuthException("Votre nom doit contenir entre 3 et 50 caractères.", "showRegister");
             if (mb_strlen($forename, 'utf8') < 3 || mb_strlen($forename, 'utf8') > 50) throw new AuthException("Votre prénom doit contenir entre 3 et 50 caractères.", "showRegister");
-            if (mb_strlen($password, 'utf8') < 8) throw new AuthException("Votre mot de passe doit contenir au moins 8 caractères", "showRegister");
+            if (mb_strlen($password, 'utf8') < 8) throw new AuthException("Votre mot de passe doit contenir au moins 8 caractères.", "showRegister");
             if (User::where('pseudo', '=', $pseudo)->exists()) throw new AuthException("Ce pseudo est déjà pris.", "showRegister");
             if (User::where('email', '=', $email)->exists()) throw new AuthException("Cet email est déjà utilisée.", "showRegister");
-            if ($password != $password_conf) throw new AuthException("La confirmation du mot de passe n'est pas bonne", "showRegister");
+            if ($password != $password_conf) throw new AuthException("La confirmation du mot de passe n'est pas bonne.", "showRegister");
 
             $user = new User();
             $user->nom = $name;
@@ -101,12 +101,12 @@ class UserController extends Controller {
     }
 
     public function showForgot(Request $request, Response $response, array $args): Response {
-        $this->render($response, 'pages/forgot.twig');
+        $this->view->render($response, 'pages/forgot.twig');
         return $response;
     }
 
     public function showReset(Request $request, Response $response, array $args): Response {
-        $this->render($response, 'pages/reset.twig');
+        $this->view->render($response, 'pages/reset.twig');
         return $response;
     }
 }

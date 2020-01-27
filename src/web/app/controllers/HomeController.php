@@ -21,7 +21,7 @@ class HomeController extends Controller {
      * @return Response
      */
     public function showHome(Request $request, Response $response, array $args): Response {
-        $this->render($response, 'pages/home.twig');
+        $this->view->render($response, 'pages/home.twig');
         return $response;
     }
 }

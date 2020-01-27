@@ -3,10 +3,6 @@
 namespace app\controllers;
 
 use Slim\Container;
-use Slim\Flash\Messages;
-use Slim\Http\Response;
-use Slim\Router;
-use Slim\Views\Twig;
 
 /**
  * Class Controller
@@ -17,39 +13,22 @@ use Slim\Views\Twig;
 abstract class Controller {
 
     /**
-     * @var Messages
+     * @var Container
      */
-    protected $flash;
-
-    /**
-     * @var Twig
-     */
-    protected $view;
-
-    /**
-     * @var Router
-     */
-    protected $router;
+    protected $container;
 
     /**
      * Controller constructor.
      * @param $container
      */
     public function __construct(Container $container) {
-        $this->flash = $container->flash;
-        $this->view = $container->view;
-        $this->router = $container->router;
+        $this->container = $container;
     }
 
-    /**
-     * Twig Render
-     * @param Response $response
-     * @param String $file
-     * @param array $params
-     * @return mixed
-     */
-    protected function render(Response $response, String $file, array $params = []) {
-        return $this->view->render($response, $file, $params);
+    public function __get($property) {
+        if($this->container->{$property}) {
+            return $this->container->{$property};
+        }
     }
 
     protected function isConnected() {
