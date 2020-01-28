@@ -6,6 +6,7 @@ use app\controllers\Auth;
 use app\controllers\HomeController;
 use app\controllers\AuthController;
 use app\controllers\ValidatorController;
+use app\controllers\LibraryController;
 use app\extensions\TwigCsrf;
 use app\extensions\TwigMessages;
 use app\middlewares\CsrfMiddleware;
@@ -87,5 +88,8 @@ $app->get('/reset', AuthController::class . ':showReset')->setName('showReset');
 $app->post('/reset', AuthController::class . ':reset')->setName('reset');
 
 $app->get('/account', AccountController::class . ':showAccount')->setName('showAccount');
+
+//Library
+$app->get('/library', \app\controllers\LibraryController::class . ':showLibrary')->setName('showLibrary');
 
 $app->run();
