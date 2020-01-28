@@ -82,3 +82,67 @@ function toggleVisibility($input) {
         $input.nextElementSibling.firstElementChild.firstElementChild.className = 'fas fa-eye';
     }
 }
+
+function checkPseudo() {
+    fetch('validator?method=pseudo&input=' + encodeURIComponent(pseudo.value))
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            if (data.valid) {
+                pseudo.className = 'form-control is-valid';
+            } else {
+                pseudo.className = 'form-control is-invalid';
+                pseudoFeedback.innerText = data.error;
+                pseudo.setCustomValidity(data.error);
+            }
+        })
+}
+
+function checkName() {
+    fetch('validator?method=name&input=' + encodeURIComponent(name.value))
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            if (data.valid) {
+                name.className = 'form-control is-valid';
+            } else {
+                name.className = 'form-control is-invalid';
+                nameFeedback.innerText = data.error;
+                name.setCustomValidity(data.error);
+            }
+        })
+}
+
+function checkForename() {
+    fetch('validator?method=forename&input=' + encodeURIComponent(forename.value))
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            if (data.valid) {
+                forename.className = 'form-control is-valid';
+            } else {
+                forename.className = 'form-control is-invalid';
+                forenameFeedback.innerText = data.error;
+                forename.setCustomValidity(data.error);
+            }
+        })
+}
+
+function checkEmail() {
+    fetch('validator?method=email&input=' + encodeURIComponent(email.value))
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            if (data.valid) {
+                email.className = 'form-control is-valid';
+            } else {
+                email.className = 'form-control is-invalid';
+                emailFeedback.innerText = data.error;
+                email.setCustomValidity(data.error);
+            }
+        })
+}
