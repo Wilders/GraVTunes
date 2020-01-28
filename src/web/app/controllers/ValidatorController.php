@@ -16,12 +16,17 @@ class ValidatorController extends Controller {
 
     const VALID = ['valid' => true, 'error' => ""];
 
+    public static function match($pattern, $input) {
+        return preg_match($pattern, $input, $matches) === 1 && $matches[0] === $input;
+    }
+
     public static function pseudo(String $input): array {
         try {
             $length = mb_strlen($input, "utf8");
             if ($length < 3 || $length > 35) {
                 throw new ValidatorException("Votre pseudo doit contenir entre 3 et 35 caractères.");
             }
+            if(!self::match("/^[A-Za-z0-9]+(?:[._-][A-Za-z0-9]+)*$/", $input)) throw new ValidatorException("Votre pseudo est incorrect.");
             if (User::where(['pseudo' => $input])->exists()) {
                 throw new ValidatorException("Ce pseudo est déjà pris.");
             }
