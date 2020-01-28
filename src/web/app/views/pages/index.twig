@@ -1,0 +1,160 @@
+{% extends "layouts/body-layout.twig" %}
+
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/home.css">
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="{{ base_url() }}/public/assets/js/jquery-ui-1.12.1.min.js"></script>
+<script type="text/javascript" src="{{ base_url() }}/public/assets/js/home.js"></script>
+{% endblock %}
+
+{% block content %}
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand" href="#">GraVTunes</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="#home">Accueil
+                            <span class="sr-only">(actuel)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="#about">A propos</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        {% if auth.check %}
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ auth.user.pseudo }}</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{{ path_for("showAccount") }}">Mon compte</a>
+                                <a class="dropdown-item" href="{{ path_for("showLibrary") }}">Bibliothèque</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ path_for("logout") }}">Déconnexion</a>
+
+                            </div>
+                        {% else %}
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Espace membre</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{{ path_for("showLogin") }}">Connexion</a>
+                                <a class="dropdown-item" href="{{ path_for("showRegister") }}">Inscription</a>
+                            </div>
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="masthead" id="home">
+        <div class="container h-100">
+            <div class="row h-100 align-items-center">
+                <div class="col-12 text-center">
+                    <h1 class="display-1 font-weight-light text-white">GraVTunes</h1>
+                    <p class="lead text-white">Créez votre vinyle personnalisé!</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="showcase" id="about">
+        <div class="container-fluid p-0">
+            <div class="row no-gutters">
+                <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('public/assets/media/images/home5.jpg');"></div>
+                <div class="col-lg-6 order-lg-1 my-auto showcase-text">
+                    <h2>Lorem Ipsum</h2>
+                    <p class="lead mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin id interdum sem. Maecenas tristique et nibh eu convallis. Donec tristique et erat et maximus. Aenean mattis a quam vel faucibus.</p>
+                </div>
+            </div>
+            <div class="row no-gutters">
+                <div class="col-lg-6 text-white showcase-img" style="background-image: url('public/assets/media/images/home3.jpg');"></div>
+                <div class="col-lg-6 my-auto showcase-text">
+                    <h2>Curabitur sodales euismod</h2>
+                    <p class="lead mb-0">Suspendisse pretium aliquam ipsum nec condimentum. In ut risus sit amet mauris finibus efficitur eu sit amet ligula. Sed lobortis id nisl eget mattis. Aliquam interdum pretium est ac imperdiet. </p>
+                </div>
+            </div>
+            <div class="row no-gutters">
+                <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('public/assets/media/images/home2.jpg');"></div>
+                <div class="col-lg-6 order-lg-1 my-auto showcase-text">
+                    <h2>Vestibulum dignissim tincidunt</h2>
+                    <p class="lead mb-0">Curabitur id tincidunt ligula. Pellentesque porta, arcu cursus ornare blandit, lectus sem cursus tellus, eu tristique augue est a eros. Pellentesque quis sagittis odio.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="call-to-action text-white text-center">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-9 mx-auto">
+                    <h2 class="mb-4">Commencez dès maintenant la création de votre vinyle!</h2>
+                </div>
+                <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+                    <form>
+                        <div class="form-row">
+                            {% if auth.check %}
+                                <div class="col-12">
+                                    <a href="{{ path_for("showAccount") }}" class="btn btn-block btn-lg btn-primary">Accéder à GraVTunes</a>
+                                </div>
+                            {% else %}
+                            <div class="col-12 col-md-6 mb-2 mb-md-0">
+                                <a href="{{ path_for("showLogin") }}" class="btn btn-block btn-lg btn-primary">Se connecter</a>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <a href="{{ path_for("showRegister") }}" class="btn btn-block btn-lg btn-primary">S'inscrire!</a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 h-100 text-center text-lg-left my-auto">
+                    <ul class="list-inline mb-2">
+                        <li class="list-inline-item">
+                            <a class="js-scroll-trigger" href="#about">A propos</a>
+                        </li>
+                        <li class="list-inline-item">&sdot;</li>
+                        <li class="list-inline-item">
+                            <a href="#">Contact</a>
+                        </li>
+                        <li class="list-inline-item">&sdot;</li>
+                        <li class="list-inline-item">
+                            <a href="#">Conditions d'utilisation</a>
+                        </li>
+                    </ul>
+                    <p class="text-muted small mb-4 mb-lg-0">&copy; GraVTunes. Tous droits reservé.</p>
+                </div>
+                <div class="col-lg-6 h-100 text-center text-lg-right my-auto">
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item mr-3">
+                            <a href="#">
+                                <i class="fab fa-facebook fa-2x fa-fw"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item mr-3">
+                            <a href="#">
+                                <i class="fab fa-twitter-square fa-2x fa-fw"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="#">
+                                <i class="fab fa-instagram fa-2x fa-fw"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+{% endblock %}

@@ -2,14 +2,13 @@
 
 use app\config\Database;
 use app\controllers\AccountController;
+use app\controllers\AppController;
 use app\controllers\Auth;
 use app\controllers\HomeController;
 use app\controllers\AuthController;
 use app\controllers\ValidatorController;
-use app\controllers\LibraryController;
 use app\extensions\TwigCsrf;
 use app\extensions\TwigMessages;
-use app\middlewares\CsrfMiddleware;
 use app\middlewares\OldInputMiddleware;
 use Slim\App;
 use Slim\Csrf\Guard;
@@ -81,15 +80,9 @@ $app->post('/register', AuthController::class . ':register')->setName('register'
 
 $app->get('/logout', AuthController::class . ':logout')->setName('logout');
 
-$app->get('/forgot', AuthController::class . ':showForgot')->setName('showForgot');
-$app->post('/forgot', AuthController::class . ':forgot')->setName('forgot');
-
-$app->get('/reset', AuthController::class . ':showReset')->setName('showReset');
-$app->post('/reset', AuthController::class . ':reset')->setName('reset');
-
 $app->get('/account', AccountController::class . ':showAccount')->setName('showAccount');
 
 //Library
-$app->get('/library', \app\controllers\LibraryController::class . ':showLibrary')->setName('showLibrary');
+$app->get('/home', AppController::class . ':showHome')->setName('appHome');
 
 $app->run();
