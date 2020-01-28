@@ -1,7 +1,9 @@
 {% extends "layouts/body-layout.twig" %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/home.css">
+    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/uac.css">
+    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/bootstrap-4.4.1.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/fas.min.css">
 {% endblock %}
 
 {% block scripts %}
@@ -9,4 +11,67 @@
     <script type="text/javascript" src="{{ base_url() }}/public/assets/js/home.js"></script>
 {% endblock %}
 
-{% block nav %}{% endblock %}
+{%  block nav %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand" href="#">GraVTunes</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="{{ path_for("home") }}">Accueil
+                            <span class="sr-only">(actuel)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="#">A propos</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        {% if auth.check %}
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ auth.user.pseudo }}</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{{ path_for("showAccount") }}">Mon compte</a>
+                                <a class="dropdown-item" href="{{ path_for("showLibrary") }}">Bibliothèque</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ path_for("logout") }}">Déconnexion</a>
+
+                            </div>
+                        {% else %}
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Espace membre</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{{ path_for("showLogin") }}">Connexion</a>
+                                <a class="dropdown-item" href="{{ path_for("showRegister") }}">Inscription</a>
+                            </div>
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="call-to-action text-white text-xl-left" style="min-width : 100px; width: 280px; height: 100%; background-color: rgba(200, 42, 100); @media all and (max-width: 1024px){display: none; flex-direction: row} ">
+        <div class="overlay" ></div>
+            <ul class="nav flex-column ml-auto" style="text-align: center; ">
+                <li class="nav-item" >
+                    <div class="text-center" style="font-size : 200%; color: antiquewhite; width: 160px; height: 40px; margin-top: 80px; margin-bottom: 40px; margin-left: 20px">Bibliotheque</div>
+                    <!--<span class="badge badge-secondary">New</span>-->
+                </li>
+                <li class="nav-item" >
+                    <button type="button" class="btn btn-light" style="width: 160px; height: 40px; margin: 12px"><a href="#">Titres</a></button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="btn btn-light" style="width: 160px; height: 40px; margin: 12px"><a href="#">Playlists</a></button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="btn btn-light" style="width: 160px; height: 40px; margin: 12px"><a href="#">Vinyles</a></button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="btn btn-light" style="width: 160px; height: 40px; margin: 12px"><a href="#">Collaborateurs</a></button>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+{%  endblock %}
