@@ -10,6 +10,8 @@ use app\controllers\ValidatorController;
 use app\controllers\TracksController;
 use app\extensions\TwigCsrf;
 use app\extensions\TwigMessages;
+use app\middlewares\AuthMiddleware;
+use app\middlewares\GuestMiddleware;
 use app\middlewares\OldInputMiddleware;
 use Slim\App;
 use Slim\Csrf\Guard;
@@ -69,24 +71,23 @@ $app->add($container->csrf);
 
 // Home
 $app->get('/', HomeController::class . ':showHome')->setName('home');
-
-// Users
 $app->get('/validator', ValidatorController::class . ':validator')->setName('validator');
 
-$app->get('/login', AuthController::class . ':showLogin')->setName('showLogin');
-$app->post('/login', AuthController::class . ':login')->setName('login');
+// Membres
+$app->group('', function() {
+    $this->get('/login', AuthController::class . ':showLogin')->setName('showLogin');
+    $this->post('/login', AuthController::class . ':login')->setName('login');
 
-$app->get('/register', AuthController::class . ':showRegister')->setName('showRegister');
-$app->post('/register', AuthController::class . ':register')->setName('register');
+    $this->get('/register', AuthController::class . ':showRegister')->setName('showRegister');
+    $this->post('/register', AuthController::class . ':register')->setName('register');
+})->add(new GuestMiddleware($container));
+// App
 
-$app->get('/logout', AuthController::class . ':logout')->setName('logout');
-
-$app->get('/account', AccountController::class . ':showAccount')->setName('showAccount');
-
-//Library
-$app->get('/home', AppController::class . ':showHome')->setName('appHome');
-
-//Tracks
-$app->get('/tracks', TracksController::class . ':tracks')->setName("appTracks");
+$app->group('', function() {
+    $this->get('/logout', AuthController::class . ':logout')->setName('logout');
+    $this->get('/account', AccountController::class . ':showAccount')->setName('showAccount');
+    $this->get('/home', AppController::class . ':showHome')->setName('appHome');
+    $this->get('/tracks', TracksController::class . ':tracks')->setName("appTracks");
+})->add(new AuthMiddleware($container));
 
 $app->run();
