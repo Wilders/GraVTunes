@@ -32,10 +32,9 @@
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ auth.user.pseudo }}</a>
                             <div class="dropdown-menu">
                                 <a class="dropdown-item" href="{{ path_for("showAccount") }}">Mon compte</a>
-                                <a class="dropdown-item" href="{{ path_for("appHome") }}">Bibliothèque</a>
+                                <a class="dropdown-item" href="{{ path_for("appHome") }}">Accéder à GraVTunes</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ path_for("logout") }}">Déconnexion</a>
-
                             </div>
                         {% else %}
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Espace membre</a>
@@ -56,6 +55,11 @@
                 <div class="col-12 text-center">
                     <h1 class="display-1 font-weight-light text-white">GraVTunes</h1>
                     <p class="lead text-white">Créez votre vinyle personnalisé!</p>
+                    {% if auth.check %}
+                    <p class="lead">
+                        <a href="{{ path_for("showAccount") }}" class="btn btn-lg btn-primary">Accéder à GraVTunes</a>
+                    </p>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -64,21 +68,21 @@
     <section class="showcase" id="about">
         <div class="container-fluid p-0">
             <div class="row no-gutters">
-                <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('public/assets/media/images/home5.jpg');"></div>
+                <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('{{ base_url() }}/public/assets/media/images/home5.jpg');"></div>
                 <div class="col-lg-6 order-lg-1 my-auto showcase-text">
                     <h2>Lorem Ipsum</h2>
                     <p class="lead mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin id interdum sem. Maecenas tristique et nibh eu convallis. Donec tristique et erat et maximus. Aenean mattis a quam vel faucibus.</p>
                 </div>
             </div>
             <div class="row no-gutters">
-                <div class="col-lg-6 text-white showcase-img" style="background-image: url('public/assets/media/images/home3.jpg');"></div>
+                <div class="col-lg-6 text-white showcase-img" style="background-image: url('{{ base_url() }}/public/assets/media/images/home3.jpg');"></div>
                 <div class="col-lg-6 my-auto showcase-text">
                     <h2>Curabitur sodales euismod</h2>
                     <p class="lead mb-0">Suspendisse pretium aliquam ipsum nec condimentum. In ut risus sit amet mauris finibus efficitur eu sit amet ligula. Sed lobortis id nisl eget mattis. Aliquam interdum pretium est ac imperdiet. </p>
                 </div>
             </div>
             <div class="row no-gutters">
-                <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('public/assets/media/images/home2.jpg');"></div>
+                <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('{{ base_url() }}/public/assets/media/images/home2.jpg');"></div>
                 <div class="col-lg-6 order-lg-1 my-auto showcase-text">
                     <h2>Vestibulum dignissim tincidunt</h2>
                     <p class="lead mb-0">Curabitur id tincidunt ligula. Pellentesque porta, arcu cursus ornare blandit, lectus sem cursus tellus, eu tristique augue est a eros. Pellentesque quis sagittis odio.</p>

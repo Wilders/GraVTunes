@@ -20,14 +20,20 @@
                         <div class="card-body">
                             <h4 class="card-title">Connexion</h4>
                             {% for msg in flash('error') %}
-                                <ul class="alert alert-danger">
-                                        {{ msg }}
-                                </ul>
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    {{ msg }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
                             {% endfor %}
                             {% for msg in flash('success') %}
-                                <ul class="alert alert-success">
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
                                     {{ msg }}
-                                </ul>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
                             {% endfor %}
                             <form method="POST" class="uac-validation" novalidate="" action="{{ path_for("login") }}">
                                 <div class="form-group">
