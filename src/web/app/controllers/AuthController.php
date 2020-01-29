@@ -32,7 +32,7 @@ class AuthController extends Controller {
 
             if(!Auth::attempt($login, $password)) throw new AuthException();
 
-            $response = $response->withRedirect($this->router->pathFor('showAccount'));
+            $response = $response->withRedirect($this->router->pathFor('appHome'));
         } catch (AuthException $e) {
             $this->flash->addMessage('error', "Identifiant ou mot de passe invalide.");
             $response = $response->withRedirect($this->router->pathFor('showLogin'));

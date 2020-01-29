@@ -7,6 +7,7 @@ use app\controllers\Auth;
 use app\controllers\HomeController;
 use app\controllers\AuthController;
 use app\controllers\ValidatorController;
+use app\controllers\TracksController;
 use app\extensions\TwigCsrf;
 use app\extensions\TwigMessages;
 use app\middlewares\OldInputMiddleware;
@@ -84,5 +85,8 @@ $app->get('/account', AccountController::class . ':showAccount')->setName('showA
 
 //Library
 $app->get('/home', AppController::class . ':showHome')->setName('appHome');
+
+//Tracks
+$app->get('/tracks', TracksController::class . ':tracks')->setName("appTracks");
 
 $app->run();

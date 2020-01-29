@@ -14,10 +14,26 @@
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
                 {% include "layouts/app-navbar.twig" %}
+
                 <div class="container-fluid">
-                    {% block appcontent %}{% endblock %}
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-outline-primary btn-lg d-sm-flex p-2 bd-highlight" style="margin: 1%">Importer un fichier audio</button>
+                    </div>
+                       <div class="card-title " style="padding: 2%; ">
+                            <h1 class="text-md-center border  rounded-pill shadow-lg p-3 mb-5 bg-white rounded" style="padding-left: 20%; padding-right: 20%; padding-top: 1%; padding-bottom: 1%; text-align: center">Vos Titres</h1>
+                        </div>
+                        {%  for track in tracks %}
+                            <div class="media shadow p-3 mb-5 bg-white rounded" style="margin-top: 3%; margin-left: 2%">
+                                <img src="{{ base_url() }}/public/assets/media/images/logo.png" style="height:55px" class="mr-3" alt="{{ track.nom }}">
+                                <div class="media-body">
+                                    <h5 class="mt-0">{{ track.nom }}</h5>
+                                    {{ track.description }}
+                                </div>
+                            </div>
+                        {% endfor %}
                 </div>
             </div>
+
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
@@ -48,3 +64,6 @@
         </div>
     </div>
 {% endblock %}
+
+
+
