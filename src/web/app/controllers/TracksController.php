@@ -50,15 +50,15 @@ class TracksController extends Controller{
             $fichier = new File();
             $track = new Tracks();
 
-            $fichier->path = "test";//pathinfo($file->getClientFilename(), PATHINFO_EXTENSION );
-            $fichier->hash = "test";//$this->hashage($fichier->getClientFilename());
+            $fichier->path = $file["file"]->getClientFilename();
+            $fichier->hash = $this->hashage($file["file"]->getClientFilename());
             $fichier->duree = 0;
 
             $fichier->save();
 
             $track->nom = $titre;
             $track->description = $descr;
-            $track->file_id = 1;// $fichier->id;
+            $track->file_id = 1;//File::select("*")->count()->get() + 1;
 
             $track->save();
 
