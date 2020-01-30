@@ -2,11 +2,19 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/app.css">
+    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/uac.css">
 {% endblock %}
 
 {% block scripts %}
     <script type="text/javascript" src="{{ base_url() }}/public/assets/js/jquery-ui-1.12.1.min.js"></script>
     <script type="text/javascript" src="{{ base_url() }}/public/assets/js/app.js"></script>
+    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/track.js"></script>
+    <script type="text/javascript" src='{{ base_url() }}/public/assets/js/jqueryDT.js'></script>
+    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/jquery.dataTables.min.js"></script>
+
+
+    <script type="text/javascript" src="main.js"></script>
 {% endblock %}
 {% block content %}
     <div id="wrapper">
@@ -17,20 +25,29 @@
 
                 <div class="container-fluid">
                     <div class="d-flex justify-content-end">
-                        <button type="button" class="btn btn-outline-primary btn-lg d-sm-flex p-2 bd-highlight" style="margin: 1%">Importer un fichier audio</button>
+                        <button type="button" class="btn btn-outline-primary btn-lg d-sm-flex p-2 bd-highlight" style="margin: 1%" data-toggle="modal" data-target="#importTrack">Importer un fichier audio</button>
                     </div>
                        <div class="card-title " style="padding: 2%; ">
                             <h1 class="text-md-center border  rounded-pill shadow-lg p-3 mb-5 bg-white rounded" style="padding-left: 20%; padding-right: 20%; padding-top: 1%; padding-bottom: 1%; text-align: center">Vos Titres</h1>
                         </div>
-                        {%  for track in tracks %}
-                            <div class="media shadow p-3 mb-5 bg-white rounded" style="margin-top: 3%; margin-left: 2%">
-                                <img src="{{ base_url() }}/public/assets/media/images/logo.png" style="height:55px" class="mr-3" alt="{{ track.nom }}">
-                                <div class="media-body">
-                                    <h5 class="mt-0">{{ track.nom }}</h5>
-                                    {{ track.description }}
-                                </div>
-                            </div>
-                        {% endfor %}
+                        <table class="display" id="track" style="width:95%; margin: 2%; margin-bottom: 3%">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>Titre</th>
+                                <th>Description</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {%  for track in tracks %}
+                                <tr>
+                                    <td><img src="{{ base_url() }}/public/assets/media/images/play.png" style="height:55px" class="mr-3" alt="{{ track.nom }}"></td>
+                                    <td>{{ track.nom }}</td>
+                                    <td>{{ track.description }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                 </div>
             </div>
 
@@ -63,6 +80,40 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade bd-example-modal-lg" id="importTrack" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <form method="POST" class="uac-validation" action="{{ path_for("importFile") }}" id="importTrackForm" enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Ajout d'une chanson</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="file">Fichier</label>
+                            <input id="file" type="file" class="form-control" name="file" required autofocus>
+                        </div>
+                        <div class="form-group">
+                            <label for="title">Titre</label>
+                            <input id="title" type="text" class="form-control" name="title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="descr">Description</label>
+                            <textarea id="descr" type="text" class="form-control" name="descr" placeholder="Nom de l'album du titre, de son artiste ..."></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-primary">Importer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 

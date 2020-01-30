@@ -81,13 +81,14 @@ $app->group('', function() {
     $this->get('/register', AuthController::class . ':showRegister')->setName('showRegister');
     $this->post('/register', AuthController::class . ':register')->setName('register');
 })->add(new GuestMiddleware($container));
-// App
 
+// App
 $app->group('', function() {
     $this->get('/logout', AuthController::class . ':logout')->setName('logout');
     $this->get('/account', AccountController::class . ':showAccount')->setName('showAccount');
     $this->get('/home', AppController::class . ':showHome')->setName('appHome');
     $this->get('/tracks', TracksController::class . ':tracks')->setName("appTracks");
+    $this->post('/importFile', TracksController::class . ':addFile')->setName("importFile");
 })->add(new AuthMiddleware($container));
 
 $app->run();
