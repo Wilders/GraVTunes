@@ -105,6 +105,9 @@
                             <textarea id="descr" type="text" class="form-control" name="descr" placeholder="Nom de l'album du titre, de son artiste ..."></textarea>
                         </div>
                     </div>
+
+                    {{ csrf() | raw }}
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
                         <button type="submit" class="btn btn-primary">Importer</button>
