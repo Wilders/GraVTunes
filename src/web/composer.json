@@ -31,7 +31,8 @@
         "illuminate/database": "^6.8",
         "dflydev/fig-cookies": "^2.0",
         "php": "^7.2",
-        "slim/csrf": "^0.8"
+        "slim/csrf": "^0.8",
+        "braintree/braintree_php": "^4.6"
     },
     "autoload": {
         "psr-4": {
