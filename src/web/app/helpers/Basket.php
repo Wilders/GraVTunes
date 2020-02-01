@@ -56,6 +56,16 @@ class Basket {
         return $items;
     }
 
+    public static function subtotal() {
+        $total = 0;
+
+        foreach(Basket::all() as $item) {
+            $total += $item->prix * $item->quantity;
+        }
+
+        return $total;
+    }
+
     public static function count() {
         self::init();
         return count($_SESSION['cart']);

@@ -33,6 +33,18 @@
         </div>
     {% endfor %}
     <div class="row">
+        {% if basket.count is same as(0) %}
+            <div class="col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Votre panier est vide!</h6>
+                    </div>
+                    <div class="card-body">
+                        Votre panier est vide, commencez par ajouter des vinyles à votre panier!
+                    </div>
+                </div>
+            </div>
+        {% else %}
         <div class="col-9">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
@@ -48,18 +60,11 @@
                                 <th>Quantité</th>
                             </tr>
                             </thead>
-                            <tfoot>
-                            <tr>
-                                <th>Nom</th>
-                                <th>Prix</th>
-                                <th>Quantité</th>
-                            </tr>
-                            </tfoot>
                             <tbody>
                             {% for item in basket.all %}
                                 <tr>
-                                    <td>{{ item.nom }}</td>
-                                    <td>{{ item.prix }}</td>
+                                    <td><a href="#" target="_blank">{{ item.nom }}</a></td>
+                                    <td>{{ item.prix | number_format(2) }} €</td>
                                     <td>{{ item.quantity }}</td>
                                 </tr>
                             {% endfor %}
@@ -80,7 +85,7 @@
                             <tbody>
                                 <tr>
                                     <td>Sous total</td>
-                                    <td>17.20 €</td>
+                                    <td>{{ basket.subtotal | number_format(2) }} €</td>
                                 </tr>
                                 <tr>
                                     <td>Livraison</td>
@@ -88,7 +93,7 @@
                                 </tr>
                                 <tr class="table-secondary">
                                     <td>Total</td>
-                                    <td>22.20 €</td>
+                                    <td>{{ (basket.subtotal + 5) | number_format(2) }} €</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -98,6 +103,7 @@
                 </div>
             </div>
         </div>
+        {% endif %}
     </div>
 
 {% endblock %}

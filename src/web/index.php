@@ -65,7 +65,8 @@ $container['view'] = function ($container) {
 
     $view->getEnvironment()->addGlobal('basket', [
         'all' => Basket::all(),
-        'count' => Basket::count()
+        'count' => Basket::count(),
+        'subtotal' => Basket::subtotal()
     ]);
 
     $view->addExtension(new TwigExtension($container->router, Uri::createFromEnvironment(new Environment($_SERVER))));
