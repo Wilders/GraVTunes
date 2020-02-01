@@ -57,7 +57,7 @@
                     <p class="lead text-white">Créez votre vinyle personnalisé!</p>
                     {% if auth.check %}
                     <p class="lead">
-                        <a href="{{ path_for("showAccount") }}" class="btn btn-lg btn-primary">Accéder à GraVTunes</a>
+                        <a href="{{ path_for("appHome") }}" class="btn btn-lg btn-primary">Accéder à GraVTunes</a>
                     </p>
                     {% endif %}
                 </div>
@@ -103,7 +103,7 @@
                         <div class="form-row">
                             {% if auth.check %}
                                 <div class="col-12">
-                                    <a href="{{ path_for("showAccount") }}" class="btn btn-block btn-lg btn-primary">Accéder à GraVTunes</a>
+                                    <a href="{{ path_for("appHome") }}" class="btn btn-block btn-lg btn-primary">Accéder à GraVTunes</a>
                                 </div>
                             {% else %}
                             <div class="col-12 col-md-6 mb-2 mb-md-0">
