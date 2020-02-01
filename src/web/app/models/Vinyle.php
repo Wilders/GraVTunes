@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * Class User
@@ -12,4 +14,16 @@ class Vinyle extends Model {
     public $timestamps = false;
     protected $table = "vinyles";
     protected $primaryKey = "id";
+
+    public function user(): BelongsTo {
+        return $this->belongsTo("\app\models\User");
+    }
+
+    public function tracks(): BelongsToMany {
+        return $this->belongsToMany("\app\models\Track");
+    }
+
+    public function commandes(): BelongsToMany {
+        return $this->belongsToMany("\app\models\Commande");
+    }
 }
