@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
- * Class User
+ * Class Vinyle
  * @package app\models
  */
 class Vinyle extends Model {

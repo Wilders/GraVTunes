@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * Class Tracks
+ * Class File
  * @package app\models
  */
 class File extends Model {

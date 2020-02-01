@@ -6,35 +6,58 @@ use app\models\Vinyle;
 
 class Basket {
 
-    private $session;
-
-    public function __construct(SessionBasket $session) {
-        $this->session = $session;
-    }
-
-    public function get(Vinyle $vinyle) {
-        return $this->session->get($vinyle);
-    }
-
-    public function add(Vinyle $vinyle, int $quantity) {
-        if($this->session->exists($vinyle)) {
-            $this->session->set($vinyle, $quantity);
+    private static function init() {
+        if(!isset($_SESSION['cart'])) {
+            $_SESSION['cart'] = [];
         }
     }
 
-    public function remove(Vinyle $vinyle) {
-        $this->session->unset($vinyle);
+    public static function get(Vinyle $vinyle) {
+        self::init();
+        return isset($_SESSION['cart'][$vinyle->id]) ? Vinyle::where(['id' => $vinyle->id]) : null;
     }
 
-    public function clear() {
-        $this->session->clear();
+    public static function add(Vinyle $vinyle, int $quantity) {
+        self::init();
+        if(isset($_SESSION['cart'][$vinyle->id])) {
+            $_SESSION['cart'][$vinyle->id] += $quantity;
+        } else {
+            $_SESSION['cart'][$vinyle->id] = $quantity;
+        }
     }
 
-    public function all() {
-        return $this->session->all();
+    public static function remove(Vinyle $vinyle) {
+        self::init();
+        unset($_SESSION['cart'][$vinyle->id]);
     }
 
-    public function count() {
-        return $this->session->count();
+    public static function clear() {
+        self::init();
+        unset($_SESSION['cart']);
+    }
+
+    public static function all() {
+        self::init();
+
+        $ids = [];
+        $items = [];
+
+        foreach ($_SESSION['cart'] as $k => $v) {
+            $ids[] = $k;
+        }
+
+        $vinyles = Vinyle::find($ids);
+
+        foreach ($vinyles as $vinyle) {
+            $vinyle->quantity = $_SESSION['cart'][$vinyle->id];
+            $items[] = $vinyle;
+        }
+
+        return $items;
+    }
+
+    public static function count() {
+        self::init();
+        return count($_SESSION['cart']);
     }
 }

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * Class Tracks
+ * Class Ticket
  * @package app\models
  */
 class Ticket extends Model {

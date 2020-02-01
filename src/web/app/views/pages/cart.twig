@@ -35,11 +35,9 @@
     <div class="row">
         <div class="col-9">
             <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Votre panier (0)</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Votre panier ({{ basket.count }})</h6>
                 </div>
-                <!-- Card Body -->
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -58,11 +56,13 @@
                             </tr>
                             </tfoot>
                             <tbody>
-                            <tr>
-                                <td>Vinyle #1</td>
-                                <td>17.20 €</td>
-                                <td>2</td>
-                            </tr>
+                            {% for item in basket.all %}
+                                <tr>
+                                    <td>{{ item.nom }}</td>
+                                    <td>{{ item.prix }}</td>
+                                    <td>{{ item.quantity }}</td>
+                                </tr>
+                            {% endfor %}
                             </tbody>
                         </table>
                     </div>

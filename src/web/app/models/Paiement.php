@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * Class Tracks
+ * Class Paiement
  * @package app\models
  */
 class Paiement extends Model {

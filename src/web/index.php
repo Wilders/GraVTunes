@@ -11,6 +11,7 @@ use app\controllers\ValidatorController;
 use app\controllers\TracksController;
 use app\extensions\TwigCsrf;
 use app\extensions\TwigMessages;
+use app\helpers\Basket;
 use app\helpers\SessionBasket;
 use app\middlewares\AuthMiddleware;
 use app\middlewares\GuestMiddleware;
@@ -42,10 +43,6 @@ $config = [
 $app = new App($config);
 $container = $app->getContainer();
 
-$container['basket'] = function () {
-    return new SessionBasket();
-};
-
 $container['csrf'] = function () {
     $guard = new Guard();
     $guard->setPersistentTokenMode(true);
@@ -64,6 +61,11 @@ $container['view'] = function ($container) {
     $view->getEnvironment()->addGlobal('auth', [
         'check' => Auth::check(),
         'user' => Auth::user()
+    ]);
+
+    $view->getEnvironment()->addGlobal('basket', [
+        'all' => Basket::all(),
+        'count' => Basket::count()
     ]);
 
     $view->addExtension(new TwigExtension($container->router, Uri::createFromEnvironment(new Environment($_SERVER))));
@@ -94,6 +96,7 @@ $app->group('', function() {
     $this->get('/account', AccountController::class . ':showAccount')->setName('showAccount');
     $this->get('/home', AppController::class . ':showHome')->setName('appHome');
     $this->get('/cart', CartController::class . ':showCart')->setName("showCart");
+    $this->get('/cart/add/{id:[0-9]+}[/{quantity:[0-9]+}]', CartController::class . ':addCart')->setName("addCart");
     $this->get('/tracks', TracksController::class . ':tracks')->setName("appTracks");
     $this->post('/importFile', TracksController::class . ':addFile')->setName("importFile");
 })->add(new AuthMiddleware($container));
