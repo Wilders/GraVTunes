@@ -1,0 +1,103 @@
+{% extends "layouts/app-layout.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/datatables.bootstrap.min.css">
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/dataTables.min.js"></script>
+    <script type="text/javascript" src='{{ base_url() }}/public/assets/js/datatables.bootstrap.min.js'></script>
+{% endblock %}
+
+{% block appcontent %}
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Panier</h1>
+        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm"><i class="fas fa-trash-alt fa-sm text-white-50"></i> Vider le panier</a>
+    </div>
+    {% for msg in flash('error') %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ msg }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endfor %}
+    {% for msg in flash('success') %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ msg }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endfor %}
+    <div class="row">
+        <div class="col-9">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Votre panier (0)</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Prix</th>
+                                <th>Quantité</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Prix</th>
+                                <th>Quantité</th>
+                            </tr>
+                            </tfoot>
+                            <tbody>
+                            <tr>
+                                <td>Vinyle #1</td>
+                                <td>17.20 €</td>
+                                <td>2</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Récapitulatif</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>Sous total</td>
+                                    <td>17.20 €</td>
+                                </tr>
+                                <tr>
+                                    <td>Livraison</td>
+                                    <td>5.00 €</td>
+                                </tr>
+                                <tr class="table-secondary">
+                                    <td>Total</td>
+                                    <td>22.20 €</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-center text-muted">Vous aurez la possibilité de vérifier vos informations avant de payer.</p>
+                    <a href="#" class="btn btn-block btn-lg btn-primary">Commander</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

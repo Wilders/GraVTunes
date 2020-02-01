@@ -1,13 +1,16 @@
 {% extends "layouts/body-layout.twig" %}
 
 {% block stylesheets %}
+    {{ parent() }}
     <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/app.css">
 {% endblock %}
 
 {% block scripts %}
+    {{ parent() }}
     <script type="text/javascript" src="{{ base_url() }}/public/assets/js/jquery-ui-1.12.1.min.js"></script>
     <script type="text/javascript" src="{{ base_url() }}/public/assets/js/app.js"></script>
 {% endblock %}
+
 {% block content %}
     <div id="wrapper">
         {% include "layouts/app-sidebar.twig" %}

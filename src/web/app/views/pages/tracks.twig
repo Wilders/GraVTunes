@@ -1,15 +1,13 @@
 {% extends "layouts/app-layout.twig" %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/app.css">
+    {{ parent() }}
     <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/datatables.bootstrap.min.css">
 {% endblock %}
 
 {% block scripts %}
-    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/jquery-ui-1.12.1.min.js"></script>
-    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/app.js"></script>
-    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/track.js"></script>
-    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/jquery.dataTables.min.js"></script>
+    {{ parent() }}
+    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/dataTables.min.js"></script>
     <script type="text/javascript" src='{{ base_url() }}/public/assets/js/datatables.bootstrap.min.js'></script>
 {% endblock %}
 

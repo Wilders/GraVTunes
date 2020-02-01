@@ -4,6 +4,7 @@ use app\config\Database;
 use app\controllers\AccountController;
 use app\controllers\AppController;
 use app\controllers\Auth;
+use app\controllers\CartController;
 use app\controllers\HomeController;
 use app\controllers\AuthController;
 use app\controllers\ValidatorController;
@@ -73,7 +74,7 @@ $app->add($container->csrf);
 $app->get('/', HomeController::class . ':showHome')->setName('home');
 $app->get('/validator', ValidatorController::class . ':validator')->setName('validator');
 
-// Membres
+// Guest
 $app->group('', function() {
     $this->get('/login', AuthController::class . ':showLogin')->setName('showLogin');
     $this->post('/login', AuthController::class . ':login')->setName('login');
@@ -82,11 +83,12 @@ $app->group('', function() {
     $this->post('/register', AuthController::class . ':register')->setName('register');
 })->add(new GuestMiddleware($container));
 
-// App
+// Authenticated
 $app->group('', function() {
     $this->get('/logout', AuthController::class . ':logout')->setName('logout');
     $this->get('/account', AccountController::class . ':showAccount')->setName('showAccount');
     $this->get('/home', AppController::class . ':showHome')->setName('appHome');
+    $this->get('/cart', CartController::class . ':showCart')->setName("showCart");
     $this->get('/tracks', TracksController::class . ':tracks')->setName("appTracks");
     $this->post('/importFile', TracksController::class . ':addFile')->setName("importFile");
 })->add(new AuthMiddleware($container));
