@@ -75,7 +75,7 @@
                                             <button type="submit" class="btn btn-primary btn-sm ml-2"><i class="fas fa-sync"></i></button>
                                         </form>
                                     </td>
-                                    <td><a href="#" class="btn btn-danger btn-sm ml-2"> Supprimer <i class="fas fa-trash"></i></a></td>
+                                    <td><a href="{{ path_for('deleteCart', {id: item.id}) }}" class="btn btn-danger btn-sm ml-2"> Supprimer <i class="fas fa-trash"></i></a></td>
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -108,8 +108,8 @@
                             </tbody>
                         </table>
                     </div>
-                    <p class="text-center text-muted">Vous aurez la possibilité de vérifier vos informations avant de payer.</p>
                     <a href="#" class="btn btn-block btn-lg btn-primary">Commander</a>
+                    <small>Vous pourrez toujours annuler sur la page suivante.</small>
                 </div>
             </div>
         </div>

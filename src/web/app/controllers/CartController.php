@@ -59,4 +59,21 @@ class CartController extends Controller {
         $response = $response->withRedirect($this->router->pathFor('showCart'));
         return $response;
     }
+
+    public function deleteCart(Request $request, Response $response, array $args): Response {
+        try {
+            $item_id = filter_var($args['id'], FILTER_SANITIZE_NUMBER_INT);
+
+            $vinyle = Vinyle::where(['id' => $item_id, 'user_id' => Auth::user()->id])->firstOrFail();
+
+            Basket::remove($vinyle);
+
+            $this->container->flash->addMessage('success', "Votre panier à été mis à jour!");
+            $response = $response->withRedirect($this->router->pathFor('showCart'));
+        } catch(ModelNotFoundException $e) {
+            $this->container->flash->addMessage('error', 'Impossible de modifier la quantité de ce vinyle.');
+            $response = $response->withRedirect($this->router->pathFor('appHome'));
+        }
+        return $response;
+    }
 }
