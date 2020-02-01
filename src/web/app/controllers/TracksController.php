@@ -6,7 +6,7 @@ use app\exceptions\TracksException;
 use app\models\Tracks;
 use app\models\UserPossede;
 use app\models\File;
-use app\controllers\Auth;
+use app\helpers\Auth;
 
 use Slim\Http\Request;
 use Slim\Http\Response;

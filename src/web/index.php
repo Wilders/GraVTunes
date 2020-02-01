@@ -3,7 +3,7 @@
 use app\config\Database;
 use app\controllers\AccountController;
 use app\controllers\AppController;
-use app\controllers\Auth;
+use app\helpers\Auth;
 use app\controllers\CartController;
 use app\controllers\HomeController;
 use app\controllers\AuthController;
@@ -11,6 +11,7 @@ use app\controllers\ValidatorController;
 use app\controllers\TracksController;
 use app\extensions\TwigCsrf;
 use app\extensions\TwigMessages;
+use app\helpers\Basket;
 use app\middlewares\AuthMiddleware;
 use app\middlewares\GuestMiddleware;
 use app\middlewares\OldInputMiddleware;
@@ -40,6 +41,10 @@ $config = [
 
 $app = new App($config);
 $container = $app->getContainer();
+
+$container['basket'] = function () {
+    return new Basket();
+};
 
 $container['csrf'] = function () {
     $guard = new Guard();

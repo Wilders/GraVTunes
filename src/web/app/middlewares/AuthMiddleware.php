@@ -2,7 +2,7 @@
 
 namespace app\middlewares;
 
-use app\controllers\Auth;
+use app\helpers\Auth;
 use app\exceptions\AuthException;
 use Slim\Http\Request;
 use Slim\Http\Response;

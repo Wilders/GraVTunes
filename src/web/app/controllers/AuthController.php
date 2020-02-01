@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\exceptions\AuthException;
+use app\helpers\Auth;
 use app\models\User;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -78,7 +79,7 @@ class AuthController extends Controller {
             $response = $response->withRedirect($this->router->pathFor('showLogin'));
         } catch (AuthException $e) {
             $this->flash->addMessage('error', $e->getMessage());
-            $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
+            $response = $response->withRedirect($this->router->pathFor("showRegister"));
         }
         return $response;
     }

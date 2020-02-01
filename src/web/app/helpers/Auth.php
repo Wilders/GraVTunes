@@ -1,6 +1,6 @@
 <?php
 
-namespace app\controllers;
+namespace app\helpers;
 
 use app\models\User;
 use Exception;
