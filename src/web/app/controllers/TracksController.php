@@ -3,10 +3,8 @@
 namespace app\controllers;
 
 use app\exceptions\TracksException;
-use app\models\Tracks;
-use app\models\UserPossede;
+use app\models\Track;
 use app\models\File;
-use app\helpers\Auth;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -28,7 +26,7 @@ class TracksController extends Controller{
            // if(Auth::check()){
                 //$userPossede = UserPossede::where('user_id','=',1)->firstOrFail();
                 //$tracks = Tracks::where('id','=',$userPossede->track_id)->get();
-                $tracks = Tracks::select("*")->get();
+                $tracks = Track::select("*")->get();
 
                 $this->view->render($response, 'pages/tracks.twig',[
                     "tracks" => $tracks
@@ -48,7 +46,7 @@ class TracksController extends Controller{
             $descr = filter_var($request->getParsedBodyParam('descr'), FILTER_SANITIZE_SPECIAL_CHARS);
 
             $fichier = new File();
-            $track = new Tracks();
+            $track = new Track();
 
             $fichier->path = $file["file"]->getClientFilename();
             $fichier->hash = $this->hashage($file["file"]->getClientFilename());

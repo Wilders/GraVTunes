@@ -4,9 +4,12 @@ namespace app\models;
 
 use Illuminate\Database\Eloquent\Model;
 
-
-class UserPossede extends Model{
+/**
+ * Class Tracks
+ * @package app\models
+ */
+class Commande extends Model {
     public $timestamps = false;
-    protected $table = "users_possede";
+    protected $table = "commandes";
     protected $primaryKey = "id";
 }

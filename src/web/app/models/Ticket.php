@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
  * Class Tracks
  * @package app\models
  */
-class Tracks extends Model {
+class Ticket extends Model {
     public $timestamps = false;
-    protected $table = "tracks";
+    protected $table = "tickets";
     protected $primaryKey = "id";
 }
