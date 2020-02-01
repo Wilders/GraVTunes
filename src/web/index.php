@@ -11,7 +11,7 @@ use app\controllers\ValidatorController;
 use app\controllers\TracksController;
 use app\extensions\TwigCsrf;
 use app\extensions\TwigMessages;
-use app\helpers\Basket;
+use app\helpers\SessionBasket;
 use app\middlewares\AuthMiddleware;
 use app\middlewares\GuestMiddleware;
 use app\middlewares\OldInputMiddleware;
@@ -43,7 +43,7 @@ $app = new App($config);
 $container = $app->getContainer();
 
 $container['basket'] = function () {
-    return new Basket();
+    return new SessionBasket();
 };
 
 $container['csrf'] = function () {

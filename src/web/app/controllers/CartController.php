@@ -12,4 +12,8 @@ class CartController extends Controller {
         return $response;
     }
 
+    public function addCart(Request $request, Response $response, array $args): Response {
+
+    }
+
 }

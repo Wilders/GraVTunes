@@ -1,47 +1,40 @@
 <?php
+
 namespace app\helpers;
 
-use Countable;
+use app\models\Vinyle;
 
-class Basket implements Countable {
+class Basket {
 
-    public function __construct() {
-        if(!isset($_SESSION['cart'])) {
-            $_SESSION['cart'] = [];
+    private $session;
+
+    public function __construct(SessionBasket $session) {
+        $this->session = $session;
+    }
+
+    public function get(Vinyle $vinyle) {
+        return $this->session->get($vinyle);
+    }
+
+    public function add(Vinyle $vinyle, int $quantity) {
+        if($this->session->exists($vinyle)) {
+            $this->session->set($vinyle, $quantity);
         }
     }
 
-
-    public function set($index, $value) {
-        $_SESSION['cart'][$index] = $value;
-    }
-
-    public function get($index) {
-        return $this->exists($index) ? $_SESSION['cart'][$index] : null;
-    }
-
-    public function exists($index) {
-        return isset($_SESSION['cart'][$index]);
-    }
-
-    public function all() {
-        return $_SESSION['cart'];
-    }
-
-    public function unset($index) {
-        if($this->exists($index)) {
-            unset($_SESSION['cart'][$index]);
-        }
+    public function remove(Vinyle $vinyle) {
+        $this->session->unset($vinyle);
     }
 
     public function clear() {
-        unset($_SESSION['cart']);
+        $this->session->clear();
     }
 
-    /**
-     * @inheritDoc
-     */
+    public function all() {
+        return $this->session->all();
+    }
+
     public function count() {
-        return count($this->all());
+        return $this->session->count();
     }
 }
