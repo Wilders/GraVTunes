@@ -99,6 +99,8 @@ $app->group('', function() {
 
     $this->get('/cart', CartController::class . ':showCart')->setName("showCart");
     $this->get('/cart/add/{id:[0-9]+}[/{quantity:[0-9]+}]', CartController::class . ':addCart')->setName("addCart");
+    $this->get('/cart/clear', CartController::class . ':clearCart')->setName("clearCart");
+    $this->get('/cart/delete/{id:[0-9]+}', CartController::class . ':deleteCart')->setName("deleteCart");
     $this->post('/cart/update/{id:[0-9]+}', CartController::class . ':updateCart')->setName("updateCart");
 
     $this->get('/tracks', TracksController::class . ':tracks')->setName("appTracks");
