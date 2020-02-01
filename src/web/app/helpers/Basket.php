@@ -66,6 +66,16 @@ class Basket {
         return $total;
     }
 
+    public static function update(Vinyle $vinyle, int $quantity) {
+        if(isset($_SESSION['cart'][$vinyle->id])) {
+            if($quantity <= 0 ) {
+                self::remove($vinyle);
+            } else {
+                $_SESSION['cart'][$vinyle->id] = $quantity;
+            }
+        }
+    }
+
     public static function count() {
         self::init();
         return count($_SESSION['cart']);

@@ -14,7 +14,9 @@
 {% block appcontent %}
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Panier</h1>
-        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm"><i class="fas fa-trash-alt fa-sm text-white-50"></i> Vider le panier</a>
+        {% if basket.count > 0 %}
+            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm"><i class="fas fa-trash-alt fa-sm text-white-50"></i> Vider le panier</a>
+        {% endif %}
     </div>
     {% for msg in flash('error') %}
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -54,18 +56,26 @@
                     <div class="table-responsive">
                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead>
-                            <tr>
-                                <th>Nom</th>
-                                <th>Prix</th>
-                                <th>Quantité</th>
-                            </tr>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>Prix</th>
+                                    <th>Quantité</th>
+                                    <th>Action</th>
+                                </tr>
                             </thead>
                             <tbody>
                             {% for item in basket.all %}
                                 <tr>
                                     <td><a href="#" target="_blank">{{ item.nom }}</a></td>
                                     <td>{{ item.prix | number_format(2) }} €</td>
-                                    <td>{{ item.quantity }}</td>
+                                    <td>
+                                        <form action="{{ path_for("updateCart", {id: item.id}) }}" method="POST" class="form-inline">
+                                            <input type="text" class="form-control form-control-sm" value="{{ item.quantity }}" name="quantity">
+                                            {{ csrf() | raw }}
+                                            <button type="submit" class="btn btn-primary btn-sm ml-2"><i class="fas fa-sync"></i></button>
+                                        </form>
+                                    </td>
+                                    <td><a href="#" class="btn btn-danger btn-sm ml-2"> Supprimer <i class="fas fa-trash"></i></a></td>
                                 </tr>
                             {% endfor %}
                             </tbody>

@@ -96,9 +96,13 @@ $app->group('', function() {
     $this->get('/logout', AuthController::class . ':logout')->setName('logout');
     $this->get('/account', AccountController::class . ':showAccount')->setName('showAccount');
     $this->get('/home', AppController::class . ':showHome')->setName('appHome');
+
     $this->get('/cart', CartController::class . ':showCart')->setName("showCart");
     $this->get('/cart/add/{id:[0-9]+}[/{quantity:[0-9]+}]', CartController::class . ':addCart')->setName("addCart");
+    $this->post('/cart/update/{id:[0-9]+}', CartController::class . ':updateCart')->setName("updateCart");
+
     $this->get('/tracks', TracksController::class . ':tracks')->setName("appTracks");
+
     $this->post('/importFile', TracksController::class . ':addFile')->setName("importFile");
 })->add(new AuthMiddleware($container));
 
