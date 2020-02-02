@@ -14,6 +14,11 @@ class Track extends Model {
     public $timestamps = false;
     protected $table = "tracks";
     protected $primaryKey = "id";
+    protected $fillable = [
+        'nom',
+        'description',
+        'archived',
+    ];
 
     public function user(): BelongsTo {
         return $this->belongsTo("\app\models\User");

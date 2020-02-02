@@ -13,7 +13,11 @@ class File extends Model {
     public $timestamps = false;
     protected $table = "files";
     protected $primaryKey = "id";
-
+    protected $fillable = [
+        'path',
+        'hash',
+        'duree'
+    ];
     public function tracks(): HasMany {
         return $this->hasMany("\app\models\Track");
     }

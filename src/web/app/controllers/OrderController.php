@@ -48,11 +48,27 @@ class OrderController extends Controller {
                 ]
             ]);
 
-            $this->flash->addMessage('success', "Votre commande a été créée!");
-            $this->view->render($response, 'pages/cart.twig');
+            if($result->success) {
+                $order->update([
+                    'paid' => true
+                ]);
+                Basket::clear();
+                $order->paiement()->create([
+                    'success' => true,
+                    'transaction_id' => $result->transaction->id
+                ]);
+            } else {
+                $order->paiement()->create([
+                    'success' => false
+                ]);
+                throw new Exception("Votre paiement a été refusé.");
+            }
+
+            $this->flash->addMessage('success', "Votre paiement a été accepté et votre commande a été créée.");
+            $response = $response->withRedirect($this->router->pathFor("appHome"));
         } catch(Exception $e) {
             $this->flash->addMessage('error', $e->getMessage());
-            $response = $response->withRedirect($this->router->pathFor("showCart"));
+            $response = $response->withRedirect($this->router->pathFor("showOrder"));
         }
         return $response;
     }

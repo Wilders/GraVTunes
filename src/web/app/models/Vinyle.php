@@ -14,7 +14,15 @@ class Vinyle extends Model {
     public $timestamps = false;
     protected $table = "vinyles";
     protected $primaryKey = "id";
-
+    protected $fillable = [
+        'nom',
+        'shareKey',
+        'locked',
+        'description',
+        'cover',
+        'prix',
+        'creationDate'
+    ];
     public $quantity = null;
 
     public function user(): BelongsTo {

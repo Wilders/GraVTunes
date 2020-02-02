@@ -13,6 +13,15 @@ class User extends Model {
     public $timestamps = false;
     protected $table = "users";
     protected $primaryKey = "id";
+    protected $fillable = [
+        'pseudo',
+        'email',
+        'password',
+        'nom',
+        'prenom',
+        'avatar',
+        'address'
+    ];
 
     public function tracks(): HasMany {
         return $this->hasMany("\app\models\Track");

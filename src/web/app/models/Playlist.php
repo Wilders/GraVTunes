@@ -14,6 +14,11 @@ class Playlist extends Model {
     public $timestamps = false;
     protected $table = "playlists";
     protected $primaryKey = "id";
+    protected $fillable = [
+        'nom',
+        'description',
+        'creationDate'
+    ];
 
     public function user(): BelongsTo {
         return $this->belongsTo("\app\models\User");

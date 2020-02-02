@@ -14,6 +14,11 @@ class Ticket extends Model {
     public $timestamps = false;
     protected $table = "tickets";
     protected $primaryKey = "id";
+    protected $fillable = [
+        'objet',
+        'statut',
+        'creationDate'
+    ];
 
     public function messages(): HasMany {
         return $this->hasMany("\app\models\Message");

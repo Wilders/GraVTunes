@@ -13,6 +13,10 @@ class Message extends Model {
     public $timestamps = false;
     protected $table = "messages";
     protected $primaryKey = "id";
+    protected $fillable = [
+        'message',
+        'creationDate'
+    ];
 
     public function ticket(): BelongsTo {
         return $this->belongsTo("\app\models\Ticket");
