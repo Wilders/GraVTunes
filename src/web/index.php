@@ -105,6 +105,7 @@ $app->group('', function() {
     $this->post('/cart/update/{id:[0-9]+}', CartController::class . ':updateCart')->setName("updateCart");
 
     $this->get('/order', OrderController::class . ':showOrder')->setName("showOrder");
+    $this->post('/order/create', OrderController::class . ':createOrder')->setName("createOrder");
 
     $this->get('/tracks', TracksController::class . ':tracks')->setName("appTracks");
 

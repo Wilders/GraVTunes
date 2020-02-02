@@ -29,4 +29,8 @@ class User extends Model {
     public function tickets(): HasMany {
         return $this->hasMany("\app\models\Ticket");
     }
+
+    public function commandes(): HasMany {
+        return $this->hasMany("\app\models\Commande");
+    }
 }

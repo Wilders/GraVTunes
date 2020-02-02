@@ -15,6 +15,8 @@ class Vinyle extends Model {
     protected $table = "vinyles";
     protected $primaryKey = "id";
 
+    public $quantity = null;
+
     public function user(): BelongsTo {
         return $this->belongsTo("\app\models\User");
     }

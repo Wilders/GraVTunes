@@ -7,8 +7,6 @@
 
 {% block scripts %}
     {{ parent() }}
-    <script src="https://cdn.jsdelivr.net/npm/places.js@1.17.1"></script>
-    <script src="{{ base_url() }}/public/assets/js/places.js"></script>
 {% endblock %}
 
 {% block appcontent %}
@@ -25,7 +23,7 @@
                     </h4>
                     <ul class="list-group mb-3">
                         {% for item in basket.all %}
-                            <li class="list-group-item d-flex justify-content-between lh-condensed">
+                            <li class="list-group-item d-flex justify-content-between">
                                 <div>
                                     <h6 class="my-0">{{ item.nom }}</h6>
                                     <small class="text-muted">{{ item.description }}</small>
@@ -48,39 +46,27 @@
                     </ul>
                 </div>
                 <div class="col-md-8 order-md-1">
-                    <h4 class="mb-3">Vos informations</h4>
-                    <form class="needs-validation" novalidate>
+                    <h4 class="mb-3">Vérifier vos informations <small class="text-muted">(<a href="{{ path_for("showAccount") }}">Modifier</a>)</small></h4>
+                    <form method="POST" action="{{ path_for("createOrder") }}">
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="firstName">Prénom</label>
-                                <input type="text" class="form-control" id="firstName" placeholder="" value="{{ auth.user.prenom }}" required>
-                                <div class="invalid-feedback">
-                                    Valid first name is required.
-                                </div>
+                                <input type="text" class="form-control" id="firstName" placeholder="" value="{{ auth.user.prenom }}" disabled>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="lastName">Nom</label>
-                                <input type="text" class="form-control" id="lastName" placeholder="" value="{{ auth.user.nom }}" required>
-                                <div class="invalid-feedback">
-                                    Valid last name is required.
-                                </div>
+                                <input type="text" class="form-control" id="lastName" placeholder="" value="{{ auth.user.nom }}" disabled>
                             </div>
                         </div>
 
                         <div class="mb-3">
                             <label for="email">Adresse e-mail</label>
                             <input type="email" class="form-control" id="email" value="{{ auth.user.email }}" disabled>
-                            <div class="invalid-feedback">
-                                Please enter a valid email address for shipping updates.
-                            </div>
                         </div>
 
                         <div class="mb-3">
                             <label for="address">Adresse de livraison</label>
-                            <input type="text" class="form-control" id="address" name="address" value="{{ auth.user.address }}" required>
-                            <div class="invalid-feedback">
-                                Please enter your shipping address.
-                            </div>
+                            <input type="text" class="form-control" id="address" name="address" value="{{ auth.user.address }}" disabled>
                         </div>
 
                         <hr class="mb-4">
