@@ -7,6 +7,13 @@
 
 {% block scripts %}
     {{ parent() }}
+    <script src="https://js.braintreegateway.com/web/dropin/1.22.0/js/dropin.min.js"></script>
+    braintree.dropin.create({
+        authorization: CLIENT_TOKEN_FROM_SERVER,
+        container: '#dropin-container'
+    }, function (err, instance) {
+        /* ... */
+    });
 {% endblock %}
 
 {% block appcontent %}

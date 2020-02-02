@@ -3,6 +3,7 @@
 use app\config\Database;
 use app\controllers\AccountController;
 use app\controllers\AppController;
+use app\controllers\BraintreeController;
 use app\controllers\OrderController;
 use app\helpers\Auth;
 use app\controllers\CartController;
@@ -34,6 +35,10 @@ try {
 } catch (Exception $e) {
     die($e->getMessage());
 }
+Braintree_Configuration::environment('sandbox');
+Braintree_Configuration::merchantId('zj3j5gfy8j6nmmvc');
+Braintree_Configuration::publicKey('5xhpkqtdwqzd43ph');
+Braintree_Configuration::privateKey('a9b3613da260e9fbb317dfef6ff5a60c');
 
 $config = [
     'settings' => [
@@ -106,6 +111,8 @@ $app->group('', function() {
 
     $this->get('/order', OrderController::class . ':showOrder')->setName("showOrder");
     $this->post('/order/create', OrderController::class . ':createOrder')->setName("createOrder");
+
+    $this->get('/braintree/token', BraintreeController::class . ':token')->setName("braintreeToken");
 
     $this->get('/tracks', TracksController::class . ':tracks')->setName("appTracks");
 
