@@ -90,25 +90,21 @@
                     <h6 class="m-0 font-weight-bold text-primary">Récapitulatif</h6>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table">
-                            <tbody>
-                                <tr>
-                                    <td>Sous total</td>
-                                    <td>{{ basket.subtotal | number_format(2) }} €</td>
-                                </tr>
-                                <tr>
-                                    <td>Livraison</td>
-                                    <td>5.00 €</td>
-                                </tr>
-                                <tr class="table-secondary">
-                                    <td>Total</td>
-                                    <td>{{ (basket.subtotal + 5) | number_format(2) }} €</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <a href="#" class="btn btn-block btn-lg btn-primary">Commander</a>
+                    <ul class="list-group mb-3">
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Sous-total</span>
+                            <strong>{{ basket.subtotal | number_format(2) }} €</strong>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Livraison</span>
+                            <strong>5.00 €</strong>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between list-group-item-secondary">
+                            <span>Total</span>
+                            <strong>{{ (basket.subtotal + 5) | number_format(2) }} €</strong>
+                        </li>
+                    </ul>
+                    <a href="{{ path_for("showOrder") }}" class="btn btn-block btn-lg btn-primary">Commander</a>
                     <small>Vous pourrez toujours annuler sur la page suivante.</small>
                 </div>
             </div>

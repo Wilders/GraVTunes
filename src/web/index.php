@@ -3,6 +3,7 @@
 use app\config\Database;
 use app\controllers\AccountController;
 use app\controllers\AppController;
+use app\controllers\OrderController;
 use app\helpers\Auth;
 use app\controllers\CartController;
 use app\controllers\HomeController;
@@ -102,6 +103,8 @@ $app->group('', function() {
     $this->get('/cart/clear', CartController::class . ':clearCart')->setName("clearCart");
     $this->get('/cart/delete/{id:[0-9]+}', CartController::class . ':deleteCart')->setName("deleteCart");
     $this->post('/cart/update/{id:[0-9]+}', CartController::class . ':updateCart')->setName("updateCart");
+
+    $this->get('/order', OrderController::class . ':showOrder')->setName("showOrder");
 
     $this->get('/tracks', TracksController::class . ':tracks')->setName("appTracks");
 

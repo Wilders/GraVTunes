@@ -57,6 +57,7 @@ class Basket {
     }
 
     public static function subtotal() {
+        self::init();
         $total = 0;
 
         foreach(Basket::all() as $item) {
@@ -67,6 +68,7 @@ class Basket {
     }
 
     public static function update(Vinyle $vinyle, int $quantity) {
+        self::init();
         if(isset($_SESSION['cart'][$vinyle->id])) {
             if($quantity <= 0 ) {
                 self::remove($vinyle);
