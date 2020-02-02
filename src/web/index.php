@@ -36,9 +36,9 @@ try {
     die($e->getMessage());
 }
 Braintree_Configuration::environment('sandbox');
-Braintree_Configuration::merchantId('zj3j5gfy8j6nmmvc');
-Braintree_Configuration::publicKey('5xhpkqtdwqzd43ph');
-Braintree_Configuration::privateKey('a9b3613da260e9fbb317dfef6ff5a60c');
+Braintree_Configuration::merchantId('ydckbd3x4bg7c7tb');
+Braintree_Configuration::publicKey('bhq4jpp6799jtv8z');
+Braintree_Configuration::privateKey('fb3904f6c49af6f4f1417471db1fa5a9');
 
 $config = [
     'settings' => [
