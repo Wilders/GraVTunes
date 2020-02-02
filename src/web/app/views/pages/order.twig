@@ -7,13 +7,20 @@
 
 {% block scripts %}
     {{ parent() }}
-    <script src="https://js.braintreegateway.com/web/dropin/1.22.0/js/dropin.min.js"></script>
-    braintree.dropin.create({
-        authorization: CLIENT_TOKEN_FROM_SERVER,
-        container: '#dropin-container'
-    }, function (err, instance) {
-        /* ... */
-    });
+    <script src="{{ base_url() }}/public/assets/js/braintree-2.32.1.min.js"></script>
+    <script>
+        fetch('braintree/token')
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                if(data.token) {
+                    braintree.setup(data.token, 'dropin', {
+                        container: 'payment'
+                    })
+                }
+            });
+    </script>
 {% endblock %}
 
 {% block appcontent %}
@@ -79,6 +86,8 @@
                         <hr class="mb-4">
 
                         <h4 class="mb-3">Informations de paiement</h4>
+
+                        <div id="payment"></div>
                         {{ csrf() | raw }}
                         <button class="btn btn-primary btn-lg btn-block" type="submit">Procéder au paiement</button>
                     </form>

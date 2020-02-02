@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\helpers\Auth;
 use app\helpers\Basket;
 use app\models\Commande;
+use Braintree_Transaction;
 use DateTime;
 use Exception;
 use Slim\Http\Request;
@@ -27,6 +28,7 @@ class OrderController extends Controller {
     public function createOrder(Request $request, Response $response, array $args): Response {
         try {
             if(Basket::count() === 0) throw new Exception("Votre panier est vide.");
+            if(is_null($request->getParsedBodyParam('payment_method_nonce'))) throw new Exception("Une erreur est survenue lors du paiement. Vous n'avez pas été débité.");
 
             $order = new Commande();
             $order->user_id = Auth::user()->id;
@@ -37,6 +39,14 @@ class OrderController extends Controller {
             $order->save();
 
             $order->vinyles()->saveMany(Basket::all(), $this->getQuantities(Basket::all()));
+
+            $result = Braintree_Transaction::sale([
+                'amount' => Basket::subtotal() + 5,
+                'paymentMethodNonce' => $request->getParsedBodyParam('payment_method_nonce'),
+                'options' => [
+                    'submitForSettlement' => true
+                ]
+            ]);
 
             $this->flash->addMessage('success', "Votre commande a été créée!");
             $this->view->render($response, 'pages/cart.twig');
