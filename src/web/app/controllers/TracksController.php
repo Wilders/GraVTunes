@@ -3,9 +3,11 @@
 namespace app\controllers;
 
 use app\exceptions\TracksException;
+use app\helpers\Auth;
 use app\models\Track;
 use app\models\File;
 
+use Psr\Http\Message\UploadedFileInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -21,18 +23,20 @@ class TracksController extends Controller{
         return $response;
     }
 
+    public function importTracks(Request $request, Response $response, array $args) : Response {
+        $this->view->render($response, 'pages/importTracks.twig');
+        return $response;
+    }
+
     public function tracks(Request $request, Response $response, array $args) : Response {
         try{
-           // if(Auth::check()){
-                //$userPossede = UserPossede::where('user_id','=',1)->firstOrFail();
-                //$tracks = Tracks::where('id','=',$userPossede->track_id)->get();
-                $tracks = Track::select("*")->get();
+                $tracks = Track::where('user_id','=',Auth::user()->id)->get();
 
                 $this->view->render($response, 'pages/tracks.twig',[
                     "tracks" => $tracks
                 ]);
                 return $response;
-            //}
+
         }catch (TracksException $e){
             $this->flash->addMessage('error', $e->getMessage());
             $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
@@ -52,17 +56,39 @@ class TracksController extends Controller{
             $fichier->hash = $this->hashage($file["file"]->getClientFilename());
             $fichier->duree = 0;
 
+
             $fichier->save();
 
             $track->nom = $titre;
             $track->description = $descr;
-            $track->file_id = 1;//File::select("*")->count()->get() + 1;
+            $track->file_id = 11;//File::count()->get() + 1;
+            $track->user_id = Auth::user()->id;
 
             $track->save();
+
+            $this->moveUploadedFile(__DIR__ . '/../public/assets/media/musiques', $file["file"]);
 
             $this->flash->addMessage('success',"Félicitations, votre fichier a bien été enregistré. Vous pouvez le consulter dans vos titres.");
             $response = $response->withRedirect($this->router->pathFor("appHome"));
         }catch(TracksException $e){
+            $this->flash->addMessage('error', $e->getMessage());
+            $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
+        }
+        return $response;
+    }
+
+    public function deleteFile(Request $request, Response $response, array $args) : Response {
+        try{
+
+            $track = Track::where('user_id','=', Auth::user()->id)->first();
+            $file = File::where('id','=',$track->file_id)->first();
+
+            $file->delete();
+            $track->delete();
+
+            $this->flash->addMessage('success',"Vous venez de supprimer ".$track->nom.".");
+            $response = $response->withRedirect($this->router->pathFor("appHome"));
+        }catch (TracksException $e){
             $this->flash->addMessage('error', $e->getMessage());
             $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
         }

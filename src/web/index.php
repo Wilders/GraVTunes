@@ -115,8 +115,10 @@ $app->group('', function() {
     $this->get('/braintree/token', BraintreeController::class . ':token')->setName("braintreeToken");
 
     $this->get('/tracks', TracksController::class . ':tracks')->setName("appTracks");
+    $this->get('/tracks/import', TracksController::class . ':importtracks')->setName("importTracks");
 
     $this->post('/importFile', TracksController::class . ':addFile')->setName("importFile");
+    $this->post('/deleteFile', TracksController::class . ':deleteFile')->setName("deleteFile");
 })->add(new AuthMiddleware($container));
 
 $app->run();

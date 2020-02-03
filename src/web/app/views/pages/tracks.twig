@@ -13,8 +13,10 @@
 
 {% block appcontent %}
     <!-- DataTales Example -->
+
     <div class="card shadow mb-4">
         <div class="card-header py-3">
+            <a class="btn btn-outline-primary float-right" href="{{ path_for("importTracks") }}">Ajouter une musique</a>
             <h6 class="m-0 font-weight-bold text-primary">Mes titres</h6>
         </div>
         <div class="card-body">
@@ -25,6 +27,7 @@
                             <th></th>
                             <th>Nom</th>
                             <th>Description</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tfoot>
@@ -32,6 +35,7 @@
                             <th></th>
                             <th>Nom</th>
                             <th>Description</th>
+                            <th></th>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -40,6 +44,17 @@
                                 <td class="text-center"><i class="far fa-play-circle fa-3x"></i></td>
                                 <td>{{ track.nom }}</td>
                                 <td>{{ track.description }}</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <a  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <img src="{{ base_url() }}/public/assets/media/images/menulist.png" >
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                            <a class="dropdown-item" href="#">Modifier</a>
+                                            <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteTrackModal">Supprimer</button>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -48,59 +63,29 @@
         </div>
     </div>
 
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="deleteTrackModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Êtes-vous sûr de vous déconnecter ?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Selectionnez "Déconnexion" si vous souhaitez vous déconnecter de votre compte.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Fermer</button>
-                    <a class="btn btn-primary" href="{{ path_for("logout") }}">Déconnexion</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade bd-example-modal-lg" id="importTrack" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <form method="POST" class="uac-validation" action="{{ path_for("importFile") }}" id="importTrackForm" enctype="multipart/form-data">
+           <form method="POST" action="{{ path_for("deleteFile") }}" id="deleteTrackForm" >
+                <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Ajout d'une chanson</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                        <h5 class="modal-title" id="exampleModalLabel">Êtes-vous sûr de supprimer cette chanson ?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
                         </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="file">Fichier</label>
-                            <input id="file" type="file" class="form-control" name="file" required autofocus>
-                        </div>
-                        <div class="form-group">
-                            <label for="title">Titre</label>
-                            <input id="title" type="text" class="form-control" name="title" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="descr">Description</label>
-                            <textarea id="descr" type="text" class="form-control" name="descr" placeholder="Nom de l'album du titre, de son artiste ..."></textarea>
-                        </div>
                     </div>
 
                     {{ csrf() | raw }}
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                        <button type="submit" class="btn btn-primary">Importer</button>
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Fermer</button>
+                        <button class="btn btn-primary" type="submit">Supprimer</button>
                     </div>
-                </form>
-            </div>
+                </div>
+           </form>
         </div>
     </div>
+
+
 
 {% endblock %}
 
