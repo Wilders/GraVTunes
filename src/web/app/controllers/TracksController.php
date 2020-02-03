@@ -12,7 +12,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 
 /**
- * Class AuthController
+ * Class TracksController
  * @author Anthony Pernot <Anthony Pernot>
  * @package app\controllers
  */
@@ -66,7 +66,7 @@ class TracksController extends Controller{
 
             $track->save();
 
-            $this->moveUploadedFile(__DIR__ . '/../public/assets/media/musiques', $file["file"]);
+            $this->moveUploadedFile( 'uploads/tracks', $file["file"]);
 
             $this->flash->addMessage('success',"Félicitations, votre fichier a bien été enregistré. Vous pouvez le consulter dans vos titres.");
             $response = $response->withRedirect($this->router->pathFor("appHome"));
@@ -87,7 +87,7 @@ class TracksController extends Controller{
             $track->delete();
 
             $this->flash->addMessage('success',"Vous venez de supprimer ".$track->nom.".");
-            $response = $response->withRedirect($this->router->pathFor("appHome"));
+            $response = $response->withRedirect($this->router->pathFor("appTracks"));
         }catch (TracksException $e){
             $this->flash->addMessage('error', $e->getMessage());
             $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
@@ -95,11 +95,33 @@ class TracksController extends Controller{
         return $response;
     }
 
+    public function updateFile(Request $request, Response $response, array $args) : Response {
+        try{
+            $name = filter_var($request->getParsedBodyParam("name"),FILTER_SANITIZE_SPECIAL_CHARS);
+            $descr = filter_var($request->getParsedBodyParam("descr"), FILTER_SANITIZE_SPECIAL_CHARS);
+
+            $track = Track::where("user_id","=",Auth::user()->id)->first();
+
+            $track->nom = $name;
+            $track->description = $descr;
+
+            $track->save();
+
+            $this->flash->addMessage('success',"Vous venez de modifier les informations de votre chanson.");
+            $response = $response->withRedirect($this->router->pathFor("appTracks"));
+        }catch(TracksException $e){
+            $this->flash->addMessage('error', $e->getMessage());
+            $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
+        }
+
+        return $response;
+    }
+
     function moveUploadedFile($directory, UploadedFileInterface $uploadedFile)
     {
         $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
-        $basename = bin2hex(random_bytes(8));
-        $filename = sprintf('%s.%0.8s', $basename, $extension);
+        //$basename = bin2hex(random_bytes(8));
+        $filename = sprintf('%s.%0.8s', /*$basename,*/ $extension);
 
         $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
 

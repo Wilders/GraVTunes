@@ -50,7 +50,7 @@
                                             <img src="{{ base_url() }}/public/assets/media/images/menulist.png" >
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                            <a class="dropdown-item" href="#">Modifier</a>
+                                            <button type="button" class="dropdown-item" data-toggle="modal" data-target="#updateTrackModal">Modifier</button>
                                             <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteTrackModal">Supprimer</button>
                                         </div>
                                     </div>
@@ -82,6 +82,44 @@
                     </div>
                 </div>
            </form>
+        </div>
+    </div>
+
+    <div class="modal fade" id="updateTrackModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form method="POST" action="{{ path_for("updateFile") }}" id="updateTrackForm" >
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modification d'une chanson</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+
+                    <!--
+                        * Condition pour afficher le nom et description du titre selectionne
+                        * Pas Fonctionnel
+                        * {% if tracks.user_id == auth.user %}  {% endif %}
+                        -->
+
+                    <div class="modal-body">
+                            <label for="nameUpdate">Nom</label>
+                            <input type="text" name="name" class="form-control" id="nameUpdate" value="">
+                            <label for="descriptionUpdate">Description</label>
+                            <textarea class="form-control" name="descr" id="descriptionUpdate" rows="4"></textarea>
+
+                    </div>
+
+
+
+                    {{ csrf() | raw }}
+
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Fermer</button>
+                        <button class="btn btn-primary" type="submit">Modifier</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 

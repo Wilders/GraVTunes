@@ -11,6 +11,8 @@ use app\controllers\HomeController;
 use app\controllers\AuthController;
 use app\controllers\ValidatorController;
 use app\controllers\TracksController;
+use app\controllers\PlaylistController;
+use app\controllers\VinyleController;
 use app\extensions\TwigCsrf;
 use app\extensions\TwigMessages;
 use app\helpers\Basket;
@@ -115,10 +117,15 @@ $app->group('', function() {
     $this->get('/braintree/token', BraintreeController::class . ':token')->setName("braintreeToken");
 
     $this->get('/tracks', TracksController::class . ':tracks')->setName("appTracks");
-    $this->get('/tracks/import', TracksController::class . ':importtracks')->setName("importTracks");
+    $this->get('/tracks/import', TracksController::class . ':importTracks')->setName("importTracks");
 
     $this->post('/importFile', TracksController::class . ':addFile')->setName("importFile");
+    $this->post('/updateFile', TracksController::class . ':updateFile')->setName("updateFile");
     $this->post('/deleteFile', TracksController::class . ':deleteFile')->setName("deleteFile");
+
+    $this->get('/playlists', PlaylistController::class . ':playlists')->setName("appPlaylist");
+
+    $this->get('/vinyles', VinyleController::class . ':vinyles')->setName("appVinyle");
 })->add(new AuthMiddleware($container));
 
 $app->run();
