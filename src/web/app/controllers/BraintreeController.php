@@ -9,7 +9,7 @@ use Slim\Http\Response;
 /**
  * Class HomeController
  * @author Jules Sayer <jules.sayer@protonmail.com>
- * @package mywishlist\controllers
+ * @package app\controllers
  */
 class BraintreeController extends Controller {
 

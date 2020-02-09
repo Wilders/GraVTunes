@@ -4,6 +4,10 @@ namespace app\helpers;
 
 use app\models\Vinyle;
 
+/**
+ * Class Basket
+ * @package app\helpers
+ */
 class Basket {
 
     private static function init() {

@@ -12,31 +12,19 @@ cd s3b_s02_chevalier_pernot_sayer_tardieu/src/web
 composer install
 ```
 
-Il faut créer un fichier de configuration pour la base de donnée nommé **database.ini** dans le répertoire app/config.
-En insérant:
+Il faut copier le fichier .env.example, le renommer en .env et remplir les informations de connexion à la BDD.
 
 | Paramètre     | Valeur d'exemple | Description               |
 | :------------:|:----------------:|:-------------------------:|
-| driver        | mysql            | Driver de votre SGBD      |
-| host          | localhost        | Hôte de votre BDD         |
-| database      | gravtunes        | Nom de votre BDD          |
-| username      | root             | Nom d'user de votre BDD   |
-| password      | root             | Mot de passe de votre BDD |
-| charset       | utf8             | Méthode d'encodage        |
-| collation     | utf8_unicode_ci  | Collation de la BDD       |
+| DB_DRIVER     | mysql            | Driver de votre SGBD      |
+| DB_HOST       | localhost        | Hôte de votre BDD         |
+| DB_NAME       | gravtunes        | Nom de votre BDD          |
+| DB_USER       | root             | Nom d'user de votre BDD   |
+| DB_PWD        | root             | Mot de passe de votre BDD |
+| DB_CHARSET    | utf8             | Méthode d'encodage        |
+| DB_COLLATION  | utf8_unicode_ci  | Collation de la BDD       |
+| DB_PREFIX     | gvt              | Préfixe de nom de table   |
 
 ## Utilisation
 
 Lancez un serveur XAMP, importez la BDD (fichier **sql/gravtunes.sql**) et connectez-vous sur le site.
-
-## Technologies
-
-- [x] *[PHP ^7.2](https://github.com/php/php-src)*
-- [x] *[Slim 3](https://github.com/slimphp/Slim)*
-- [x] *[Eloquent ORM](https://github.com/illuminate/database)*
-- [x] *[FIG Cookies](https://github.com/dflydev/dflydev-fig-cookies)*
-- [x] *[Twig-View (fork Slim)](https://github.com/slimphp/Twig-View)*
-- [x] *[Slim-Flash](https://github.com/slimphp/Slim-Flash)*
-- [x] *[Bootstrap](https://github.com/twbs/bootstrap)*
-- [x] *[jQuery](https://github.com/jquery/jquery)*
-- [x] *[jQuery-UI](https://github.com/jquery/jquery-ui)*

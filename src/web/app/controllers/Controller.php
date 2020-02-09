@@ -8,7 +8,7 @@ use Slim\Container;
  * Class Controller
  * @author Jules Sayer <jules.sayer@protonmail.com>
  * @abstract
- * @package mywishlist\controllers
+ * @package app\controllers
  */
 abstract class Controller {
 

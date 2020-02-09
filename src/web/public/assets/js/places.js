@@ -11,7 +11,7 @@
         aroundLatLngViaIP: true
     });
 
-    var $address = document.querySelector('#address-value')
+    var $address = document.querySelector('#address-value');
     placesAutocomplete.on('change', function(e) {
         $address.textContent = e.suggestion.value
     });

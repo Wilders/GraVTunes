@@ -1,6 +1,5 @@
 <?php
 
-use app\config\Database;
 use app\controllers\AccountController;
 use app\controllers\AppController;
 use app\controllers\BraintreeController;
@@ -16,10 +15,10 @@ use app\controllers\VinyleController;
 use app\extensions\TwigCsrf;
 use app\extensions\TwigMessages;
 use app\helpers\Basket;
-use app\helpers\SessionBasket;
 use app\middlewares\AuthMiddleware;
 use app\middlewares\GuestMiddleware;
 use app\middlewares\OldInputMiddleware;
+use Illuminate\Database\Capsule\Manager as DB;
 use Slim\App;
 use Slim\Csrf\Guard;
 use Slim\Flash\Messages;
@@ -32,11 +31,24 @@ require_once(__DIR__ . '/vendor/autoload.php');
 
 session_start();
 
-try {
-    Database::connect();
-} catch (Exception $e) {
-    die($e->getMessage());
-}
+$env = Dotenv\Dotenv::createImmutable(__DIR__);
+$env->load();
+$env->required(['DB_DRIVER', 'DB_HOST', 'DB_NAME', 'DB_USER', 'DB_PWD', 'DB_CHARSET', 'DB_COLLATION', 'DB_PREFIX']);
+
+$db = new DB();
+$db->addConnection([
+    'driver' => $_ENV['DB_DRIVER'],
+    'host' => $_ENV['DB_HOST'],
+    'database' => $_ENV['DB_NAME'],
+    'username' => $_ENV['DB_USER'],
+    'password' => $_ENV['DB_PWD'],
+    'charset' => $_ENV['DB_CHARSET'],
+    'collation' => $_ENV['DB_COLLATION'],
+    'prefix' => $_ENV['DB_PREFIX']
+]);
+$db->setAsGlobal();
+$db->bootEloquent();
+
 Braintree_Configuration::environment('sandbox');
 Braintree_Configuration::merchantId('ydckbd3x4bg7c7tb');
 Braintree_Configuration::publicKey('bhq4jpp6799jtv8z');
