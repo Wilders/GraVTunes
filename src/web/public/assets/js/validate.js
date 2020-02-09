@@ -16,25 +16,33 @@ pseudo.addEventListener('input', function () {
     clearTimeout(timer1);
     pseudo.className = 'form-control is-pending';
     pseudo.setCustomValidity('');
-    timer1 = setTimeout(checkPseudo, 1000);
+    timer1 = setTimeout(function () {
+        check('pseudo', pseudo, pseudoFeedback);
+    }, 1000);
 });
 name.addEventListener('input', function () {
     clearTimeout(timer2);
     name.className = 'form-control is-pending';
     name.setCustomValidity('');
-    timer2 = setTimeout(checkName, 1000);
+    timer2 = setTimeout(function () {
+        check('name', name, nameFeedback);
+    }, 1000);
 });
 forename.addEventListener('input', function () {
     clearTimeout(timer3);
     forename.className = 'form-control is-pending';
     forename.setCustomValidity('');
-    timer3 = setTimeout(checkForename, 1000);
+    timer3 = setTimeout(function () {
+        check('forename', forename, forenameFeedback);
+    }, 1000);
 });
 email.addEventListener('input', function () {
     clearTimeout(timer4);
     email.className = 'form-control is-pending';
     email.setCustomValidity('');
-    timer4 = setTimeout(checkEmail, 1000);
+    timer4 = setTimeout(function () {
+        check('email', email, emailFeedback);
+    }, 1000);
 });
 password.addEventListener('input', function () {
     clearTimeout(timer5);
@@ -83,66 +91,24 @@ function toggleVisibility($input) {
     }
 }
 
-function checkPseudo() {
-    fetch('validator?method=pseudo&input=' + encodeURIComponent(pseudo.value))
-        .then(response => {
-            return response.json();
-        })
-        .then(data => {
-            if (data.valid) {
-                pseudo.className = 'form-control is-valid';
+function check(method, valueElement, feedbackElement) {
+    $.ajax({
+        url: 'validator?method=' + method + '&input=' + encodeURIComponent(valueElement.value),
+        type: 'GET',
+        dataType: 'json',
+        success: function (res) {
+            if(res.valid) {
+                valueElement.className = 'form-control is-valid';
             } else {
-                pseudo.className = 'form-control is-invalid';
-                pseudoFeedback.innerText = data.error;
-                pseudo.setCustomValidity(data.error);
+                valueElement.className = 'form-control is-invalid';
+                feedbackElement.innerText = res.error;
+                valueElement.setCustomValidity(res.error);
             }
-        })
-}
-
-function checkName() {
-    fetch('validator?method=name&input=' + encodeURIComponent(name.value))
-        .then(response => {
-            return response.json();
-        })
-        .then(data => {
-            if (data.valid) {
-                name.className = 'form-control is-valid';
-            } else {
-                name.className = 'form-control is-invalid';
-                nameFeedback.innerText = data.error;
-                name.setCustomValidity(data.error);
-            }
-        })
-}
-
-function checkForename() {
-    fetch('validator?method=forename&input=' + encodeURIComponent(forename.value))
-        .then(response => {
-            return response.json();
-        })
-        .then(data => {
-            if (data.valid) {
-                forename.className = 'form-control is-valid';
-            } else {
-                forename.className = 'form-control is-invalid';
-                forenameFeedback.innerText = data.error;
-                forename.setCustomValidity(data.error);
-            }
-        })
-}
-
-function checkEmail() {
-    fetch('validator?method=email&input=' + encodeURIComponent(email.value))
-        .then(response => {
-            return response.json();
-        })
-        .then(data => {
-            if (data.valid) {
-                email.className = 'form-control is-valid';
-            } else {
-                email.className = 'form-control is-invalid';
-                emailFeedback.innerText = data.error;
-                email.setCustomValidity(data.error);
-            }
-        })
+        },
+        error: function () {
+            valueElement.className = 'form-control is-invalid';
+            feedbackElement.innerText = "Erreur AJAX";
+            valueElement.setCustomValidity("Erreur");
+        }
+    })
 }
