@@ -6,7 +6,6 @@ use Slim\Container;
 
 /**
  * Class Middleware
- * @author Jules Sayer <jules.sayer@protonmail.com>
  * @package app\middlewares
  */
 class Middleware {

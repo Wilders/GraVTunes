@@ -7,7 +7,6 @@ use Slim\Http\Response;
 
 /**
  * Class HomeController
- * @author Jules Sayer <jules.sayer@protonmail.com>
  * @package app\controllers
  */
 class HomeController extends Controller {

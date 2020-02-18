@@ -1,82 +1,66 @@
-{% extends "layouts/body-layout.twig" %}
-
-{% block stylesheets %}
-<link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/uac.css">
-{% endblock %}
-
-{% block scripts %}
-<script type="text/javascript" src="{{ base_url() }}/public/assets/js/uac.js"></script>
-{% endblock %}
+{% extends "layouts/uac-layout.twig" %}
 
 {% block content %}
-    <section class="uac h-100">
-        <div class="container h-100">
-            <div class="row justify-content-md-center h-100">
-                <div class="card-wrapper">
-                    <div class="brand">
-                        <img src="{{ base_url() }}/public/assets/media/images/logo.png" alt="logo">
-                    </div>
-                    <div class="card fat">
-                        <div class="card-body">
-                            <h4 class="card-title">Connexion</h4>
-                            {% for msg in flash('error') %}
-                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                    {{ msg }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            {% endfor %}
-                            {% for msg in flash('success') %}
-                                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                    {{ msg }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            {% endfor %}
-                            <form method="POST" class="uac-validation" novalidate="" action="{{ path_for("login") }}">
-                                <div class="form-group">
-                                    <label for="id">Identifiant</label>
-                                    <input id="id" type="text" class="form-control" name="id" value="{{ oldData.id }}" required autofocus>
-                                    <div class="invalid-feedback">
-                                        Votre identifiant est indispensable
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-10 col-lg-12 col-md-9">
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <div class="row">
+                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                            <div class="col-lg-6">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">Connectez-vous</h1>
+                                    </div>
+                                    {% for msg in flash('error') %}
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                            {{ msg }}
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    {% endfor %}
+                                    {% for msg in flash('success') %}
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                            {{ msg }}
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    {% endfor %}
+                                    <form method="POST" class="user" novalidate="" autocomplete="off" action="{{ path_for("login") }}">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control form-control-user" id="id" name="id" placeholder="Identifiant" value="{{ oldData.id }}" required autofocus>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <input type="password" class="form-control form-control-user" id="password" name="password" placeholder="Mot de passe" required>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="custom-control custom-checkbox small">
+                                                <input type="checkbox" class="custom-control-input" id="customCheck">
+                                                <label class="custom-control-label" for="customCheck">Se souvenir de moi</label>
+                                            </div>
+                                        </div>
+
+                                        {{ csrf() | raw }}
+
+                                        <button type="submit" class="btn btn-primary btn-block btn-user">
+                                            Connexion
+                                        </button>
+                                    </form>
+                                    <hr>
+                                    <div class="text-center">
+                                        <a class="small" href="{{ path_for("showRegister") }}">Pas de compte? Cliquez-ici!</a>
                                     </div>
                                 </div>
-
-                                <div class="form-group">
-                                    <label for="password">Mot de passe</label>
-                                    <input id="password" type="password" class="form-control" name="password" required>
-                                    <div class="invalid-feedback">
-                                        Votre mot de passe est indispensable
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="custom-checkbox custom-control">
-                                        <input type="checkbox" name="remember" id="remember" class="custom-control-input">
-                                        <label for="remember" class="custom-control-label">Se souvenir de moi</label>
-                                    </div>
-                                </div>
-
-                                {{ csrf() | raw }}
-
-                                <div class="form-group m-0">
-                                    <button type="submit" class="btn btn-primary btn-block">
-                                        Connexion
-                                    </button>
-                                </div>
-                                <div class="mt-4 text-center">
-                                    Vous n'avez pas de compte? <a href="{{ path_for("showRegister") }}">Créez-en un</a>
-                                </div>
-                            </form>
+                            </div>
                         </div>
-                    </div>
-                    <div class="footer">
-                        Copyright &copy; 2020 &mdash; GraVTunes
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 {% endblock %}

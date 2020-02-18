@@ -7,8 +7,7 @@ use Exception;
 
 /**
  * Class Auth
- * @author Jules Sayer <jules.sayer@protonmail.com>
- * @package app\controllers
+ * @package app\helpers
  */
 class Auth {
 

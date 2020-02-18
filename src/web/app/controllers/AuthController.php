@@ -10,7 +10,6 @@ use Slim\Http\Response;
 
 /**
  * Class AuthController
- * @author Jules Sayer <jules.sayer@protonmail.com>
  * @package app\controllers
  */
 class AuthController extends Controller {
@@ -56,14 +55,14 @@ class AuthController extends Controller {
             $password = filter_var($request->getParsedBodyParam('password'), FILTER_SANITIZE_STRING);
             $password_conf = filter_var($request->getParsedBodyParam('password_conf'), FILTER_SANITIZE_STRING);
 
-            if (is_null($request->getParsedBodyParam('agree'))) throw new AuthException("Vous devez accépter les conditions d'utilisation.", "showRegister");
-            if (mb_strlen($pseudo, 'utf8') < 3 || mb_strlen($pseudo, 'utf8') > 35) throw new AuthException("Votre pseudo doit contenir entre 3 et 35 caractères.", "showRegister");
-            if (mb_strlen($name, 'utf8') < 3 || mb_strlen($name, 'utf8') > 50) throw new AuthException("Votre nom doit contenir entre 3 et 50 caractères.", "showRegister");
-            if (mb_strlen($forename, 'utf8') < 3 || mb_strlen($forename, 'utf8') > 50) throw new AuthException("Votre prénom doit contenir entre 3 et 50 caractères.", "showRegister");
-            if (mb_strlen($password, 'utf8') < 8) throw new AuthException("Votre mot de passe doit contenir au moins 8 caractères.", "showRegister");
-            if (User::where('pseudo', '=', $pseudo)->exists()) throw new AuthException("Ce pseudo est déjà pris.", "showRegister");
-            if (User::where('email', '=', $email)->exists()) throw new AuthException("Cet email est déjà utilisée.", "showRegister");
-            if ($password != $password_conf) throw new AuthException("La confirmation du mot de passe n'est pas bonne.", "showRegister");
+            if (is_null($request->getParsedBodyParam('agree'))) throw new AuthException("Vous devez accepter les conditions d'utilisation.");
+            if (mb_strlen($pseudo, 'utf8') < 3 || mb_strlen($pseudo, 'utf8') > 35) throw new AuthException("Votre pseudo doit contenir entre 3 et 35 caractères.");
+            if (mb_strlen($name, 'utf8') < 3 || mb_strlen($name, 'utf8') > 50) throw new AuthException("Votre nom doit contenir entre 3 et 50 caractères.");
+            if (mb_strlen($forename, 'utf8') < 3 || mb_strlen($forename, 'utf8') > 50) throw new AuthException("Votre prénom doit contenir entre 3 et 50 caractères.");
+            if (mb_strlen($password, 'utf8') < 8) throw new AuthException("Votre mot de passe doit contenir au moins 8 caractères.");
+            if (User::where('pseudo', '=', $pseudo)->exists()) throw new AuthException("Ce pseudo est déjà pris.");
+            if (User::where('email', '=', $email)->exists()) throw new AuthException("Cet email est déjà utilisée.");
+            if ($password != $password_conf) throw new AuthException("La confirmation du mot de passe n'est pas bonne.");
 
             $user = new User();
             $user->nom = $name;
@@ -74,23 +73,12 @@ class AuthController extends Controller {
             $user->password = password_hash($password_conf, PASSWORD_DEFAULT);
             $user->save();
 
-
             $this->flash->addMessage('success', "$pseudo, votre compte a été créé! Vous pouvez dès à présent vous connecter.");
             $response = $response->withRedirect($this->router->pathFor('showLogin'));
         } catch (AuthException $e) {
             $this->flash->addMessage('error', $e->getMessage());
             $response = $response->withRedirect($this->router->pathFor("showRegister"));
         }
-        return $response;
-    }
-
-    public function showForgot(Request $request, Response $response, array $args): Response {
-        $this->view->render($response, 'pages/forgot.twig');
-        return $response;
-    }
-
-    public function showReset(Request $request, Response $response, array $args): Response {
-        $this->view->render($response, 'pages/reset.twig');
         return $response;
     }
 }

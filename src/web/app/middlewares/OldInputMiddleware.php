@@ -7,7 +7,6 @@ use Slim\Http\Response;
 
 /**
  * Class OldInputMiddleware
- * @author Jules Sayer <jules.sayer@protonmail.com>
  * @package app\middlewares
  */
 class OldInputMiddleware extends Middleware {

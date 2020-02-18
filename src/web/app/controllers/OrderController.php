@@ -11,6 +11,10 @@ use Exception;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
+/**
+ * Class OrderController
+ * @package app\controllers
+ */
 class OrderController extends Controller {
 
     public function showOrder(Request $request, Response $response, array $args): Response {

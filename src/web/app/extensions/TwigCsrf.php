@@ -8,7 +8,6 @@ use Twig\TwigFunction;
 
 /**
  * Class TwigCsrf
- * @author Jules Sayer <jules.sayer@protonmail.com>
  * @package app\extensions
  */
 class TwigCsrf extends AbstractExtension {

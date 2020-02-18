@@ -8,8 +8,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 
 /**
- * Class OldInputMiddleware
- * @author Jules Sayer <jules.sayer@protonmail.com>
+ * Class AuthMiddleware
  * @package app\middlewares
  */
 class AuthMiddleware extends Middleware {

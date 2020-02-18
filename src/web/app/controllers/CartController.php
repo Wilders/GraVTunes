@@ -9,6 +9,10 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
+/**
+ * Class CartController
+ * @package app\controllers
+ */
 class CartController extends Controller {
 
     public function showCart(Request $request, Response $response, array $args): Response {

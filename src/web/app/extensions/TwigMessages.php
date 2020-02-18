@@ -9,8 +9,6 @@ use Twig\TwigFunction;
 /**
  * Class TwigMessages
  * Adapaté car outdated sur ce repo
- *
- * @author Jules Sayer <jules.sayer@protonmail.com>
  * @link https://github.com/kanellov/slim-twig-flash for the canonical source repository
  * @package App\Extensions
  */

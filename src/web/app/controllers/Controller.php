@@ -6,7 +6,6 @@ use Slim\Container;
 
 /**
  * Class Controller
- * @author Jules Sayer <jules.sayer@protonmail.com>
  * @abstract
  * @package app\controllers
  */

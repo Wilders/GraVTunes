@@ -7,7 +7,7 @@
         language: 'fr',
         type: 'address',
         countries: 'fr,lu,be,ad,mc',
-        hitsPerPage: 5,
+        hitsPerPage: 3,
         aroundLatLngViaIP: true
     });
 

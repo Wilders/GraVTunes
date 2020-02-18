@@ -1,27 +1,22 @@
-{% extends "layouts/body-layout.twig" %}
-
-{% block stylesheets %}
-<link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/uac.css">
-{% endblock %}
+{% extends "layouts/uac-layout.twig" %}
 
 {% block scripts %}
-<script type="text/javascript" src="{{ base_url() }}/public/assets/js/uac.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/places.js@1.17.1"></script>
-<script src="{{ base_url() }}/public/assets/js/places.js"></script>
-<script src="{{ base_url() }}/public/assets/js/validate.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/places.js@1.17.1"></script>
+    <script src="{{ base_url() }}/public/assets/js/places.js"></script>
+    <script src="{{ base_url() }}/public/assets/js/validate.js"></script>
 {% endblock %}
 
 {% block content %}
-    <section class="uac h-100">
-        <div class="container h-100">
-            <div class="row justify-content-md-center h-100">
-                <div class="card-wrapper">
-                    <div class="brand">
-                        <img src="{{ base_url() }}/public/assets/media/images/logo.png" alt="logo">
-                    </div>
-                    <div class="card fat">
-                        <div class="card-body">
-                            <h4 class="card-title">Inscription</h4>
+    <div class="container">
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <div class="row">
+                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                    <div class="col-lg-7">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">Inscrivez-vous</h1>
+                            </div>
                             {% for msg in flash('error') %}
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                     {{ msg }}
@@ -38,18 +33,16 @@
                                     </button>
                                 </div>
                             {% endfor %}
-                            <form method="POST" class="uac-validation" action="{{ path_for("register") }}" novalidate>
-                                <div class="form-group form-row">
-                                    <div class="col">
-                                        <label for="name">Nom</label>
-                                        <input id="name" type="text" class="form-control" name="name" value="{{ oldData.name }}" required autofocus>
+                            <form method="POST" class="user" novalidate="" autocomplete="off" action="{{ path_for("register") }}">
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="text" class="form-control form-control-user" id="name" name="name" placeholder="Nom" value="{{ oldData.name }}" required autofocus>
                                         <div class="invalid-feedback" id="nameFeedback">
                                             Votre nom est indispensable
                                         </div>
                                     </div>
-                                    <div class="col">
-                                        <label for="forename">Prénom</label>
-                                        <input id="forename" type="text" class="form-control" name="forename" value="{{ oldData.forename }}" required>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control form-control-user" id="forename" name="forename" placeholder="Prénom" value="{{ oldData.forename }}" required>
                                         <div class="invalid-feedback" id="forenameFeedback">
                                             Votre prénom est indispensable
                                         </div>
@@ -57,89 +50,65 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="pseudo">Pseudonyme</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">@</div>
-                                        </div>
-                                        <input id="pseudo" type="text" class="form-control" name="pseudo" required>
-                                        <div class="invalid-feedback" id="pseudoFeedback">
-                                            Votre pseudonyme est indispensable
-                                        </div>
+                                    <input type="text" class="form-control form-control-user" id="pseudo" name="pseudo" placeholder="Pseudonyme" required>
+                                    <div class="invalid-feedback" id="pseudoFeedback">
+                                        Votre pseudonyme est indispensable
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="email">Adresse e-mail</label>
-                                    <input id="email" type="email" class="form-control" name="email" required>
+                                    <input type="text" class="form-control form-control-user" id="email" name="email" placeholder="Adresse e-mail" required>
                                     <div class="invalid-feedback" id="emailFeedback">
                                         Votre adresse e-mail est indispensable
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="address">Adresse</label>
-                                    <input id="address" type="search" class="form-control" name="address" value="{{ oldData.address }}" required>
+                                    <input id="address" type="search" class="form-control form-control-user" name="address" placeholder="Adresse" value="{{ oldData.address }}" required>
                                     <div class="invalid-feedback" id="addressFeedback">
                                         Votre adresse est indispensable
                                     </div>
                                 </div>
 
-                                <div class="form-group form-row">
-                                    <div class="col">
-                                        <label for="password">Mot de passe</label>
-                                        <div class="input-group">
-                                            <input type="password" name="password" class="form-control" id="password" required>
-                                            <div class="input-group-append">
-                                                <button class="input-group-text" onclick="toggleVisibility('password')" type="button" style="outline: none" tabindex="-1"><i id="icon" class="fas fa-eye"></i></button>
-                                            </div>
-                                            <div class="invalid-feedback" id="passwordFeedback">
-                                                Votre mot de passe est indispensable
-                                            </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="password" class="form-control form-control-user" id="password" name="password" placeholder="Mot de passe">
+                                        <div class="invalid-feedback" id="passwordFeedback">
+                                            Votre mot de passe est indispensable
                                         </div>
                                     </div>
-                                    <div class="col">
-                                        <label for="password_conf">Confirmation</label>
-                                        <div class="input-group">
-                                            <input type="password" name="password_conf" class="form-control" id="password_conf" required>
-                                            <div class="input-group-append">
-                                                <button class="input-group-text" onclick="toggleVisibility('password_conf')" type="button" style="outline: none" tabindex="-1"><i class="fas fa-eye"></i></button>
-                                            </div>
-                                            <div class="invalid-feedback" id="password_confFeedback">
-                                                La confirmation du mot de passe est indispensable
-                                            </div>
+                                    <div class="col-sm-6">
+                                        <input type="password" class="form-control form-control-user" id="password_conf" name="password_conf" placeholder="Confirmation du mot de passe">
+                                        <div class="invalid-feedback" id="password_confFeedback">
+                                            La confirmation du mot de passe est indispensable
                                         </div>
                                     </div>
                                 </div>
 
-                                {{ csrf() | raw }}
-
                                 <div class="form-group">
-                                    <div class="custom-checkbox custom-control">
-                                        <input type="checkbox" name="agree" id="agree" class="custom-control-input" required>
-                                        <label for="agree" class="custom-control-label">J'accepte les <a href="#">conditions d'utilisation</a></label>
+                                    <div class="custom-control custom-checkbox small">
+                                        <input type="checkbox" class="custom-control-input" id="agree" name="agree" required>
+                                        <label class="custom-control-label" for="agree">J'ai lu et j'accepte les <a href="#">conditions d'utilisation</a></label>
                                         <div class="invalid-feedback" id="agreeFeedback">
                                             Vous devez accepter nos conditions d'utilisation
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="form-group m-0">
-                                    <button type="submit" class="btn btn-primary btn-block">
-                                        S'inscrire
-                                    </button>
-                                </div>
-                                <div class="mt-4 text-center">
-                                    Vous avez déjà un compte? <a href="{{ path_for("showLogin") }}">Connectez-vous!</a>
-                                </div>
+                                {{ csrf() | raw }}
+
+                                <button type="submit" class="btn btn-primary btn-block btn-user">
+                                    Inscription
+                                </button>
                             </form>
+                            <hr>
+                            <div class="text-center">
+                                <a class="small" href="{{ path_for("showLogin") }}">Vous avez déjà un compte? Connectez-vous!</a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="footer">
-                        Copyright &copy; 2020 &mdash; GraVTunes
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 {% endblock %}

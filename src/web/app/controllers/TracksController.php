@@ -13,7 +13,6 @@ use Slim\Http\Response;
 
 /**
  * Class TracksController
- * @author Anthony Pernot <Anthony Pernot>
  * @package app\controllers
  */
 class TracksController extends Controller{

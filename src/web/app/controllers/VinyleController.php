@@ -14,7 +14,6 @@ use Slim\Http\Response;
 
 /**
  * Class VinyleController
- * @author Anthony Pernot <Anthony Pernot>
  * @package app\controllers
  */
 class VinyleController extends Controller {

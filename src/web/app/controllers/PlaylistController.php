@@ -14,7 +14,6 @@ use Slim\Http\Response;
 
 /**
  * Class PlaylistController
- * @author Anthony Pernot <Anthony Pernot>
  * @package app\controllers
  */
 class PlaylistController extends Controller {

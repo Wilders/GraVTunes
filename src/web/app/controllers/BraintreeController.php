@@ -7,8 +7,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 
 /**
- * Class HomeController
- * @author Jules Sayer <jules.sayer@protonmail.com>
+ * Class BraintreeController
  * @package app\controllers
  */
 class BraintreeController extends Controller {
