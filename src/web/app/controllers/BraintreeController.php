@@ -12,14 +12,6 @@ use Slim\Http\Response;
  */
 class BraintreeController extends Controller {
 
-    /**
-     * Appel index.twig
-     *
-     * @param Request $request
-     * @param Response $response
-     * @param array $args
-     * @return Response
-     */
     public function token(Request $request, Response $response, array $args): Response {
         return $response->withJson([
             'token' => Braintree_ClientToken::generate()

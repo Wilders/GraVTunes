@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\helpers\Auth;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -12,7 +13,11 @@ use Slim\Http\Response;
 class HomeController extends Controller {
 
     public function showHome(Request $request, Response $response, array $args): Response {
-        $this->view->render($response, 'pages/index.twig');
+        if(Auth::check()) {
+            $response = $response->withRedirect($this->router->pathFor('appHome'));
+        } else {
+            $response = $response->withRedirect($this->router->pathFor('login'));
+        }
         return $response;
     }
 }
