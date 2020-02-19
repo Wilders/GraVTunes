@@ -7,6 +7,10 @@ use app\helpers\Auth;
 use app\models\Track;
 use app\models\File;
 
+use Exception;
+use ffmpeg_movie;
+use FFMpeg\FFProbe;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Psr\Http\Message\UploadedFileInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -48,28 +52,35 @@ class TracksController extends Controller{
             $titre = filter_var($request->getParsedBodyParam('title'), FILTER_SANITIZE_SPECIAL_CHARS);
             $descr = filter_var($request->getParsedBodyParam('descr'), FILTER_SANITIZE_SPECIAL_CHARS);
 
+            $ffmpeg = FFProbe::create();
+            $filename = $file["file"]->getClientFilename();
+            $path = 'uploads/tracks/'.$filename;
+            $extensionOk = array('mp3','avi','wav');
+            $extension = substr(strrchr($filename,"."),1);
+            //if(!array_search($extension,$extensionOk)) throw new Exception("L'extension du fichier importé ne correspond aux exigences de notre application. Veuillez réessayer ultérieurement.");
+            $file["file"]->moveTo('uploads/tracks/' . $filename);
+            $ffmpeg = FFProbe::create();
+            $trackInfo = $ffmpeg->format($path);
+
             $fichier = new File();
             $track = new Track();
 
-            $fichier->path = $file["file"]->getClientFilename();
-            $fichier->hash = $this->hashage($file["file"]->getClientFilename());
-            $fichier->duree = 0;
-
+            $fichier->path = $filename;
+            $fichier->hash = $this->hashage($filename);
+            $fichier->duree = $trackInfo->get('duration');
 
             $fichier->save();
 
             $track->nom = $titre;
             $track->description = $descr;
-            $track->file_id = 11;//File::count()->get() + 1;
+            $track->file_id = File::count() + 2;
             $track->user_id = Auth::user()->id;
 
             $track->save();
 
-            $this->moveUploadedFile( 'uploads/tracks', $file["file"]);
-
             $this->flash->addMessage('success',"Félicitations, votre fichier a bien été enregistré. Vous pouvez le consulter dans vos titres.");
             $response = $response->withRedirect($this->router->pathFor("appHome"));
-        }catch(TracksException $e){
+        }catch(ModelNotFoundException $e){
             $this->flash->addMessage('error', $e->getMessage());
             $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
         }
@@ -87,7 +98,7 @@ class TracksController extends Controller{
 
             $this->flash->addMessage('success',"Vous venez de supprimer ".$track->nom.".");
             $response = $response->withRedirect($this->router->pathFor("appTracks"));
-        }catch (TracksException $e){
+        }catch (ModelNotFoundException $e){
             $this->flash->addMessage('error', $e->getMessage());
             $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
         }
@@ -108,23 +119,12 @@ class TracksController extends Controller{
 
             $this->flash->addMessage('success',"Vous venez de modifier les informations de votre chanson.");
             $response = $response->withRedirect($this->router->pathFor("appTracks"));
-        }catch(TracksException $e){
+        }catch(ModelNotFoundException $e){
             $this->flash->addMessage('error', $e->getMessage());
             $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
         }
 
         return $response;
-    }
-
-    function moveUploadedFile($directory, UploadedFileInterface $uploadedFile)
-    {
-        $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
-        //$basename = bin2hex(random_bytes(8));
-        $filename = sprintf('%s.%0.8s', /*$basename,*/ $extension);
-
-        $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
-
-        return $filename;
     }
 
     function hashage($data = "", $width=192, $rounds = 3) {

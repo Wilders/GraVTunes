@@ -8,6 +8,7 @@ use app\models\Track;
 use app\models\Playlist;
 use app\models\File;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Psr\Http\Message\UploadedFileInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -32,7 +33,7 @@ class PlaylistController extends Controller {
             ]);
             return $response;
 
-        }catch (PlaylistException $e){
+        }catch (ModelNotFoundException $e){
             $this->flash->addMessage('error', $e->getMessage());
             $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
         }

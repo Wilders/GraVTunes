@@ -9,6 +9,7 @@ use app\models\Playlist;
 use app\models\File;
 use app\models\Vinyle;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -32,7 +33,7 @@ class VinyleController extends Controller {
             ]);
             return $response;
 
-        }catch (VinyleException $e){
+        }catch (ModelNotFoundException $e){
             $this->flash->addMessage('error', $e->getMessage());
             $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
         }
