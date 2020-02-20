@@ -92,17 +92,6 @@ function checkConfirm() {
     }
 }
 
-function toggleVisibility($input) {
-    $input = document.getElementById($input);
-    if ($input.type === 'password') {
-        $input.type = 'text';
-        $input.nextElementSibling.firstElementChild.firstElementChild.className = 'fas fa-eye-slash';
-    } else {
-        $input.type = 'password';
-        $input.nextElementSibling.firstElementChild.firstElementChild.className = 'fas fa-eye';
-    }
-}
-
 function check(method, valueElement, feedbackElement) {
     $.ajax({
         url: 'validator?method=' + method + '&input=' + encodeURIComponent(valueElement.value),

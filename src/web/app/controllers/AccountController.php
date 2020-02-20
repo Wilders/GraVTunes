@@ -15,7 +15,4 @@ class AccountController extends Controller {
         $this->view->render($response, 'pages/account.twig');
         return $response;
     }
-
-
-
 }

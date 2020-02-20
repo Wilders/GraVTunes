@@ -39,8 +39,8 @@ class ValidatorController extends Controller {
     public static function name(String $input): array {
         try {
             $length = mb_strlen($input, "utf8");
-            if ($length < 3 || $length > 50) {
-                throw new ValidatorException("Votre nom doit contenir entre 3 et 50 caractères.");
+            if ($length < 2 || $length > 50) {
+                throw new ValidatorException("Votre nom doit contenir entre 2 et 50 caractères.");
             }
             $response = self::VALID;
         } catch(ValidatorException $e) {
@@ -52,8 +52,8 @@ class ValidatorController extends Controller {
     public static function forename(String $input): array {
         try {
             $length = mb_strlen($input, "utf8");
-            if ($length < 3 || $length > 50) {
-                throw new ValidatorException("Votre nom doit contenir entre 3 et 50 caractères.");
+            if ($length < 2 || $length > 50) {
+                throw new ValidatorException("Votre prénom doit contenir entre 2 et 50 caractères.");
             }
             $response = self::VALID;
         } catch(ValidatorException $e) {
