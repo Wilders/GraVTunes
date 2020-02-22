@@ -113,21 +113,37 @@ $app->group('', function() {
 
 // Authenticated
 $app->group('', function() {
+
+    $this->get('/home', AppController::class . ':showHome')->setName('appHome');
+    $this->get('/braintree/token', AppController::class . ':btToken')->setName("braintreeToken");
+
+    /**
+     * Account
+     */
     $this->get('/logout', AuthController::class . ':logout')->setName('logout');
     $this->get('/account', AccountController::class . ':showAccount')->setName('showAccount');
-    $this->get('/home', AppController::class . ':showHome')->setName('appHome');
+    $this->post('/account/settings', AccountController::class . ':updateSettings')->setName('updateSettings');
+    $this->post('/account/profile', AccountController::class . ':updateProfile')->setName('updateProfile');
+    $this->post('/account/security', AccountController::class . ':updateSecurity')->setName('updateSecurity');
 
+    /**
+     * Cart
+     */
     $this->get('/cart', CartController::class . ':showCart')->setName("showCart");
     $this->get('/cart/add/{id:[0-9]+}[/{quantity:[0-9]+}]', CartController::class . ':addCart')->setName("addCart");
     $this->get('/cart/clear', CartController::class . ':clearCart')->setName("clearCart");
     $this->get('/cart/delete/{id:[0-9]+}', CartController::class . ':deleteCart')->setName("deleteCart");
     $this->post('/cart/update/{id:[0-9]+}', CartController::class . ':updateCart')->setName("updateCart");
 
+    /**
+     * Order
+     */
     $this->get('/order', OrderController::class . ':showOrder')->setName("showOrder");
     $this->post('/order/create', OrderController::class . ':createOrder')->setName("createOrder");
 
-    $this->get('/braintree/token', BraintreeController::class . ':token')->setName("braintreeToken");
-
+    /**
+     * Tracks
+     */
     $this->get('/tracks', TracksController::class . ':tracks')->setName("appTracks");
     $this->get('/tracks/import', TracksController::class . ':importTracks')->setName("importTracks");
 

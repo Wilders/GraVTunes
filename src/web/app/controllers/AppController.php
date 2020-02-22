@@ -16,4 +16,9 @@ class AppController extends Controller {
         return $response;
     }
 
+    public function btToken(Request $request, Response $response, array $args): Response {
+        return $response->withJson([
+            'token' => Braintree_ClientToken::generate()
+        ]);
+    }
 }
