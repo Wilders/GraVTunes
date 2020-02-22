@@ -44,6 +44,7 @@
 })(jQuery);
 
 $(document).ready(function() {
+  bsCustomFileInput.init();
   $('#dataTable').DataTable({
     language: {
       url: 'public/assets/js/datatables.french.json'

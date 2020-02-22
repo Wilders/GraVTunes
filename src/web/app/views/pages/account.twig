@@ -1,4 +1,10 @@
 {% extends "layouts/app-layout.twig" %}
+
+{% block scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/places.js@1.17.1"></script>
+    <script src="{{ base_url() }}/public/assets/js/places.js"></script>
+{% endblock %}
+
 {% block appcontent %}
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Mon compte</h1>
@@ -15,29 +21,39 @@
             <div class="tab-content" id="v-pills-tabContent">
                 <div class="tab-pane fade show active" id="general" role="tabpanel">
                     <div class="card bg-light">
-                        <div class="card-header">
-                            Général
+                        <div class="card-header bg-gradient-primary text-white">
+                            Paramètres du compte
                         </div>
                         <div class="card-body">
                             <form method="POST" action="#">
-                                <div class="form-group">
-                                    <label for="inputTitle">Titre*</label>
-                                    <input type="text" name="newTitle" class="form-control" id="inputTitle" value="">
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputDateExpi">Date d'expiration*</label>
-                                    <input type="date" name="newDate" class="form-control" id="inputDateExpi" value="">
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputDesc0">Description</label>
-                                    <textarea class="form-control" id="inputDesc0" rows="3" name="newDescription"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <div class="custom-control custom-switch">
-                                        <input type="checkbox" class="custom-control-input" id="public" name="public" checked>
-                                        <label class="custom-control-label" for="public">Rendre la liste publique</label>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="pseudo">Nom d'utilisateur *</label>
+                                        <input type="text" id="pseudo" class="form-control" value="{{ auth.user.pseudo }}" disabled>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="email">Adresse e-mail *</label>
+                                        <input type="email" class="form-control" id="email" value="{{ auth.user.email }}" required>
                                     </div>
                                 </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="pseudo">Nom *</label>
+                                        <input type="text" id="pseudo" class="form-control" value="{{ auth.user.nom }}">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="email">Prénom *</label>
+                                        <input type="email" class="form-control" id="email" value="{{ auth.user.prenom }}" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="address">Adresse *</label>
+                                    <input id="address" type="search" class="form-control form-control-user" name="address" placeholder="Adresse" value="{{ auth.user.address }}" required>
+                                    <div class="invalid-feedback" id="addressFeedback">
+                                        Votre adresse est indispensable
+                                    </div>
+                                </div>
+                                <hr>
                                 Les champs marqués d'un astérisque sont obligatoires.
                                 <button type="submit" class="btn btn-lg btn-primary float-right">Envoyer</button>
                             </form>
@@ -46,30 +62,33 @@
                 </div>
                 <div class="tab-pane fade" id="createItem" role="tabpanel">
                     <div class="card bg-light">
-                        <div class="card-header">
-                            Ajouter un objet
+                        <div class="card-header bg-gradient-primary text-white">
+                            Profil public
                         </div>
                         <div class="card-body">
                             <form method="POST" action="#">
-                                <div class="form-group">
-                                    <label for="inputName">Nom de l'objet*</label>
-                                    <input type="text" name="nom" class="form-control" id="inputName">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="pseudo">Nom d'utilisateur *</label>
+                                        <input type="text" id="pseudo" class="form-control" value="{{ auth.user.pseudo }}" disabled>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Avatar</label>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="avatar" name="avatar">
+                                            <label for="avatar" class="custom-file-label" data-browse="Parcourir">Choisir un fichier...</label>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputPrix">Prix*</label>
-                                    <input type="number" step="0.01" min="0" name="prix" class="form-control" id="inputPrix">
+                                    <label for="description">Description</label>
+                                    <textarea class="form-control" id="description" rows="3" name="description">{{ auth.user.description }}</textarea>
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputLinkPicture"><abbr title="Nom d'un fichier présent dans le dossier /public/images ou lien direct">Image (?)</abbr></label>
-                                    <input type="text" name="picture" class="form-control" id="inputLinkPicture">
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputUrl">Lien pour plus d'information</label>
-                                    <input type="url" name="url" class="form-control" id="inputUrl">
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputDesc">Description</label>
-                                    <textarea class="form-control" id="inputDesc" rows="3" name="descr"></textarea>
+                                    <div class="custom-control custom-switch">
+                                        <input type="checkbox" class="custom-control-input" id="public" name="public" checked>
+                                        <label class="custom-control-label" for="public">Rendre votre profil publique</label>
+                                    </div>
                                 </div>
                                 Les champs marqués d'un astérisque sont obligatoires.
                                 <button type="submit" class="btn btn-lg btn-primary float-right">Envoyer</button>
@@ -79,30 +98,24 @@
                 </div>
                 <div class="tab-pane fade" id="manageItems" role="tabpanel">
                     <div class="card bg-light">
-                        <div class="card-header">
-                            Gérer les objets
+                        <div class="card-header bg-gradient-primary text-white">
+                            Sécurité
                         </div>
                         <div class="card-body">
                             <form method="POST" action="#">
                                 <div class="form-group">
-                                    <label for="inputName">qsdfqsdf*</label>
-                                    <input type="text" name="nom" class="form-control" id="inputName">
+                                    <label for="actual_password">Mot de passe actuel*</label>
+                                    <input type="text" name="actual_password" class="form-control" id="actual_password">
                                 </div>
-                                <div class="form-group">
-                                    <label for="inputPrix">qsdffsqdqsfdqsfd*</label>
-                                    <input type="number" step="0.01" min="0" name="prix" class="form-control" id="inputPrix">
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputLinkPicture"><abbr title="Nom d'un fichier présent dans le dossier /public/images ou lien direct">Image (?)</abbr></label>
-                                    <input type="text" name="picture" class="form-control" id="inputLinkPicture">
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputUrl">qsdfqsfdqsdf pour plus d'information</label>
-                                    <input type="url" name="url" class="form-control" id="inputUrl">
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputDesc">qsdf</label>
-                                    <textarea class="form-control" id="inputDesc" rows="3" name="descr"></textarea>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="newpassword">Nouveau mot de passe *</label>
+                                        <input type="text" id="newpassword" name="newpassword" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="conf_newpassword">Confirmation *</label>
+                                        <input type="text" id="conf_newpassword" name="conf_newpassword" class="form-control">
+                                    </div>
                                 </div>
                                 Les champs marqués d'un astérisque sont obligatoires.
                                 <button type="submit" class="btn btn-lg btn-primary float-right">Envoyer</button>
