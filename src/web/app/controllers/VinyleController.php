@@ -41,6 +41,3 @@ class VinyleController extends Controller {
 
 
 }
-
-
-?>

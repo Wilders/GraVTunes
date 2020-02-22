@@ -9,6 +9,9 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Mon compte</h1>
     </div>
+
+    {% include "layouts/flash.twig" %}
+
     <div class="row">
         <div class="col-3">
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
@@ -25,7 +28,7 @@
                             Paramètres du compte
                         </div>
                         <div class="card-body">
-                            <form method="POST" action="#">
+                            <form method="POST" action="{{ path_for("updateSettings") }}">
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="pseudo">Nom d'utilisateur *</label>
@@ -33,17 +36,17 @@
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="email">Adresse e-mail *</label>
-                                        <input type="email" class="form-control" id="email" value="{{ auth.user.email }}" required>
+                                        <input type="email" class="form-control" id="email" name="email" value="{{ auth.user.email }}" required>
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="pseudo">Nom *</label>
-                                        <input type="text" id="pseudo" class="form-control" value="{{ auth.user.nom }}">
+                                        <input type="text" id="pseudo" class="form-control" name="name" value="{{ auth.user.nom }}" required>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label for="email">Prénom *</label>
-                                        <input type="email" class="form-control" id="email" value="{{ auth.user.prenom }}" required>
+                                        <label for="forename">Prénom *</label>
+                                        <input type="text" class="form-control" id="forename" name="forename" value="{{ auth.user.prenom }}" required>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -53,6 +56,9 @@
                                         Votre adresse est indispensable
                                     </div>
                                 </div>
+
+                                {{ csrf() | raw }}
+
                                 <hr>
                                 Les champs marqués d'un astérisque sont obligatoires.
                                 <button type="submit" class="btn btn-lg btn-primary float-right">Envoyer</button>
@@ -66,7 +72,7 @@
                             Profil public
                         </div>
                         <div class="card-body">
-                            <form method="POST" action="#">
+                            <form method="POST" action="{{ path_for("updateProfile") }}">
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="pseudo">Nom d'utilisateur *</label>
@@ -90,6 +96,10 @@
                                         <label class="custom-control-label" for="public">Rendre votre profil publique</label>
                                     </div>
                                 </div>
+
+                                {{ csrf() | raw }}
+
+                                <hr>
                                 Les champs marqués d'un astérisque sont obligatoires.
                                 <button type="submit" class="btn btn-lg btn-primary float-right">Envoyer</button>
                             </form>
@@ -102,21 +112,25 @@
                             Sécurité
                         </div>
                         <div class="card-body">
-                            <form method="POST" action="#">
+                            <form method="POST" action="{{ path_for("updateSecurity") }}">
                                 <div class="form-group">
-                                    <label for="actual_password">Mot de passe actuel*</label>
-                                    <input type="text" name="actual_password" class="form-control" id="actual_password">
+                                    <label for="actual_password">Mot de passe actuel *</label>
+                                    <input type="password" name="actual_password" class="form-control" id="actual_password">
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="newpassword">Nouveau mot de passe *</label>
-                                        <input type="text" id="newpassword" name="newpassword" class="form-control">
+                                        <input type="password" id="newpassword" name="newpassword" class="form-control">
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="conf_newpassword">Confirmation *</label>
-                                        <input type="text" id="conf_newpassword" name="conf_newpassword" class="form-control">
+                                        <input type="password" id="conf_newpassword" name="conf_newpassword" class="form-control">
                                     </div>
                                 </div>
+
+                                {{ csrf() | raw }}
+
+                                <hr>
                                 Les champs marqués d'un astérisque sont obligatoires.
                                 <button type="submit" class="btn btn-lg btn-primary float-right">Envoyer</button>
                             </form>
