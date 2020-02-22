@@ -253,25 +253,25 @@ INSERT INTO `track_vinyle` (`id`, `vinyle_id`, `track_id`) VALUES
 -- Structure de la table `users`
 --
 
-CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
-  `pseudo` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
-  `email` varchar(320) COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(320) COLLATE utf8_unicode_ci NOT NULL,
-  `nom` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
-  `prenom` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
-  `avatar` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `address` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `role` int(11) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Déchargement des données de la table `users`
---
-
-INSERT INTO `users` (`id`, `pseudo`, `email`, `password`, `nom`, `prenom`, `avatar`, `address`, `role`) VALUES
-(11, 'totoprnt54', 'anthony.pernot@hotmail.fr', '$2y$10$/ROxdpJvF1pcMuYi498aW.DnG/vWHacD5tpQQB5Xxmn0sv01l/vY.', 'PERNOT', 'Anthony', '', '8 Rue Lothaire II, Nancy, Grand-Est, France', 0);
-
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users`
+(
+    `id`          int(11)                                                 NOT NULL AUTO_INCREMENT,
+    `pseudo`      varchar(35) CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL,
+    `email`       varchar(320) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+    `password`    varchar(60) CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL,
+    `nom`         varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL,
+    `prenom`      varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL,
+    `avatar`      varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'default.jpg',
+    `description` varchar(1000) CHARACTER SET utf8 COLLATE utf8_unicode_ci         DEFAULT NULL,
+    `public`      tinyint(1)                                              NOT NULL DEFAULT '0',
+    `address`     varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+    `role`        int(11)                                                 NOT NULL DEFAULT '0',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 14
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
 -- --------------------------------------------------------
 
 --
