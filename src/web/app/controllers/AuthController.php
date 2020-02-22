@@ -21,7 +21,8 @@ class AuthController extends Controller {
 
     public function logout(Request $request, Response $response, array $args): Response {
         Auth::logout();
-        $response = $response->withRedirect($this->router->pathFor('home'));
+        $this->flash->addMessage('success', "Vous avez été déconnecté.");
+        $response = $response->withRedirect($this->router->pathFor('showLogin'));
         return $response;
     }
 

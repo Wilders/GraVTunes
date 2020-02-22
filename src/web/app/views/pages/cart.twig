@@ -18,22 +18,9 @@
             <a href="{{ path_for('clearCart') }}" class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm"><i class="fas fa-trash-alt fa-sm text-white-50"></i> Vider le panier</a>
         {% endif %}
     </div>
-    {% for msg in flash('error') %}
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ msg }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    {% endfor %}
-    {% for msg in flash('success') %}
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ msg }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    {% endfor %}
+
+    {% include "layouts/flash.twig" %}
+
     <div class="row">
         {% if basket.count is same as(0) %}
             <div class="col-12">

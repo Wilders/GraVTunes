@@ -17,22 +17,9 @@
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Inscrivez-vous</h1>
                             </div>
-                            {% for msg in flash('error') %}
-                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                    {{ msg }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            {% endfor %}
-                            {% for msg in flash('success') %}
-                                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                    {{ msg }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            {% endfor %}
+
+                            {% include "layouts/flash.twig" %}
+
                             <form method="POST" class="user" novalidate="" autocomplete="off" action="{{ path_for("register") }}">
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
