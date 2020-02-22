@@ -63,6 +63,8 @@ $config = [
 $app = new App($config);
 $container = $app->getContainer();
 
+$container['uploadsPath'] = __DIR__ . DIRECTORY_SEPARATOR . 'uploads';
+
 $container['csrf'] = function () {
     $guard = new Guard();
     $guard->setPersistentTokenMode(true);

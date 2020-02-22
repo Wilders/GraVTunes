@@ -51,9 +51,29 @@ class AccountController extends Controller {
 
     public function updateProfile(Request $request, Response $response, array $args): Response {
         try {
-            /**
-             * Modification avatar
-             */
+            $description = filter_var($request->getParsedBodyParam('description'), FILTER_SANITIZE_STRING);
+            $public = !is_null($request->getParsedBodyParam('public'));
+            $files = $request->getUploadedFiles();
+
+            if (mb_strlen($description, 'utf8') > 1000) throw new AuthException("Votre description ne doit pas dépasser 1000 caractères.");
+
+            $user = Auth::user();
+
+            $avatar = $files['avatar'];
+            if ($avatar->getError() === UPLOAD_ERR_OK) {
+                $avatarsPath = $this->uploadsPath . DIRECTORY_SEPARATOR . "avatars";
+                $extension = pathinfo($avatar->getClientFilename(), PATHINFO_EXTENSION);
+                $name = sprintf('%s.%0.8s', $user->id . '-' . bin2hex(random_bytes(8)), $extension);
+                $avatar->moveTo($avatarsPath . DIRECTORY_SEPARATOR . $name);
+                $user->avatar = $name;
+            }
+
+            $user->description = $description;
+            $user->public = $public;
+            $user->save();
+
+            $this->flash->addMessage('success', "Les modifications apportées à votre compte ont été enregistrées !");
+            $response = $response->withRedirect($this->router->pathFor('showAccount'));
         } catch (AuthException $e) {
             $this->flash->addMessage('error', $e->getMessage());
             $response = $response->withRedirect($this->router->pathFor("showAccount"));
