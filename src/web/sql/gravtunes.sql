@@ -179,12 +179,13 @@ INSERT INTO `playlist_track` (`id`, `playlist_id`, `track_id`) VALUES
 --
 -- Structure de la table `tickets`
 --
-
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE `tickets` (
   `id` int(11) NOT NULL,
   `objet` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `statut` tinyint(1) NOT NULL,
-  `creationDate` date NOT NULL
+  `creationDate` date NOT NULL,
+  `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
