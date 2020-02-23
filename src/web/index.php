@@ -12,6 +12,7 @@ use app\controllers\ValidatorController;
 use app\controllers\TracksController;
 use app\controllers\PlaylistController;
 use app\controllers\VinyleController;
+use app\controllers\TicketController;
 use app\extensions\TwigCsrf;
 use app\extensions\TwigMessages;
 use app\helpers\Basket;
@@ -156,6 +157,15 @@ $app->group('', function() {
     $this->get('/playlists', PlaylistController::class . ':playlists')->setName("appPlaylist");
 
     $this->get('/vinyles', VinyleController::class . ':vinyles')->setName("appVinyle");
+
+    /**
+     * Tickets
+     */
+
+    $this->get('/tickets', TicketController::class . ':tickets')->setName("appTickets");
+
+    $this->post('/closeTicket', TicketController::class . ':closeTicket')->setName("closeTicket");
+    $this->post('/createTicket', TicketController::class . ':createTicket')->setName("createTicket");
 })->add(new AuthMiddleware($container));
 
 $app->run();
