@@ -49,6 +49,9 @@ class AccountController extends Controller {
         return $response;
     }
 
+    /**
+     * @todo: Vérification du type de fichiers uploadés
+     */
     public function updateProfile(Request $request, Response $response, array $args): Response {
         try {
             $description = filter_var($request->getParsedBodyParam('description'), FILTER_SANITIZE_STRING);
