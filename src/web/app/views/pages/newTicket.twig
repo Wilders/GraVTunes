@@ -1,0 +1,33 @@
+{% extends "layouts/app-layout.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/datatables.bootstrap.min.css">
+{% endblock %}
+
+{%  block appcontent %}
+    <div class="card shadow mb-4">
+        <form method="POST" action="{{ path_for("createTicket") }}" id="newTicketForm" enctype="multipart/form-data">
+            <div class="card-header py-3">
+                <h5>Nouveau ticket</h5>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="objet">Objet</label>
+                    <input id="objet" type="text" class="form-control" name="title" required>
+                </div>
+                <!--<div class="form-group">
+                    <label for="msg">Message d'introduction</label>
+                    <textarea id="msg" type="text" class="form-control" name="descr"></textarea>
+                </div>-->
+            </div>
+
+            {{ csrf() | raw }}
+
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary btn-lg">Créer</button>
+            </div>
+
+        </form>
+    </div>
+{% endblock %}
