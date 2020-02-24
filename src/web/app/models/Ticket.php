@@ -11,13 +11,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @package app\models
  */
 class Ticket extends Model {
-    public $timestamps = false;
+    public $timestamps = true;
     protected $table = "tickets";
     protected $primaryKey = "id";
     protected $fillable = [
         'objet',
         'statut',
-        'creationDate'
+        'creationDate',
+        'user_id'
     ];
 
     public function messages(): HasMany {
