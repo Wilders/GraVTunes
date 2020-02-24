@@ -149,9 +149,10 @@ $app->group('', function() {
      */
     $this->get('/tracks', TracksController::class . ':tracks')->setName("appTracks");
     $this->get('/tracks/import', TracksController::class . ':importTracks')->setName("importTracks");
+    $this->get('/tracks/update/{id:[0-9]+}', TracksController::class . ':formUpdateTracks')->setName("formUpdateTracks");
 
     $this->post('/importFile', TracksController::class . ':addFile')->setName("importFile");
-    $this->post('/updateFile', TracksController::class . ':updateFile')->setName("updateFile");
+    $this->post('/updateFile/{id:[0-9]+}', TracksController::class . ':updateFile')->setName("updateFile");
     $this->post('/deleteFile', TracksController::class . ':deleteFile')->setName("deleteFile");
 
     $this->get('/playlists', PlaylistController::class . ':playlists')->setName("appPlaylist");

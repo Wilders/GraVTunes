@@ -42,13 +42,13 @@
                                 <td class="text-center"><i class="far fa-play-circle fa-3x"></i></td>
                                 <td>{{ track.nom }}</td>
                                 <td>{{ track.description }}</td>
-                                <td>
+                                <td class="text-center">
                                     <div class="dropdown">
                                         <a  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <img src="{{ base_url() }}/public/assets/media/images/menulist.png" >
+                                            <i class="fas fa-bars fa-2x"></i>
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                            <button type="button" class="dropdown-item" data-toggle="modal" data-target="#updateTrackModal">Modifier</button>
+                                            <a href="{{ path_for('formUpdateTracks', {id: track.id}) }}"><button type="button" class="dropdown-item">Modifier</button></a>
                                             <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteTrackModal">Supprimer</button>
                                         </div>
                                     </div>
@@ -83,41 +83,4 @@
         </div>
     </div>
 
-    <div class="modal fade" id="updateTrackModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <form method="POST" action="{{ path_for("updateFile") }}" id="updateTrackForm" >
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Modification d'une chanson</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-
-                    <!--
-                        * Condition pour afficher le nom et description du titre selectionne
-                        * Pas Fonctionnel
-                        * {% if tracks.user_id == auth.user %}  {% endif %}
-                        -->
-
-                    <div class="modal-body">
-                            <label for="nameUpdate">Nom</label>
-                            <input type="text" name="name" class="form-control" id="nameUpdate" value="">
-                            <label for="descriptionUpdate">Description</label>
-                            <textarea class="form-control" name="descr" id="descriptionUpdate" rows="4"></textarea>
-
-                    </div>
-
-
-
-                    {{ csrf() | raw }}
-
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Fermer</button>
-                        <button class="btn btn-primary" type="submit">Modifier</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
 {% endblock %}

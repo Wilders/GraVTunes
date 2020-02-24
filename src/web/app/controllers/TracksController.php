@@ -40,7 +40,7 @@ class TracksController extends Controller{
                 ]);
                 return $response;
 
-        }catch (TracksException $e){
+        }catch (Exception $e){
             $this->flash->addMessage('error', $e->getMessage());
             $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
         }
@@ -110,7 +110,7 @@ class TracksController extends Controller{
             $name = filter_var($request->getParsedBodyParam("name"),FILTER_SANITIZE_SPECIAL_CHARS);
             $descr = filter_var($request->getParsedBodyParam("descr"), FILTER_SANITIZE_SPECIAL_CHARS);
 
-            $track = Track::where("user_id","=",Auth::user()->id)->first();
+            $track = Track::where("id","=",$args['id'])->firstOrFail();
 
             $track->nom = $name;
             $track->description = $descr;
@@ -125,6 +125,22 @@ class TracksController extends Controller{
         }
 
         return $response;
+    }
+
+    public function formUpdateTracks(Request $request, Response $response, array $args) : Response {
+        try{
+            $track = Track::where('id','=', $args['id'])->firstOrFail();
+
+            $this->view->render($response, 'pages/updateTracks.twig',[
+                "track" => $track,
+                "id" => $args['id']
+            ]);
+            return $response;
+
+        }catch (ModelNotFoundException $e){
+            $this->flash->addMessage('error', $e->getMessage());
+            $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
+        }
     }
 
     function hashage($data = "", $width=192, $rounds = 3) {
