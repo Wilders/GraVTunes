@@ -17,7 +17,6 @@ class Ticket extends Model {
     protected $fillable = [
         'objet',
         'statut',
-        'creationDate',
         'user_id'
     ];
 

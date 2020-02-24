@@ -179,12 +179,13 @@ INSERT INTO `playlist_track` (`id`, `playlist_id`, `track_id`) VALUES
 --
 -- Structure de la table `tickets`
 --
-DROP TABLE IF EXISTS `users`;
+DROP TABLE IF EXISTS `tickets`;
 CREATE TABLE `tickets` (
   `id` int(11) NOT NULL,
   `objet` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `statut` tinyint(1) NOT NULL,
-  `creationDate` date NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -192,9 +193,12 @@ CREATE TABLE `tickets` (
 -- Déchargement des données de la table `tickets`
 --
 
-INSERT INTO `tickets` (`id`, `objet`, `statut`, `creationDate`) VALUES
-(1, 'test', 0, '2020-01-08'),
-(2, 'test', 0, '2020-01-08');
+INSERT INTO `tickets` (`id`, `objet`, `statut`, `updated_at`, `created_at`, `user_id`) VALUES
+(1, 'test', 0, '2020-01-07 23:00:00', '2020-02-24 12:19:45', 14),
+(2, 'test', 0, '2020-01-07 23:00:00', '2020-02-24 12:19:45', 14),
+(3, 'new test', 0, '2020-02-24 11:20:59', '2020-02-24 11:20:59', 14),
+(4, 'new test', 0, '2020-02-24 11:21:34', '2020-02-24 11:21:34', 14),
+(5, 'AH OUI OUI OUI', 0, '2020-02-24 11:31:56', '2020-02-24 11:31:56', 14);
 
 -- --------------------------------------------------------
 
