@@ -159,6 +159,7 @@ $app->group('', function() {
 
     $this->get('/vinyles', VinyleController::class . ':vinyles')->setName("appVinyle");
 
+
     /**
      * Tickets
      */

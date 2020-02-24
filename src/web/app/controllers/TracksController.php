@@ -131,6 +131,7 @@ class TracksController extends Controller{
         try{
             $track = Track::where('id','=', $args['id'])->firstOrFail();
 
+
             $this->view->render($response, 'pages/updateTracks.twig',[
                 "track" => $track,
                 "id" => $args['id']
