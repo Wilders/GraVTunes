@@ -153,10 +153,16 @@ $app->group('', function() {
 
     $this->post('/importFile', TracksController::class . ':addFile')->setName("importFile");
     $this->post('/updateFile/{id:[0-9]+}', TracksController::class . ':updateFile')->setName("updateFile");
-    $this->post('/deleteFile', TracksController::class . ':deleteFile')->setName("deleteFile");
+    $this->post('/deleteFile/{id:[0-9]+}', TracksController::class . ':deleteFile')->setName("deleteFile");
 
+    /**
+     * Playlists
+     */
     $this->get('/playlists', PlaylistController::class . ':playlists')->setName("appPlaylist");
 
+    /**
+     * Vinyles
+     */
     $this->get('/vinyles', VinyleController::class . ':vinyles')->setName("appVinyle");
 
 

@@ -50,37 +50,36 @@
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                             <a href="{{ path_for('formUpdateTracks', {id: track.id}) }}"><button type="button" class="dropdown-item">Modifier</button></a>
                                             <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteTrackModal">Supprimer</button>
+
                                         </div>
                                     </div>
                                 </td>
                             </tr>
+                            <div class="modal fade" id="deleteTrackModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <form method="POST" action="{{ path_for("deleteFile", {id: track.id}) }}" id="deleteTrackForm" >
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Êtes-vous sûr de supprimer cette chanson ?</h5>
+                                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">×</span>
+                                                </button>
+                                            </div>
+
+                                            {{ csrf() | raw }}
+
+                                            <div class="modal-footer">
+                                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Fermer</button>
+                                                <button class="btn btn-primary" type="submit">Supprimer</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
-        </div>
-    </div>
-
-
-    <div class="modal fade" id="deleteTrackModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-           <form method="POST" action="{{ path_for("deleteFile") }}" id="deleteTrackForm" >
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Êtes-vous sûr de supprimer cette chanson ?</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-
-                    {{ csrf() | raw }}
-
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Fermer</button>
-                        <button class="btn btn-primary" type="submit">Supprimer</button>
-                    </div>
-                </div>
-           </form>
         </div>
     </div>
 

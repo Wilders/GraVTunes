@@ -69,14 +69,13 @@ class TracksController extends Controller{
             $fichier->hash = $this->hashage($filename);
             $fichier->duree = $trackInfo->get('duration');
 
-            $fichier->save();
-
             $track->nom = $titre;
             $track->description = $descr;
-            $track->file_id = File::count() + 2;
+            $track->file_id = File::count() + 3;
             $track->user_id = Auth::user()->id;
 
             $track->save();
+            $fichier->save();
 
             $this->flash->addMessage('success',"Félicitations, votre fichier a bien été enregistré. Vous pouvez le consulter dans vos titres.");
             $response = $response->withRedirect($this->router->pathFor("appHome"));
@@ -89,12 +88,13 @@ class TracksController extends Controller{
 
     public function deleteFile(Request $request, Response $response, array $args) : Response {
         try{
+            $id = filter_var($args['id'], FILTER_SANITIZE_NUMBER_INT);
 
-            $track = Track::where('user_id','=', Auth::user()->id)->first();
-            $file = File::where('id','=',$track->file_id)->first();
+            $track = Track::where(["id" => $id, "user_id" => Auth::user()->id])->firstOrFail();
+            $file = File::where('id','=',$track->file_id)->firstOrFail();
 
-            $file->delete();
             $track->delete();
+            $file->delete();
 
             $this->flash->addMessage('success',"Vous venez de supprimer ".$track->nom.".");
             $response = $response->withRedirect($this->router->pathFor("appTracks"));
@@ -107,10 +107,11 @@ class TracksController extends Controller{
 
     public function updateFile(Request $request, Response $response, array $args) : Response {
         try{
+            $id = filter_var($args['id'], FILTER_SANITIZE_NUMBER_INT);
             $name = filter_var($request->getParsedBodyParam("name"),FILTER_SANITIZE_SPECIAL_CHARS);
             $descr = filter_var($request->getParsedBodyParam("descr"), FILTER_SANITIZE_SPECIAL_CHARS);
 
-            $track = Track::where("id","=",$args['id'])->firstOrFail();
+            $track = Track::where(["id" => $id, "user_id" => Auth::user()->id])->firstOrFail();
 
             $track->nom = $name;
             $track->description = $descr;
@@ -129,8 +130,9 @@ class TracksController extends Controller{
 
     public function formUpdateTracks(Request $request, Response $response, array $args) : Response {
         try{
-            $track = Track::where('id','=', $args['id'])->firstOrFail();
+            $id = filter_var($args['id'], FILTER_SANITIZE_NUMBER_INT);
 
+            $track = Track::where(["id" => $id, "user_id" => Auth::user()->id])->firstOrFail();
 
             $this->view->render($response, 'pages/updateTracks.twig',[
                 "track" => $track,
