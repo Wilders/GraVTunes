@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use Braintree_ClientToken;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
