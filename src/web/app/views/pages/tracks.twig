@@ -3,16 +3,21 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/datatables.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/stickyaudioplayerjquery.min.css">
 {% endblock %}
 
 {% block scripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ base_url() }}/public/assets/js/dataTables.min.js"></script>
     <script type="text/javascript" src='{{ base_url() }}/public/assets/js/datatables.bootstrap.min.js'></script>
+    <script type="text/javascript" src='{{ base_url() }}/public/assets/js/player.js'></script>
+    <script type="text/javascript" src='{{ base_url() }}/public/assets/js/stickyaudioplayerjquery.min.js'></script>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
+
 {% endblock %}
 
 {% block appcontent %}
-    <div class="card shadow mb-4">
+    <div class="card shadow mb-4" id="tableTracks">
         <div class="card-header py-3">
             <a class="btn btn-outline-primary float-right" href="{{ path_for("importTracks") }}">Ajouter une musique</a>
             <h6 class="m-0 font-weight-bold text-primary">Mes titres</h6>
@@ -39,7 +44,7 @@
                     <tbody>
                         {% for track in tracks %}
                             <tr>
-                                <td class="text-center"><i class="far fa-play-circle fa-3x"></i></td>
+                                <td class="text-center" id="play"><i class="far fa-play-circle fa-3x" id="buttonPlayer"></i></td>
                                 <td>{{ track.nom }}</td>
                                 <td>{{ track.description }}</td>
                                 <td class="text-center">

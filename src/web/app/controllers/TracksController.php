@@ -65,13 +65,15 @@ class TracksController extends Controller{
             $fichier = new File();
             $track = new Track();
 
+            $fichier->id = File::count() + 1;
             $fichier->path = $filename;
             $fichier->hash = $this->hashage($filename);
             $fichier->duree = $trackInfo->get('duration');
 
+            $track->id = Track::count()+1;
             $track->nom = $titre;
             $track->description = $descr;
-            $track->file_id = File::count() + 3;
+            $track->file_id = File::count() + 1;
             $track->user_id = Auth::user()->id;
 
             $track->save();
