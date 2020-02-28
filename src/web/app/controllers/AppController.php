@@ -21,7 +21,7 @@ class AppController extends Controller {
         $tracksUser = Track::where('user_id','=', $user->id)->get();
         $commandesUser = Commande::where('user_id','=',$user->id)->get();
         $ticketsUser = Ticket::where(['user_id' => $user->id, 'statut' => 0])->get();
-        $this->view->render($response, 'pages/home.twig',[
+        $this->view->render($response, 'pages/home.twig', [
             "user" => $user,
             "tracks" => $tracksUser,
             "commandes" => $commandesUser,

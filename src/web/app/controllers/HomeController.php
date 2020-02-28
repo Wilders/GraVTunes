@@ -13,6 +13,7 @@ use Slim\Http\Response;
 class HomeController extends Controller {
 
     public function showHome(Request $request, Response $response, array $args): Response {
+
         if(Auth::check()) {
             $response = $response->withRedirect($this->router->pathFor('appHome'));
         } else {
