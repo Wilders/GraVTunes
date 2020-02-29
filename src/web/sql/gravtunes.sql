@@ -367,11 +367,6 @@ ALTER TABLE `tracks`
 ALTER TABLE `track_vinyle`
   ADD PRIMARY KEY (`id`);
 
---
--- Index pour la table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Index pour la table `vinyles`
