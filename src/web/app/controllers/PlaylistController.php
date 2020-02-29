@@ -51,8 +51,6 @@ class PlaylistController extends Controller {
             $titre = filter_var($request->getParsedBodyParam('name'), FILTER_SANITIZE_SPECIAL_CHARS);
             $descr = filter_var($request->getParsedBodyParam('descr'), FILTER_SANITIZE_SPECIAL_CHARS);
 
-            $ffmpeg = FFProbe::create();
-            $ffmpeg = FFProbe::create();
             $playlist = new Playlist();
 
             $playlist->nom = $titre;
@@ -62,7 +60,7 @@ class PlaylistController extends Controller {
 
             $playlist->save();
 
-            $this->flash->addMessage('success',"Félicitations, votre playliste a bien été enregistré. Vous pouvez la consulter dans vos playlistes.");
+            $this->flash->addMessage('success',"Félicitations, votre playlist a bien été enregistré. Vous pouvez la consulter dans vos playlists.");
             $response = $response->withRedirect($this->router->pathFor("appHome"));
         }catch(ModelNotFoundException $e){
             $this->flash->addMessage('error', $e->getMessage());
