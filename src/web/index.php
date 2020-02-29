@@ -159,6 +159,8 @@ $app->group('', function() {
      * Playlists
      */
     $this->get('/playlists', PlaylistController::class . ':playlists')->setName("appPlaylist");
+    $this->get('/playlists/add', PlaylistController::class . ':newPlaylist')->setName("addPlaylist");
+    $this->post('/addPlaylist', PlaylistController::class . ':addPlaylist')->setName("importPlaylist");
 
     /**
      * Vinyles
