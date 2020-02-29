@@ -60,7 +60,7 @@ class PlaylistController extends Controller {
 
             $playlist->save();
 
-            $this->flash->addMessage('success',"Félicitations, votre playlist a bien été enregistré. Vous pouvez la consulter dans vos playlists.");
+            $this->flash->addMessage('success',"Félicitations, votre playlist a bien été enregistré. Vous pouvez la consulter dans vos playlists. ");
             $response = $response->withRedirect($this->router->pathFor("appHome"));
         }catch(ModelNotFoundException $e){
             $this->flash->addMessage('error', $e->getMessage());
