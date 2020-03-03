@@ -25,7 +25,7 @@ class TicketController extends Controller
 
     public function tickets(Request $request, Response $response, array $args) : Response {
         try{
-            $tickets = Ticket::where('user_id','=',Auth::user()->id)->get();
+            $tickets = Ticket::where(['user_id' => Auth::user()->id, 'statut' => 0])->get();
 
             $this->view->render($response, 'pages/tickets.twig',[
                 "tickets" => $tickets
@@ -54,6 +54,24 @@ class TicketController extends Controller
             $this->flash->addMessage('success',"Nouveau ticket créé.");
             $response = $response->withRedirect($this->router->pathFor("appTickets"));
         }catch(ModelNotFoundException $e){
+            $this->flash->addMessage('error', $e->getMessage());
+            $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
+        }
+        return $response;
+    }
+
+    public function closeTicket(Request $request, Response $response, array $args) : Response {
+        try{
+            $id = filter_var($args['id'], FILTER_SANITIZE_NUMBER_INT);
+
+            $ticket = Ticket::where(["id" => $id, "user_id" => Auth::user()->id])->firstOrFail();
+            $ticket->statut=1;
+
+            $ticket->save();
+
+            $this->flash->addMessage('success',"Vous avez clos votre ticket.");
+            $response = $response->withRedirect($this->router->pathFor("appTickets"));
+        }catch (ModelNotFoundException $e){
             $this->flash->addMessage('error', $e->getMessage());
             $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
         }

@@ -24,6 +24,9 @@
                     <tr>
                         <th>ID</th>
                         <th>Objet</th>
+                        <th>Statut</th>
+                        <th>Date de création</th>
+                        <th>Date de la dernière modification</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -31,6 +34,9 @@
                     <tr>
                         <th>ID</th>
                         <th>Objet</th>
+                        <th>Statut</th>
+                        <th>Date de création</th>
+                        <th>Date de la dernière modification</th>
                         <th></th>
                     </tr>
                     </tfoot>
@@ -39,6 +45,9 @@
                         <tr>
                             <td>{{ ticket.id }}</td>
                             <td>{{ ticket.objet }}</td>
+                            <td>{{ ticket.statut }}</td>
+                            <td>{{ ticket.created_at }}</td>
+                            <td>{{ ticket.updated_at }}</td>
                             <td>
                                 <div class="dropdown">
                                     <a  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -51,6 +60,29 @@
                                 </div>
                             </td>
                         </tr>
+
+                        <div class="modal fade" id="closeTicketModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <form method="POST" action="{{ path_for("closeTicket", {id: ticket.id}) }}" id="closeTicketForm" >
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" >Êtes-vous sûr de vouloir clore le ticket ?</h5>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+
+                                        {{ csrf() | raw }}
+
+                                        <div class="modal-footer">
+                                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Fermer</button>
+                                            <button class="btn btn-primary" type="submit">Clore</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
                     {% endfor %}
                     </tbody>
                 </table>
@@ -58,25 +90,5 @@
         </div>
     </div>
 
-    <div class="modal fade" id="closeTicketModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <form method="POST" action="{{ path_for("closeTicket") }}" id="closeTicketForm" >
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Êtes-vous sûr de vouloir clore le ticket ?</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
 
-                    {{ csrf() | raw }}
-
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Fermer</button>
-                        <button class="btn btn-primary" type="submit">Clore</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
 {% endblock %}
