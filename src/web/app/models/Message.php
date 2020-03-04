@@ -21,4 +21,8 @@ class Message extends Model {
     public function ticket(): BelongsTo {
         return $this->belongsTo("\app\models\Ticket");
     }
+
+    public function user(): BelongsTo {
+        return $this->belongsTo("\app\models\User");
+    }
 }
