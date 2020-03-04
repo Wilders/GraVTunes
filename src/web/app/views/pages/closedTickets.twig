@@ -1,0 +1,71 @@
+{% extends "layouts/app-layout.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/datatables.bootstrap.min.css">
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/dataTables.min.js"></script>
+    <script type="text/javascript" src='{{ base_url() }}/public/assets/js/datatables.bootstrap.min.js'></script>
+{% endblock %}
+
+{% block appcontent %}
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <a class="btn btn-outline-primary float-right" href="{{ path_for("newTicket") }}">Nouveau ticket</a>
+            <h6 class="m-0 font-weight-bold text-primary">Mes tickets</h6>
+        </div>
+        <div class=class="btn-group" role="group">
+            <a class="btn btn-outline-primary " id="openedTickets" href="{{ path_for("appTickets") }}">Tickets ouverts</a>
+            <a class="btn btn-outline-primary active" id="closedTickets" href="{{ path_for("closedTickets") }}" >Tickets fermés</a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Objet</th>
+                        <th>Date de création</th>
+                        <th>Date de la dernière modification</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <th>ID</th>
+                        <th>Objet</th>
+                        <th>Date de création</th>
+                        <th>Date de la dernière modification</th>
+                        <th></th>
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                    {% for ticket in tickets %}
+                        <tr>
+                            <td>{{ ticket.id }}</td>
+                            <td>{{ ticket.objet }}</td>
+                            <td>{{ ticket.created_at }}</td>
+                            <td>{{ ticket.updated_at }}</td>
+                            <td>
+                                <div class="dropdown">
+                                    <a  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <img src="{{ base_url() }}/public/assets/media/images/menulist.png" >
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                        <button type="button" class="dropdown-item" data-toggle="" data-target="">Accéder</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

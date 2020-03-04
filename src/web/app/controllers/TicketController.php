@@ -38,6 +38,21 @@ class TicketController extends Controller
         }
     }
 
+    public function closedTickets(Request $request, Response $response, array $args) : Response {
+        try{
+            $tickets = Ticket::where(['user_id' => Auth::user()->id, 'statut' => 1])->get();
+
+            $this->view->render($response, 'pages/closedTickets.twig',[
+                "tickets" => $tickets
+            ]);
+            return $response;
+
+        }catch (ModelNotFoundException $e){
+            $this->flash->addMessage('error', $e->getMessage());
+            $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
+        }
+    }
+
     public function createTicket(Request $request, Response $response, array $args) : Response {
         try{
             $objet = filter_var($request->getParsedBodyParam('title'), FILTER_SANITIZE_SPECIAL_CHARS);
