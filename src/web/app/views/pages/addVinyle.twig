@@ -1,0 +1,40 @@
+{% extends "layouts/app-layout.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/smart_wizard.min.css">
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/jquery.smartWizard.min.js"></script>
+{% endblock %}
+
+
+{%  block appcontent %}
+    <div class="card shadow mb-4">
+        <div id="smartwizard" class="sw-main sw-theme-arrows">
+            <ul>
+                <li><a href="#step-1">Step Title<br /><small>Step description</small></a></li>
+                <li><a href="#step-2">Step Title<br /><small>Step description</small></a></li>
+                <li><a href="#step-3">Step Title<br /><small>Step description</small></a></li>
+                <li><a href="#step-4">Step Title<br /><small>Step description</small></a></li>
+            </ul>
+
+            <div>
+                <div id="step-1" class="">
+                    Step Content
+                </div>
+                <div id="step-2" class="">
+                    Step Content
+                </div>
+                <div id="step-3" class="">
+                    Step Content
+                </div>
+                <div id="step-4" class="">
+                    Step Content
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -166,7 +166,7 @@ $app->group('', function() {
      * Vinyles
      */
     $this->get('/vinyles', VinyleController::class . ':vinyles')->setName("appVinyle");
-
+    $this->get('/vinyles/add', VinyleController::class . ':addVinyle')->setName("addVinyle");
 
     /**
      * Tickets
