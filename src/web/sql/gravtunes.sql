@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  lun. 03 fév. 2020 à 20:08
+-- Généré le :  ven. 06 mars 2020 à 15:26
 -- Version du serveur :  10.4.6-MariaDB
 -- Version de PHP :  7.3.9
 
@@ -74,25 +74,21 @@ CREATE TABLE `files` (
   `id` int(11) NOT NULL,
   `path` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `hash` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `duree` float NOT NULL
+  `duree` float NOT NULL,
+  `size` int(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Déchargement des données de la table `files`
 --
 
-INSERT INTO `files` (`id`, `path`, `hash`, `duree`) VALUES
-(1, 'Damso_FaisMoiUnVie.mp3', '9af1ea6bb0b065839e52424b4a679080', 167),
-(2, 'Larry_Block.mp3', 'd1c1c11d97f404b8060121cc31f4f574', 157),
-(3, 'Alkpote_Cicatrices.mp3', '0805a5ee66a3d69da9ddd2339ad2d77f', 217),
-(4, 'Alkpote.ft.KalashCriminel_Patek.mp3', '5ed5f4f95e8459029a9f66aed64804eb', 187),
-(5, 'AW_playoff.mp3', '63a601ec737cafbd86b57103201fd631', 183),
-(6, 'AW_pistoletrose.mp3', 'de1748ad61434bddbdb40b7b072af4de', 127),
-(7, 'AW_pistoletrose2.mp3', 'ad0fc4983e2d76283d8dae8fb1e6e2eb', 98),
-(8, 'Trophée OLD.mp3', '769f2841dc7a1b982776b816e150ec50bf17b183b7a41c4e', 0),
-(9, 'Jean Teh.mp3', '11f37b5d2378946e32ac21edbea85581eca6cd6563b6e204', 0),
-(10, 'Baraccuda.mp3', 'cb5cc73e237755f6967927d92e4939a7ff20a8dfd3eefbb6', 0),
-(13, 'Berflam.mp3', '6955c632c285c2e17f3bc3a1be9c0293f84371f9e4536d9b', 0);
+INSERT INTO `files` (`id`, `path`, `hash`, `duree`, `size`) VALUES
+(0, 'Naps - La Blue.mp3', '9218df64fba9b04c706a35af53c8039861a6aab8629bacdb', 194.448, 0),
+(1, 'Freeze Corleone - 16pains.mp3', '2d6318b3f337c21d4c290d985b3c53be7ed382c0e6aa957c', 156.864, 0),
+(2, 'Soso Maness - Emmenez Moi.mp3', '72a0672691909f937b3c25725eba2be9a45f01b3da59aaed', 228.336, 0),
+(4, 'Trophée OLD.mp3', '769f2841dc7a1b982776b816e150ec50bf17b183b7a41c4e', 140.261, 1000000),
+(5, 'Sombre Soirée.mp3', 'c69d77b2054912f0d468adf86d477bbf038c6fa7592f3a30', 223.52, 1),
+(6, 'Symphonie.mp3', '48e0f327f43dfc158ffbad3849f8d73e241663c319b7abee', 209.502, 3356151);
 
 -- --------------------------------------------------------
 
@@ -179,13 +175,13 @@ INSERT INTO `playlist_track` (`id`, `playlist_id`, `track_id`) VALUES
 --
 -- Structure de la table `tickets`
 --
-DROP TABLE IF EXISTS `tickets`;
+
 CREATE TABLE `tickets` (
   `id` int(11) NOT NULL,
   `objet` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `statut` tinyint(1) NOT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -194,11 +190,12 @@ CREATE TABLE `tickets` (
 --
 
 INSERT INTO `tickets` (`id`, `objet`, `statut`, `updated_at`, `created_at`, `user_id`) VALUES
-(1, 'test', 0, '2020-01-07 23:00:00', '2020-02-24 12:19:45', 14),
+(1, 'test', 1, '2020-03-04 18:13:13', '2020-02-24 12:19:45', 14),
 (2, 'test', 0, '2020-01-07 23:00:00', '2020-02-24 12:19:45', 14),
 (3, 'new test', 0, '2020-02-24 11:20:59', '2020-02-24 11:20:59', 14),
 (4, 'new test', 0, '2020-02-24 11:21:34', '2020-02-24 11:21:34', 14),
-(5, 'AH OUI OUI OUI', 0, '2020-02-24 11:31:56', '2020-02-24 11:31:56', 14);
+(5, 'AH OUI OUI OUI', 0, '2020-02-24 11:31:56', '2020-02-24 11:31:56', 14),
+(6, 'tezst', 0, '2020-02-26 22:43:58', '2020-02-26 22:43:58', 14);
 
 -- --------------------------------------------------------
 
@@ -220,16 +217,12 @@ CREATE TABLE `tracks` (
 --
 
 INSERT INTO `tracks` (`id`, `nom`, `description`, `archived`, `file_id`, `user_id`) VALUES
-(1, 'Damso FaisMoiUnVie', 'Single 2018', 0, '1', 0),
-(2, 'Larry - Block', 'Single 2019', 0, '2', 0),
-(3, 'Alkpote - Cicatrices', 'Album Monument', 0, '3', 0),
-(4, 'Alkpote feat Kalash Criminel - Patek', 'Album Monument', 0, '4', 0),
-(5, 'Alpha Wann - Pistolet Rose', 'EP PPP', 0, '5', 0),
-(6, 'Alpha Wann - Pistolet Rose 2', 'EP PPP', 0, '6', 0),
-(7, 'Alpha Wann - PLAYOFFS', 'EP PPP', 0, '7', 0),
-(8, 'trophée', 'nqnt3', 0, '1', 0),
-(9, 'xxwxw', 'xxxx', 0, '1', 0),
-(10, 'dds', 'dfs', 0, '11', 0);
+(0, 'Naps - La Blue', 'Son Youtube', 0, '0', 14),
+(1, 'Freeze Corleone - 16pains', 'Son - Youtube | sample d`une vidéo du Roi Heenock', 0, '1', 14),
+(2, 'Soso Maness - Emmenez Moi', 'Son Youtube', 0, '2', 14),
+(4, 'trop', 'nqnt', 0, '4', 14),
+(5, 'Sombre Soirée - Vald', 'Nqnt3', 0, '5', 14),
+(6, 'Symphonie - Vald', 'NQNT 3', 0, '6', 14);
 
 -- --------------------------------------------------------
 
@@ -258,25 +251,27 @@ INSERT INTO `track_vinyle` (`id`, `vinyle_id`, `track_id`) VALUES
 -- Structure de la table `users`
 --
 
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE IF NOT EXISTS `users`
-(
-    `id`          int(11)                                                 NOT NULL AUTO_INCREMENT,
-    `pseudo`      varchar(35) CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL,
-    `email`       varchar(320) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-    `password`    varchar(60) CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL,
-    `nom`         varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL,
-    `prenom`      varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci  NOT NULL,
-    `avatar`      varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'default.jpg',
-    `description` varchar(1000) CHARACTER SET utf8 COLLATE utf8_unicode_ci         DEFAULT NULL,
-    `public`      tinyint(1)                                              NOT NULL DEFAULT '0',
-    `address`     varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-    `role`        int(11)                                                 NOT NULL DEFAULT '0',
-    PRIMARY KEY (`id`)
-) ENGINE = InnoDB
-  AUTO_INCREMENT = 14
-  DEFAULT CHARSET = utf8
-  COLLATE = utf8_unicode_ci;
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `pseudo` varchar(35) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(320) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
+  `nom` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `prenom` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `avatar` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'default.jpg',
+  `description` varchar(1000) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `public` tinyint(1) NOT NULL DEFAULT 0,
+  `address` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `role` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Déchargement des données de la table `users`
+--
+
+INSERT INTO `users` (`id`, `pseudo`, `email`, `password`, `nom`, `prenom`, `avatar`, `description`, `public`, `address`, `role`) VALUES
+(14, 'totoprnt', 'anthony.pernot@hotmail.fr', '$2y$10$m2XtwnNsUAcLLjXP53FeMOYy0dSYfPy4JmejQiLhQjgzAbwIegLj6', 'PERNOT', 'Anthony', 'default.jpg', NULL, 0, '8 Rue Lothaire II, Nancy, Grand-Est, France', 0);
+
 -- --------------------------------------------------------
 
 --
@@ -367,6 +362,11 @@ ALTER TABLE `tracks`
 ALTER TABLE `track_vinyle`
   ADD PRIMARY KEY (`id`);
 
+--
+-- Index pour la table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Index pour la table `vinyles`
@@ -394,7 +394,7 @@ ALTER TABLE `commande_vinyle`
 -- AUTO_INCREMENT pour la table `files`
 --
 ALTER TABLE `files`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT pour la table `messages`
@@ -424,31 +424,13 @@ ALTER TABLE `playlist_track`
 -- AUTO_INCREMENT pour la table `tickets`
 --
 ALTER TABLE `tickets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT pour la table `tracks`
---
-ALTER TABLE `tracks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
-
---
--- AUTO_INCREMENT pour la table `track_vinyle`
---
-ALTER TABLE `track_vinyle`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
-
---
--- AUTO_INCREMENT pour la table `vinyles`
---
-ALTER TABLE `vinyles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
