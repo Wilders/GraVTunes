@@ -16,7 +16,8 @@ class File extends Model {
     protected $fillable = [
         'path',
         'hash',
-        'duree'
+        'duree',
+        'size'
     ];
     public function tracks(): HasMany {
         return $this->hasMany("\app\models\Track");

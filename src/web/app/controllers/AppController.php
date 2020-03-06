@@ -23,10 +23,15 @@ class AppController extends Controller {
     }
 
     public function showDashHome(Request $request, Response $response, array $args): Response {
+        $files = [];
+        foreach (Auth::user()->tracks as $track) {
+            $files[] = $track->file->size;
+        }
         $stats = [
             "tracks" => Auth::user()->tracks->count(),
             "orders" => Auth::user()->commandes->count(),
-            "tickets" => Auth::user()->tickets->count()
+            "tickets" => Auth::user()->tickets->count(),
+            "diskSpace" => array_sum($files)
         ];
         $this->view->render($response, 'pages/home.twig', [
             "stats" => $stats,
