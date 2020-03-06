@@ -2,39 +2,51 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/smart_wizard.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/bootstrap-select.min.css">
 {% endblock %}
 
 {% block scripts %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/jquery.smartWizard.min.js"></script>
+    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/bootstrap-select_fr_FR.min.js"></script>
 {% endblock %}
 
 
 {%  block appcontent %}
     <div class="card shadow mb-4">
-        <div id="smartwizard" class="sw-main sw-theme-arrows">
-            <ul>
-                <li><a href="#step-1">Step Title<br /><small>Step description</small></a></li>
-                <li><a href="#step-2">Step Title<br /><small>Step description</small></a></li>
-                <li><a href="#step-3">Step Title<br /><small>Step description</small></a></li>
-                <li><a href="#step-4">Step Title<br /><small>Step description</small></a></li>
-            </ul>
-
-            <div>
-                <div id="step-1" class="">
-                    Step Content
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Créer un vinyle personnalisé</h6>
+        </div>
+        <div class="card-body">
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="name">Nom du vinyle *</label>
+                    <input type="text" name="name" id="name" class="form-control" value="{{ oldData.name }}">
                 </div>
-                <div id="step-2" class="">
-                    Step Content
+                <div class="form-group col-md-4">
+                    <label>Couverture</label>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="cover" name="cover">
+                        <label for="cover" class="custom-file-label" data-browse="Parcourir">Choisir un fichier...</label>
+                    </div>
                 </div>
-                <div id="step-3" class="">
-                    Step Content
-                </div>
-                <div id="step-4" class="">
-                    Step Content
+                <div class="form-group col-md-4">
+                    <label for="tracks">Sélection des titres</label>
+                    <select class="form-control selectpicker" id="tracks" data-live-search="true" multiple>
+                        {% for track in tracks %}
+                            <option>{{ track.nom }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
             </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control" id="description" rows="3" name="description">{{ oldData.description }}</textarea>
+            </div>
+
+
+            {{ csrf() | raw }}
+
         </div>
     </div>
 {% endblock %}

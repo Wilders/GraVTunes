@@ -49,6 +49,10 @@ $(document).ready(function() {
   if(sw.length) {
     sw.smartWizard();
   }
+  let track = $('.selectpicker');
+  if(track.length) {
+    $('.selectpicker').selectpicker();
+  }
   let dataTable = $('#dataTable');
   if(dataTable.length) {
     dataTable.DataTable({
