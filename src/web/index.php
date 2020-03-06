@@ -2,11 +2,9 @@
 
 use app\controllers\AccountController;
 use app\controllers\AppController;
-use app\controllers\BraintreeController;
 use app\controllers\OrderController;
 use app\helpers\Auth;
 use app\controllers\CartController;
-use app\controllers\HomeController;
 use app\controllers\AuthController;
 use app\controllers\ValidatorController;
 use app\controllers\TracksController;
@@ -102,7 +100,7 @@ $app->add(new OldInputMiddleware($container));
 $app->add($container->csrf);
 
 // Home
-$app->get('/', HomeController::class . ':showHome')->setName('home');
+$app->get('/', AppController::class . ':showHome')->setName('home');
 $app->get('/validator', ValidatorController::class . ':validator')->setName('validator');
 
 // Guest
@@ -117,7 +115,7 @@ $app->group('', function() {
 // Authenticated
 $app->group('', function() {
 
-    $this->get('/home', AppController::class . ':showHome')->setName('appHome');
+    $this->get('/home', AppController::class . ':showDashHome')->setName('appHome');
     $this->get('/braintree/token', AppController::class . ':btToken')->setName("braintreeToken");
 
     /**

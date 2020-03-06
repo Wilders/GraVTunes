@@ -3,9 +3,6 @@
 namespace app\controllers;
 
 use app\helpers\Auth;
-use app\models\Commande;
-use app\models\Ticket;
-use app\models\Track;
 use Braintree_ClientToken;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -17,15 +14,22 @@ use Slim\Http\Response;
 class AppController extends Controller {
 
     public function showHome(Request $request, Response $response, array $args): Response {
-        $user = Auth::user();
-        $tracksUser = Track::where('user_id','=', $user->id)->get();
-        $commandesUser = Commande::where('user_id','=',$user->id)->get();
-        $ticketsUser = Ticket::where(['user_id' => $user->id, 'statut' => 0])->get();
+        if(Auth::check()) {
+            $response = $response->withRedirect($this->router->pathFor('appHome'));
+        } else {
+            $response = $response->withRedirect($this->router->pathFor('login'));
+        }
+        return $response;
+    }
+
+    public function showDashHome(Request $request, Response $response, array $args): Response {
+        $stats = [
+            "tracks" => Auth::user()->tracks->count(),
+            "orders" => Auth::user()->commandes->count(),
+            "tickets" => Auth::user()->tickets->count()
+        ];
         $this->view->render($response, 'pages/home.twig', [
-            "user" => $user,
-            "tracks" => $tracksUser,
-            "commandes" => $commandesUser,
-            "tickets" => $ticketsUser
+            "stats" => $stats,
         ]);
         return $response;
     }

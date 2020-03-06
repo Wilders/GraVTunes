@@ -24,6 +24,12 @@ abstract class Controller {
         $this->container = $container;
     }
 
+    /**
+     * Controller magic getter
+     *
+     * @param $property
+     * @return mixed
+     */
     public function __get($property) {
         if($this->container->{$property}) {
             return $this->container->{$property};

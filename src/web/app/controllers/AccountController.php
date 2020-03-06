@@ -86,16 +86,16 @@ class AccountController extends Controller {
 
     public function updateSecurity(Request $request, Response $response, array $args): Response {
         try {
-            $actualpassword = filter_var($request->getParsedBodyParam('actual_password'), FILTER_SANITIZE_STRING);
-            $newpassword = filter_var($request->getParsedBodyParam('newpassword'), FILTER_SANITIZE_STRING);
-            $confnewpassword = filter_var($request->getParsedBodyParam('conf_newpassword'), FILTER_SANITIZE_STRING);
+            $actualPassword = filter_var($request->getParsedBodyParam('actual_password'), FILTER_SANITIZE_STRING);
+            $newPassword = filter_var($request->getParsedBodyParam('newpassword'), FILTER_SANITIZE_STRING);
+            $confNewPassword = filter_var($request->getParsedBodyParam('conf_newpassword'), FILTER_SANITIZE_STRING);
 
-            if(!password_verify($actualpassword, Auth::user()->password)) throw new AuthException("Le mot de passe actuel n'est pas bon.");
-            if (mb_strlen($newpassword, 'utf8') < 8) throw new AuthException("Votre nouveau mot de passe doit contenir au moins 8 caractères.");
-            if ($newpassword != $confnewpassword) throw new AuthException("La confirmation du mot de passe n'est pas bonne.");
+            if(!password_verify($actualPassword, Auth::user()->password)) throw new AuthException("Le mot de passe actuel n'est pas bon.");
+            if (mb_strlen($newPassword, 'utf8') < 8) throw new AuthException("Votre nouveau mot de passe doit contenir au moins 8 caractères.");
+            if ($newPassword != $confNewPassword) throw new AuthException("La confirmation du mot de passe n'est pas bonne.");
 
             $user = Auth::user();
-            $user->password = password_hash($confnewpassword, PASSWORD_DEFAULT);
+            $user->password = password_hash($confNewPassword, PASSWORD_DEFAULT);
             $user->save();
 
             $this->flash->addMessage('success', "Les modifications apportées à votre compte ont été enregistrées !");
