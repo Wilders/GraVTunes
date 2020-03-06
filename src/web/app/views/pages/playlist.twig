@@ -48,15 +48,40 @@
                             <td>
                                 <div class="dropdown">
                                     <a  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <img src="{{ base_url() }}/public/assets/media/images/menulist.png" >
+                                        <i class="fas fa-bars fa-2x"></i>
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <button type="button" class="dropdown-item" data-toggle="modal" data-target="#">Modifier</button>
-                                        <button type="button" class="dropdown-item" data-toggle="modal" data-target="#">Supprimer</button>
+                                        <a href="{{ path_for('formUpdateTracks', {id: playlist.id}) }}">
+                                            <button type="button" class="dropdown-item">Modifier</button>
+                                        </a>
+                                        <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteTrackModal">Supprimer</button>
                                     </div>
                                 </div>
                             </td>
                         </tr>
+
+                        <div class="modal fade" id="deleteTrackModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <form method="POST" action="{{ path_for("deletePlaylist", {id: playlist.id}) }}" id="deleteTrackForm" >
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Êtes-vous sûr de supprimer cette playliste ?</h5>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+
+                                        {{ csrf() | raw }}
+
+                                        <div class="modal-footer">
+                                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Fermer</button>
+                                            <button class="btn btn-primary" type="submit">Supprimer</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
                     {% endfor %}
                     </tbody>
                 </table>

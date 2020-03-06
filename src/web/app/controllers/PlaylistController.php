@@ -69,6 +69,25 @@ class PlaylistController extends Controller {
         return $response;
     }
 
+    public function delPlay(Request $request, Response $response, array $args) : Response {
+        try{
+            $id = filter_var($args['id'], FILTER_SANITIZE_NUMBER_INT);
+
+            $play = Playlist::where(["id" => $id, "user_id" => Auth::user()->id])->firstOrFail();
+            //$file = File::where('id','=',$play->file_id)->firstOrFail();
+
+            $play->delete();
+            //$file->delete();
+
+            $this->flash->addMessage('success',"Vous venez de supprimer ".$play->nom.".");
+            $response = $response->withRedirect($this->router->pathFor("appPlaylist"));
+        }catch (ModelNotFoundException $e){
+            $this->flash->addMessage('error', $e->getMessage());
+            $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
+        }
+        return $response;
+    }
+
 
 }
 

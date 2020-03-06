@@ -159,6 +159,7 @@ $app->group('', function() {
     $this->get('/playlists', PlaylistController::class . ':playlists')->setName("appPlaylist");
     $this->get('/playlists/add', PlaylistController::class . ':newPlaylist')->setName("addPlaylist");
     $this->post('/addPlaylist', PlaylistController::class . ':addPlaylist')->setName("importPlaylist");
+    $this->post('/playlists/{id:[0-9]+}', PlaylistController::class . ':delPlay')->setName("deletePlaylist");
 
     /**
      * Vinyles
