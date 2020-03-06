@@ -69,6 +69,7 @@ class TracksController extends Controller{
             $fichier->path = $filename;
             $fichier->hash = $this->hashage($filename);
             $fichier->duree = $trackInfo->get('duration');
+            $fichier->size = $file["file"]->getSize();
 
             $track->id = Track::count()+1;
             $track->nom = $titre;
