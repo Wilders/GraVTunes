@@ -15,9 +15,8 @@ use Slim\Http\Response;
  */
 class PlaylistController extends Controller {
 
-    public function showPlaylist(Request $request, Response $response, array $args) : Response{
+    public function showPlaylist(Request $request, Response $response){
         $this->view->render($response, 'pages/playlist.twig');
-        return $response;
     }
 
     public function newPlaylist(Request $request, Response $response){
