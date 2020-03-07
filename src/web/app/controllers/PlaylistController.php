@@ -2,16 +2,10 @@
 
 namespace app\controllers;
 
-use app\exceptions\PlaylistException;
 use app\helpers\Auth;
-use app\models\Track;
 use app\models\Playlist;
-use app\models\File;
 
-use Carbon\Traits\Date;
-use FFMpeg\FFProbe;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Psr\Http\Message\UploadedFileInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -23,6 +17,11 @@ class PlaylistController extends Controller {
 
     public function showPlaylist(Request $request, Response $response, array $args) : Response{
         $this->view->render($response, 'pages/playlist.twig');
+        return $response;
+    }
+
+    public function newPlaylist(Request $request, Response $response, array $args) : Response{
+        $this->view->render($response, 'pages/addPlaylist.twig');
         return $response;
     }
 
@@ -39,11 +38,6 @@ class PlaylistController extends Controller {
             $this->flash->addMessage('error', $e->getMessage());
             $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
         }
-    }
-
-    public function newPlaylist(Request $request, Response $response, array $args) : Response{
-        $this->view->render($response, 'pages/addPlaylist.twig');
-        return $response;
     }
 
     public function addPlaylist(Request $request, Response $response, array $args) : Response {
@@ -74,10 +68,8 @@ class PlaylistController extends Controller {
             $id = filter_var($args['id'], FILTER_SANITIZE_NUMBER_INT);
 
             $play = Playlist::where(["id" => $id, "user_id" => Auth::user()->id])->firstOrFail();
-            //$file = File::where('id','=',$play->file_id)->firstOrFail();
 
             $play->delete();
-            //$file->delete();
 
             $this->flash->addMessage('success',"Vous venez de supprimer ".$play->nom.".");
             $response = $response->withRedirect($this->router->pathFor("appPlaylist"));
