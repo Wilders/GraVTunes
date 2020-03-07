@@ -79,7 +79,45 @@ class PlaylistController extends Controller {
         return $response;
     }
 
+    public function modifyPlay(Request $request, Response $response, array $args) :Response{
+        try {
+            $id = filter_var($args['id'], FILTER_SANITIZE_NUMBER_INT);
 
+            $play = Playlist::where(["id" => $id, "user_id" => Auth::user()->id])->firstOrFail();
+
+            $this->view->render($response, 'pages/updatePlaylist.twig',[
+                "play" => $play,
+                "id" => $args['id']
+            ]);
+            return $response;
+        }catch (ModelNotFoundException $e){
+            $this->flash->addMessage('error', $e->getMessage());
+            $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
+        }
+    }
+
+    public function updatePlay(Request $request, Response $response, array $args) : Response {
+        try{
+            $id = filter_var($args['id'], FILTER_SANITIZE_NUMBER_INT);
+            $name = filter_var($request->getParsedBodyParam("name"),FILTER_SANITIZE_SPECIAL_CHARS);
+            $descr = filter_var($request->getParsedBodyParam("descr"), FILTER_SANITIZE_SPECIAL_CHARS);
+
+            $play = Playlist::where(["id" => $id, "user_id" => Auth::user()->id])->firstOrFail();
+
+            $play->nom = $name;
+            $play->description = $descr;
+
+            $play->save();
+
+            $this->flash->addMessage('success',"Vous venez de modifier les informations de votre playliste.");
+            $response = $response->withRedirect($this->router->pathFor("appPlaylist"));
+        }catch(ModelNotFoundException $e){
+            $this->flash->addMessage('error', $e->getMessage());
+            $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
+        }
+
+        return $response;
+    }
 }
 
 

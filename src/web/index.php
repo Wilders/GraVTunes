@@ -160,6 +160,8 @@ $app->group('', function() {
     $this->get('/playlists/add', PlaylistController::class . ':newPlaylist')->setName("addPlaylist");
     $this->post('/addPlaylist', PlaylistController::class . ':addPlaylist')->setName("importPlaylist");
     $this->post('/playlists/{id:[0-9]+}', PlaylistController::class . ':delPlay')->setName("deletePlaylist");
+    $this->get('/playlists/update/{id:[0-9]+}', PlaylistController::class . ':modifyPlay')->setName("formUpdatePlay");
+    $this->post('/playlists/update/{id:[0-9]+}', PlaylistController::class . ':updatePlay')->setName("updatePlay");
 
     /**
      * Vinyles
