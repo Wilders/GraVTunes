@@ -20,9 +20,8 @@ class PlaylistController extends Controller {
         return $response;
     }
 
-    public function newPlaylist(Request $request, Response $response, array $args) : Response{
+    public function newPlaylist(Request $request, Response $response){
         $this->view->render($response, 'pages/addPlaylist.twig');
-        return $response;
     }
 
     public function playlists(Request $request, Response $response, array $args) : Response {
