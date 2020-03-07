@@ -31,7 +31,8 @@ class AppController extends Controller {
             "tracks" => Auth::user()->tracks->count(),
             "orders" => Auth::user()->commandes->count(),
             "tickets" => Auth::user()->tickets->count(),
-            "diskSpace" => array_sum($files)
+            "diskSpace" => array_sum($files),
+            "arroundDiskSpace" => round(array_sum($files)/(1024*1024),2)
         ];
         $this->view->render($response, 'pages/home.twig', [
             "stats" => $stats,
