@@ -19,7 +19,7 @@ class PlaylistController extends Controller {
         $this->view->render($response, 'pages/playlist.twig');
     }
 
-    public function newPlaylist(Request $request, Response $response){
+    public function newPlay(Request $request, Response $response){
         $this->view->render($response, 'pages/addPlaylist.twig');
     }
 
@@ -38,7 +38,7 @@ class PlaylistController extends Controller {
         }
     }
 
-    public function addPlaylist(Request $request, Response $response, array $args) : Response {
+    public function importPlay(Request $request, Response $response, array $args) : Response {
         try{
             $titre = filter_var($request->getParsedBodyParam('name'), FILTER_SANITIZE_SPECIAL_CHARS);
             $descr = filter_var($request->getParsedBodyParam('descr'), FILTER_SANITIZE_SPECIAL_CHARS);
@@ -78,7 +78,7 @@ class PlaylistController extends Controller {
         return $response;
     }
 
-    public function modifyPlay(Request $request, Response $response, array $args) :Response{
+    public function formUpdatePlay(Request $request, Response $response, array $args) :Response{
         try {
             $id = filter_var($args['id'], FILTER_SANITIZE_NUMBER_INT);
 

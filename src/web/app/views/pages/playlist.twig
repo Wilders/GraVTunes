@@ -14,7 +14,7 @@
 {% block appcontent %}
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <a class="btn btn-outline-primary float-right" href="{{ path_for("addPlaylist") }}">Ajouter une playlist</a>
+            <a class="btn btn-outline-primary float-right" href="{{ path_for("newPlaylist") }}">Ajouter une playlist</a>
             <h6 class="m-0 font-weight-bold text-primary">Mes Playlists</h6>
         </div>
         <div class="card-body">
@@ -62,7 +62,7 @@
 
                         <div class="modal fade" id="deleteTrackModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
-                                <form method="POST" action="{{ path_for("deletePlaylist", {id: playlist.id}) }}" id="deleteTrackForm" >
+                                <form method="POST" action="{{ path_for("deletePlay", {id: playlist.id}) }}" id="deleteTrackForm" >
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Êtes-vous sûr de supprimer cette playliste ?</h5>

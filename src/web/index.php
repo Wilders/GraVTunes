@@ -157,10 +157,16 @@ $app->group('', function() {
      * Playlists
      */
     $this->get('/playlists', PlaylistController::class . ':playlists')->setName("appPlaylist");
-    $this->get('/playlists/add', PlaylistController::class . ':newPlaylist')->setName("addPlaylist");
-    $this->post('/addPlaylist', PlaylistController::class . ':addPlaylist')->setName("importPlaylist");
-    $this->post('/playlists/{id:[0-9]+}', PlaylistController::class . ':delPlay')->setName("deletePlaylist");
-    $this->get('/playlists/update/{id:[0-9]+}', PlaylistController::class . ':modifyPlay')->setName("formUpdatePlay");
+
+    //Ajouter une playliste
+    $this->get('/playlists/addPlaylist', PlaylistController::class . ':newPlay')->setName("newPlay");
+    $this->post('/addPlaylist', PlaylistController::class . ':importPlay')->setName("importPlay");
+
+    //Supprimer une playliste
+    $this->post('/playlists/{id:[0-9]+}', PlaylistController::class . ':delPlay')->setName("deletePlay");
+
+    //Modifier une playliste
+    $this->get('/playlists/update/{id:[0-9]+}', PlaylistController::class . ':formUpdatePlay')->setName("formUpdatePlay");
     $this->post('/playlists/update/{id:[0-9]+}', PlaylistController::class . ':updatePlay')->setName("updatePlay");
 
     /**
