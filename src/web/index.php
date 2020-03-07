@@ -169,6 +169,9 @@ $app->group('', function() {
     $this->get('/playlists/update/{id:[0-9]+}', PlaylistController::class . ':formUpdatePlay')->setName("formUpdatePlay");
     $this->post('/playlists/update/{id:[0-9]+}', PlaylistController::class . ':updatePlay')->setName("updatePlay");
 
+    //Ajouter une track à une playliste
+    $this->get('/playlists/{id:[0-9]+}/addTrack', PlaylistController::class . ':formNewTrack')->setName("formNewTracks");
+
     /**
      * Vinyles
      */

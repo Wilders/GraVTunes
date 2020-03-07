@@ -117,6 +117,23 @@ class PlaylistController extends Controller {
 
         return $response;
     }
+
+    /*public function formNewTracks(Request $request, Response $response, array $args) :Response{
+        try {
+            $id = filter_var($args['id'], FILTER_SANITIZE_NUMBER_INT);
+
+            $play = Playlist::where(["id" => $id, "user_id" => Auth::user()->id])->firstOrFail();
+
+            $this->view->render($response, 'pages/updatePlaylist.twig',[
+                "play" => $play,
+                "id" => $args['id']
+            ]);
+            return $response;
+        }catch (ModelNotFoundException $e){
+            $this->flash->addMessage('error', $e->getMessage());
+            $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
+        }
+    }*/
 }
 
 
