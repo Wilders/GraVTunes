@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\helpers\Auth;
 use app\models\Playlist;
+use app\models\Track;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Slim\Http\Request;
@@ -85,7 +86,6 @@ class PlaylistController extends Controller {
             $play = Playlist::where(["id" => $id, "user_id" => Auth::user()->id])->firstOrFail();
 
             $this->view->render($response, 'pages/updatePlaylist.twig',[
-                "play" => $play,
                 "id" => $args['id']
             ]);
             return $response;
@@ -118,14 +118,17 @@ class PlaylistController extends Controller {
         return $response;
     }
 
-    /*public function formNewTracks(Request $request, Response $response, array $args) :Response{
+
+    public function formNewTrack(Request $request, Response $response, array $args) :Response{
         try {
+            $tracks= Track::where (["user_id" => Auth::user()->id])->get();
+
             $id = filter_var($args['id'], FILTER_SANITIZE_NUMBER_INT);
 
             $play = Playlist::where(["id" => $id, "user_id" => Auth::user()->id])->firstOrFail();
 
-            $this->view->render($response, 'pages/updatePlaylist.twig',[
-                "play" => $play,
+            $this->view->render($response, 'pages/addTrackPlaylist.twig',[
+                "tracks" => $tracks,
                 "id" => $args['id']
             ]);
             return $response;
@@ -133,7 +136,32 @@ class PlaylistController extends Controller {
             $this->flash->addMessage('error', $e->getMessage());
             $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
         }
-    }*/
+    }
+
+    public function importTrackPlay(Request $request, Response $response, array $args) : Response {
+        try{
+            $titre = filter_var($request->getParsedBodyParam('title'), FILTER_SANITIZE_SPECIAL_CHARS);
+            $descr = filter_var($request->getParsedBodyParam('descr'), FILTER_SANITIZE_SPECIAL_CHARS);
+
+
+            $track->id = Track::count()+1;
+            $track->nom = $titre;
+            $track->description = $descr;
+            $track->file_id = File::count() + 1;
+            $track->user_id = Auth::user()->id;
+
+            $track->save();
+            $fichier->save();
+
+            $this->flash->addMessage('success',"Félicitations, votre fichier a bien été ajouté à votre playliste. Vous pouvez le consulter depuis votre playliste.");
+            $response = $response->withRedirect($this->router->pathFor("appPlaylist"));
+        }catch(ModelNotFoundException $e){
+            $this->flash->addMessage('error', $e->getMessage());
+            $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
+        }
+        return $response;
+    }
+
 }
 
 
