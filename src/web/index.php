@@ -161,7 +161,7 @@ $app->group('', function() {
 
     //Ajouter une playliste
     $this->get('/playlists/addPlaylist', PlaylistController::class . ':newPlay')->setName("newPlay");
-    $this->post('/addPlaylist', PlaylistController::class . ':importPlay')->setName("importPlay");
+    $this->post('/playlists', PlaylistController::class . ':importPlay')->setName("importPlay");
 
     //Supprimer une playliste
     $this->post('/playlists/{id:[0-9]+}', PlaylistController::class . ':delPlay')->setName("deletePlay");
@@ -171,7 +171,8 @@ $app->group('', function() {
     $this->post('/playlists/update/{id:[0-9]+}', PlaylistController::class . ':updatePlay')->setName("updatePlay");
 
     //Ajouter une track à une playliste
-    $this->get('/playlists/{id:[0-9]+}/addTrack', PlaylistController::class . ':formNewTrack')->setName("formNewTracks");
+    $this->get('/playlists/{id:[0-9]+}/addTrack', PlaylistController::class . ':formNewTrack')->setName("formNewTrack");
+    $this->post('/playlists/{id:[0-9]+}/newTrack', PlaylistController::class . ':importTrackPlay')->setName("importTrackPlay");
 
     /**
      * Vinyles
