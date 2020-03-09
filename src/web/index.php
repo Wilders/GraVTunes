@@ -2,6 +2,7 @@
 
 use app\controllers\AccountController;
 use app\controllers\AppController;
+use app\controllers\MessageController;
 use app\controllers\OrderController;
 use app\helpers\Auth;
 use app\controllers\CartController;
@@ -188,6 +189,13 @@ $app->group('', function() {
 
     $this->post('/closeTicket/{id:[0-9]+}', TicketController::class . ':closeTicket')->setName("closeTicket");
     $this->post('/createTicket', TicketController::class . ':createTicket')->setName("createTicket");
+
+    /**
+     * Contact support
+     */
+
+    $this->get('/ticket/{id:[0-9]+}', MessageController::class . ':messages')->setName("contact");
+
 })->add(new AuthMiddleware($container));
 
 $app->run();
