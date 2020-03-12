@@ -177,8 +177,9 @@ $app->group('', function() {
     /**
      * Vinyles
      */
-    $this->get('/vinyles', VinyleController::class . ':vinyles')->setName("appVinyle");
-    $this->get('/vinyles/add', VinyleController::class . ':addVinyle')->setName("addVinyle");
+    $this->get('/vinyles', VinyleController::class . ':vinyles')->setName("appVinyles");
+    $this->get('/vinyles/add', VinyleController::class . ':showAddVinyle')->setName("showAddVinyle");
+    $this->post('/vinyles/add', VinyleController::class . ':addVinyle')->setName("addVinyle");
 
     /**
      * Tickets

@@ -18,35 +18,39 @@
             <h6 class="m-0 font-weight-bold text-primary">Créer un vinyle personnalisé</h6>
         </div>
         <div class="card-body">
-            <div class="form-row">
-                <div class="form-group col-md-4">
-                    <label for="name">Nom du vinyle *</label>
-                    <input type="text" name="name" id="name" class="form-control" value="{{ oldData.name }}">
-                </div>
-                <div class="form-group col-md-4">
-                    <label>Couverture</label>
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="cover" name="cover">
-                        <label for="cover" class="custom-file-label" data-browse="Parcourir">Choisir un fichier...</label>
+            <form method="POST" action="{{ path_for("addVinyle") }}" enctype="multipart/form-data">
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="name">Nom du vinyle *</label>
+                        <input type="text" name="name" id="name" class="form-control" value="{{ oldData.name }}" required autofocus>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>Couverture</label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="cover" name="cover">
+                            <label for="cover" class="custom-file-label" data-browse="Parcourir">Choisir un fichier...</label>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="tracks">Sélection des titres</label>
+                        <select name="tracks[]" class="form-control selectpicker" id="tracks" data-live-search="true" multiple>
+                            {% for track in tracks %}
+                                <option value="{{ track.id }}">{{ track.nom }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                 </div>
-                <div class="form-group col-md-4">
-                    <label for="tracks">Sélection des titres</label>
-                    <select class="form-control selectpicker" id="tracks" data-live-search="true" multiple>
-                        {% for track in tracks %}
-                            <option>{{ track.nom }}</option>
-                        {% endfor %}
-                    </select>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea class="form-control" id="description" rows="3" name="description">{{ oldData.description }}</textarea>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="description">Description</label>
-                <textarea class="form-control" id="description" rows="3" name="description">{{ oldData.description }}</textarea>
-            </div>
 
+                {{ csrf() | raw }}
 
-            {{ csrf() | raw }}
-
+                <hr>
+                Les champs marqués d'un astérisque sont obligatoires.
+                <button type="submit" class="btn btn-lg btn-primary float-right">Envoyer</button>
+            </form>
         </div>
     </div>
 {% endblock %}

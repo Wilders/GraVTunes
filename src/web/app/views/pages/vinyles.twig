@@ -14,52 +14,43 @@
 {% block appcontent %}
     <div class="card shadow mb-4">
         <div class="card-header py-3">
+            <a class="btn btn-outline-primary float-right" href="{{ path_for("addVinyle") }}">Créer un Vinyle</a>
             <h6 class="m-0 font-weight-bold text-primary">Mes Vinyles</h6>
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered" id="dataTable">
                     <thead>
-                    <tr>
-                        <th></th>
-                        <th>Nom</th>
-                        <th>Description</th>
-                        <th>Prix</th>
-                        <th>Date de création</th>
-                        <th></th>
-                    </tr>
+                        <tr>
+                            <th></th>
+                            <th>Nom</th>
+                            <th>Prix</th>
+                            <th></th>
+                        </tr>
                     </thead>
                     <tfoot>
-                    <tr>
-                        <th></th>
-                        <th>Nom</th>
-                        <th>Description</th>
-                        <th>Prix</th>
-                        <th>Date de création</th>
-                        <th></th>
-                    </tr>
+                        <tr>
+                            <th></th>
+                            <th>Nom</th>
+                            <th>Prix</th>
+                            <th></th>
+                        </tr>
                     </tfoot>
                     <tbody>
-                    {% for vinyle in vinyles %}
-                        <tr>
-                            <td class="text-center"><i class="far fa-play-circle fa-3x"></i></td>
-                            <td>{{ vinyle.nom }}</td>
-                            <td>{{ vinyle.description }}</td>
-                            <td>{{ vinyle.prix }}</td>
-                            <td>{{ vinyle.creationDate }}</td>
-                            <td>
-                                <div class="dropdown">
-                                    <a  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <img src="{{ base_url() }}/public/assets/media/images/menulist.png" >
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <button type="button" class="dropdown-item" data-toggle="modal" data-target="#">Modifier</button>
-                                        <button type="button" class="dropdown-item" data-toggle="modal" data-target="#">Supprimer</button>
+                        {% for vinyle in vinyles %}
+                            <tr>
+                                <td class="text-center"><img src="{{ base_url() }}/uploads/covers/{{ vinyle.cover }}" alt="Couverture du vinyle {{ vinyle.nom }}" class="img-fluid img-thumbnail" style="width: 15vw; height: auto;"></td>
+                                <td>{{ vinyle.nom }}</td>
+                                <td>{{ vinyle.prix }} €</td>
+                                <td class="text-center">
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-success"><i class="fas fa-eye"></i></button>
+                                        <button type="button" class="btn btn-primary"><i class="fas fa-edit"></i></button>
+                                        <button type="button" class="btn btn-danger"><i class="fas fa-times"></i></button>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
-                    {% endfor %}
+                                </td>
+                            </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
