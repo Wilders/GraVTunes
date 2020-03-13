@@ -23,7 +23,12 @@ class Auth {
     }
 
     public static function user() {
-        return self::check() ? $_SESSION['user'] : null;
+        $res = null;
+        if(self::check()) {
+            $_SESSION['user']->refresh();
+            $res = $_SESSION['user'];
+        }
+        return $res;
     }
 
     public static function check() {
