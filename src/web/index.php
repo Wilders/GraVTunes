@@ -33,7 +33,7 @@ session_start();
 
 $env = Dotenv\Dotenv::createImmutable(__DIR__);
 $env->load();
-$env->required(['DB_DRIVER', 'DB_HOST', 'DB_NAME', 'DB_USER', 'DB_PWD', 'DB_CHARSET', 'DB_COLLATION', 'DB_PREFIX']);
+$env->required(['DB_DRIVER', 'DB_HOST', 'DB_NAME', 'DB_USER', 'DB_PWD', 'DB_CHARSET', 'DB_COLLATION', 'DB_PREFIX', 'BT_ENV', 'BT_MERCHANT_ID', 'BT_PUBLIC_KEY', 'BT_PRIVATE_KEY']);
 
 $db = new DB();
 $db->addConnection([
@@ -49,10 +49,10 @@ $db->addConnection([
 $db->setAsGlobal();
 $db->bootEloquent();
 
-Braintree_Configuration::environment('sandbox');
-Braintree_Configuration::merchantId('ydckbd3x4bg7c7tb');
-Braintree_Configuration::publicKey('bhq4jpp6799jtv8z');
-Braintree_Configuration::privateKey('fb3904f6c49af6f4f1417471db1fa5a9');
+Braintree_Configuration::environment($_ENV['BT_ENV']);
+Braintree_Configuration::merchantId($_ENV['BT_MERCHANT_ID']);
+Braintree_Configuration::publicKey($_ENV['BT_PUBLIC_KEY']);
+Braintree_Configuration::privateKey($_ENV['BT_PRIVATE_KEY']);
 
 $config = [
     'settings' => [
