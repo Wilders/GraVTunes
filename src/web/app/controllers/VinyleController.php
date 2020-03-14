@@ -4,7 +4,6 @@ namespace app\controllers;
 
 use app\exceptions\AuthException;
 use app\helpers\Auth;
-use app\models\Track;
 use app\models\Vinyle;
 use DateTime;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -20,9 +19,9 @@ class VinyleController extends Controller {
     public function vinyle(Request $request, Response $response, array $args): Response {
         try {
             $vinyle = Vinyle::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
-
             $this->view->render($response, 'pages/vinyle.twig', [
-                "vinyle" => $vinyle
+                "vinyle" => $vinyle,
+                "addableTracks" => Auth::user()->tracks->diff($vinyle->tracks)
             ]);
         } catch (ModelNotFoundException $e) {
             $this->flash->addMessage('error', "Ce vinyle n'existe pas.");
@@ -56,8 +55,8 @@ class VinyleController extends Controller {
             $files = $request->getUploadedFiles();
             $tracks = $request->getParsedBodyParam('tracks');
 
-            if (mb_strlen($name, 'utf8') > 75) throw new AuthException("Votre nom ne doit pas dépasser 75 caractères.");
-            if (mb_strlen($description, 'utf8') > 1000) throw new AuthException("Votre description ne doit pas dépasser 1000 caractères.");
+            if (mb_strlen($name, 'utf8') > 75) throw new AuthException("Le nom du vinyle ne doit pas dépasser 75 caractères.");
+            if (mb_strlen($description, 'utf8') > 1000) throw new AuthException("La description du vinyle ne doit pas dépasser 1000 caractères.");
 
             $vinyle = new Vinyle();
             $vinyle->user_id = Auth::user()->id;
@@ -80,13 +79,30 @@ class VinyleController extends Controller {
             }
             $vinyle->save();
 
-            $vinyle->tracks()->saveMany(Track::find($tracks));
+            $vinyle->tracks()->saveMany(Auth::user()->tracks->find($tracks));
 
-            $this->flash->addMessage('success', "Les modifications apportées à votre compte ont été enregistrées !");
-            $response = $response->withRedirect($this->router->pathFor('showVinyles'));
+            $this->flash->addMessage('success', "Votre vinyle a bien été créé!");
+            $response = $response->withRedirect($this->router->pathFor('showVinyle', ['id' => $vinyle->id]));
         } catch (\Exception $e) {
 
         }
+        return $response;
+    }
+
+    public function addTracks(Request $request, Response $response, array $args): Response {
+        try {
+            $vinyle = Vinyle::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
+            $tracks = $request->getParsedBodyParam('tracks');
+
+            $vinyle->tracks()->saveMany(Auth::user()->tracks->find($tracks));
+
+            $this->flash->addMessage('success', "Vos titres on bien été ajoutés");
+            $response = $response->withRedirect($this->router->pathFor('showVinyle', ["id" => $vinyle->id]));
+        } catch (ModelNotFoundException $e) {
+            $this->flash->addMessage('error', "Impossible de trouver ce vinyle.");
+            $response = $response->withRedirect($this->router->pathFor('showVinyles'));
+        }
+
         return $response;
     }
 

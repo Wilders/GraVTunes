@@ -2,13 +2,24 @@
 
 {% block stylesheets %}
     {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/bootstrap-select.min.css">
     <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/datatables.bootstrap.min.css">
 {% endblock %}
 
 {% block scripts %}
     {{ parent() }}
+    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/bootstrap-select_fr_FR.min.js"></script>
     <script type="text/javascript" src="{{ base_url() }}/public/assets/js/dataTables.min.js"></script>
     <script type="text/javascript" src='{{ base_url() }}/public/assets/js/datatables.bootstrap.min.js'></script>
+    <script>
+        $('.selectpicker').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+            console.log(e);
+            console.log(clickedIndex);
+            console.log(isSelected);
+            console.log(previousValue);
+        });
+    </script>
 {% endblock %}
 
 {% block appcontent %}
@@ -53,7 +64,17 @@
     </div>
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <a class="btn btn-sm btn-outline-primary float-right" href="{{ path_for("addVinyle") }}">Ajouter un titre</a>
+            <form action="{{ path_for('addTracksVinyle', {id: vinyle.id}) }}" class="float-right" method="POST">
+                <select name="tracks[]" class="selectpicker" id="tracks" data-live-search="true" title="Ajouter des titres" multiple>
+                    {% for track in addableTracks %}
+                        <option value="{{ track.id }}">{{ track.nom }}</option>
+                    {% endfor %}
+                </select>
+
+                {{ csrf() | raw }}
+
+                <button type="submit" class="ml-2 btn btn-primary">OK</button>
+            </form>
             <h6 class="m-0 font-weight-bold text-primary">Contenu du vinyle</h6>
         </div>
         <div class="card-body">
