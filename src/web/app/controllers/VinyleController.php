@@ -97,4 +97,25 @@ class VinyleController extends Controller {
     public function deleteVinyle() {
 
     }
+
+    /**
+     * @todo: Test si le vinyle est locked ou pas.
+     */
+    public function deleteAttachedTrack(Request $request, Response $response, array $args): Response {
+        try {
+            $vinyle = Vinyle::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
+
+            if(!$vinyle->tracks->contains($args['trackId'])) throw new ModelNotFoundException();
+
+            $vinyle->tracks()->detach($args['trackId']);
+
+            $this->flash->addMessage('success', "Le titre a bien été supprimé du vinyle.");
+            $response = $response->withRedirect($this->router->pathFor('showVinyle', ['id' => $args['id']]));
+        } catch (ModelNotFoundException $e) {
+            $this->flash->addMessage('error', "Impossible de supprimer ce titre pour ce vinyle.");
+            $response = $response->withRedirect($this->router->pathFor('showVinyle', ['id' => $args['id']]));
+        }
+
+        return $response;
+    }
 }
