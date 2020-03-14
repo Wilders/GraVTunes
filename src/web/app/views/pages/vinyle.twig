@@ -1,0 +1,101 @@
+{% extends "layouts/app-layout.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/datatables.bootstrap.min.css">
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/dataTables.min.js"></script>
+    <script type="text/javascript" src='{{ base_url() }}/public/assets/js/datatables.bootstrap.min.js'></script>
+{% endblock %}
+
+{% block appcontent %}
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Vinyle #{{ vinyle.id }} - {{ vinyle.nom }}</h1>
+    </div>
+
+    {% include "layouts/flash.twig" %}
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <div class="btn-group btn-group-sm float-right" role="group">
+                <button type="button" class="btn btn-primary">Modifier <i class="fas fa-edit"></i></button>
+                <button type="button" class="btn btn-danger">Supprimer <i class="fas fa-times"></i></button>
+            </div>
+            <h6 class="m-0 font-weight-bold text-primary">Informations générales</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-2">
+                    <img src="{{ base_url() }}/uploads/covers/{{ vinyle.cover }}" alt="" class="img-fluid img-thumbnail">
+                </div>
+                <div class="col-10">
+                    <div class="row">
+                        <h1>{{ vinyle.nom }}</h1>
+                    </div>
+                    <div class="row">
+                        <h3>{{ vinyle.description }}</h3>
+                    </div>
+                    <div class="row">
+                        <p>{{ vinyle.tracks.count }} titres</p>
+                    </div>
+                    <div class="row">
+                        <p>Durée totale de {% set duree = 0 %}{% for track in vinyle.tracks %}{% set duree = duree + track.file.duree %}{% endfor %}{{ duree }} secondes</p>
+                    </div>
+                    <div class="row">
+                        Prix: {{ vinyle.prix }} €
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <a class="btn btn-sm btn-outline-primary float-right" href="{{ path_for("addVinyle") }}">Ajouter un titre</a>
+            <h6 class="m-0 font-weight-bold text-primary">Contenu du vinyle</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nom</th>
+                        <th>Description</th>
+                        <th>Duree</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <th>#</th>
+                        <th>Nom</th>
+                        <th>Description</th>
+                        <th>Duree</th>
+                        <th>Action</th>
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                    {% set i = 1 %}
+                    {% for track in vinyle.tracks %}
+                        <tr>
+                            <td>{{ i }} {% set i = i + 1 %}</td>
+                            <td>{{ track.nom }}</td>
+                            <td>{{ track.description }}</td>
+                            <td>{{ track.file.duree }}</td>
+                            <td class="text-center">
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-primary"><i class="fas fa-edit"></i></button>
+                                    <button type="button" class="btn btn-danger"><i class="fas fa-times"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

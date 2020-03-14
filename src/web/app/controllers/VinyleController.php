@@ -7,6 +7,7 @@ use app\helpers\Auth;
 use app\models\Track;
 use app\models\Vinyle;
 use DateTime;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -17,7 +18,16 @@ use Slim\Http\Response;
 class VinyleController extends Controller {
 
     public function vinyle(Request $request, Response $response, array $args): Response {
-        $this->view->render($response, 'pages/vinyle.twig');
+        try {
+            $vinyle = Vinyle::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
+
+            $this->view->render($response, 'pages/vinyle.twig', [
+                "vinyle" => $vinyle
+            ]);
+        } catch (ModelNotFoundException $e) {
+            $this->flash->addMessage('error', "Ce vinyle n'existe pas.");
+            $response = $response->withRedirect($this->router->pathFor('appHome'));
+        }
         return $response;
     }
 

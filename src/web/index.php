@@ -177,8 +177,9 @@ $app->group('', function() {
     /**
      * Vinyles
      */
-    $this->get('/vinyles', VinyleController::class . ':vinyles')->setName("appVinyles");
+    $this->get('/vinyles', VinyleController::class . ':vinyles')->setName("showVinyles");
     $this->get('/vinyles/add', VinyleController::class . ':showAddVinyle')->setName("showAddVinyle");
+    $this->get('/vinyle/{id:[0-9]+}', VinyleController::class . ':vinyle')->setName("showVinyle");
     $this->post('/vinyles/add', VinyleController::class . ':addVinyle')->setName("addVinyle");
 
     /**
