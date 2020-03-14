@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\exceptions\AuthException;
 use app\helpers\Auth;
+use app\helpers\Basket;
 use app\models\Vinyle;
 use DateTime;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -117,6 +118,7 @@ class VinyleController extends Controller {
         try {
             $vinyle = Vinyle::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
 
+            Basket::remove($vinyle);
             $vinyle->tracks()->detach();
             $vinyle->delete();
 
