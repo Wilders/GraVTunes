@@ -14,7 +14,7 @@
 {% block appcontent %}
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <a class="btn btn-sm btn-outline-primary float-right" href="{{ path_for("addVinyle") }}">Créer un Vinyle</a>
+            <a class="btn btn-sm btn-outline-primary float-right" href="{{ path_for('addVinyle') }}">Créer un Vinyle</a>
             <h6 class="m-0 font-weight-bold text-primary">Mes Vinyles</h6>
         </div>
         <div class="card-body">
@@ -44,8 +44,8 @@
                                 <td>{{ vinyle.prix }} €</td>
                                 <td class="text-center">
                                     <div class="btn-group" role="group">
-                                        <a href="{{ path_for("showVinyle", {"id": vinyle.id}) }}" class="btn btn-success"><i class="fas fa-eye"></i></a>
-                                        <a href="#" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                                        <a href="{{ path_for('showVinyle', {id: vinyle.id}) }}" class="btn btn-success"><i class="fas fa-eye"></i></a>
+                                        <a href="{{ path_for('addCart', {id: vinyle.id}) }}" class="btn btn-primary"><i class="fas fa-cart-plus"></i></a>
                                         <a href="{{ path_for('deleteVinyle', {id: vinyle.id}) }}" class="btn btn-danger"><i class="fas fa-times"></i></a>
                                     </div>
                                 </td>
