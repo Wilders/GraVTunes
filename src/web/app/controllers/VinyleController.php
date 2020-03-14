@@ -83,7 +83,7 @@ class VinyleController extends Controller {
             $vinyle->tracks()->saveMany(Track::find($tracks));
 
             $this->flash->addMessage('success', "Les modifications apportées à votre compte ont été enregistrées !");
-            $response = $response->withRedirect($this->router->pathFor('appVinyles'));
+            $response = $response->withRedirect($this->router->pathFor('showVinyles'));
         } catch (\Exception $e) {
 
         }
@@ -94,8 +94,24 @@ class VinyleController extends Controller {
 
     }
 
-    public function deleteVinyle() {
+    /**
+     * @todo: Test si le vinyle est locked ou pas.
+     */
+    public function deleteVinyle(Request $request, Response $response, array $args): Response {
+        try {
+            $vinyle = Vinyle::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
 
+            $vinyle->tracks()->detach();
+            $vinyle->delete();
+
+            $this->flash->addMessage('success', "Le vinyle $vinyle->nom a bien été supprimé.");
+            $response = $response->withRedirect($this->router->pathFor('showVinyles'));
+        } catch (ModelNotFoundException $e) {
+            $this->flash->addMessage('error', "Impossible de supprimer ce vinyle.");
+            $response = $response->withRedirect($this->router->pathFor('showVinyle', ['id' => $args['id']]));
+        }
+
+        return $response;
     }
 
     /**

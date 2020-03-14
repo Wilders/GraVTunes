@@ -22,7 +22,7 @@
         <div class="card-header py-3">
             <div class="btn-group btn-group-sm float-right" role="group">
                 <button type="button" class="btn btn-primary">Modifier <i class="fas fa-edit"></i></button>
-                <button type="button" class="btn btn-danger">Supprimer <i class="fas fa-times"></i></button>
+                <a href="{{ path_for('deleteVinyle', {id: vinyle.id}) }}" class="btn btn-danger">Supprimer <i class="fas fa-times"></i></a>
             </div>
             <h6 class="m-0 font-weight-bold text-primary">Informations générales</h6>
         </div>

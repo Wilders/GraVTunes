@@ -180,6 +180,7 @@ $app->group('', function() {
     $this->get('/vinyles', VinyleController::class . ':vinyles')->setName("showVinyles");
     $this->get('/vinyles/add', VinyleController::class . ':showAddVinyle')->setName("showAddVinyle");
     $this->get('/vinyle/{id:[0-9]+}', VinyleController::class . ':vinyle')->setName("showVinyle");
+    $this->get('/vinyle/{id:[0-9]+}/delete', VinyleController::class . ':deleteVinyle')->setName("deleteVinyle");
     $this->get('/vinyle/{id:[0-9]+}/delete/{trackId:[0-9]+}', VinyleController::class . ':deleteAttachedTrack')->setName('deleteTrackVinyle');
     $this->post('/vinyles/add', VinyleController::class . ':addVinyle')->setName("addVinyle");
 
