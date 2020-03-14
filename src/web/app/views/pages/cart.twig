@@ -7,6 +7,7 @@
 
 {% block scripts %}
     {{ parent() }}
+    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/bootstrap-input-spinner.min.js"></script>
     <script type="text/javascript" src="{{ base_url() }}/public/assets/js/dataTables.min.js"></script>
     <script type="text/javascript" src='{{ base_url() }}/public/assets/js/datatables.bootstrap.min.js'></script>
 {% endblock %}
@@ -53,7 +54,7 @@
                             <tbody>
                             {% for item in basket.all %}
                                 <tr>
-                                    <td><a href="#" target="_blank">{{ item.nom }}</a></td>
+                                    <td><a href="{{ path_for('showVinyle', {id: item.id}) }}">{{ item.nom }}</a></td>
                                     <td>{{ item.prix | number_format(2) }} €</td>
                                     <td>
                                         <form action="{{ path_for("updateCart", {id: item.id}) }}" method="POST" class="form-inline">
