@@ -1,0 +1,52 @@
+{% extends "layouts/app-layout.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/datatables.bootstrap.min.css">
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/dataTables.min.js"></script>
+    <script type="text/javascript" src='{{ base_url() }}/public/assets/js/datatables.bootstrap.min.js'></script>
+{% endblock %}
+
+{% block appcontent %}
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Mes Commandes</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable">
+                    <thead>
+                    <tr>
+                        <th>Référence</th>
+                        <th>Date</th>
+                        <th>Total</th>
+                        <th>Statut</th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <th>Référence</th>
+                        <th>Date</th>
+                        <th>Total</th>
+                        <th>Statut</th>
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                    {% for order in orders %}
+                        <tr>
+                            <td>#{{ order.id }}</td>
+                            <td>{{ order.creationDate }}</td>
+                            <td>{{ order.total }} €</td>
+                            <td>{{ order.statut }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

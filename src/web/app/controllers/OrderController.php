@@ -29,6 +29,15 @@ class OrderController extends Controller {
         return $response;
     }
 
+    public function orders(Request $request, Response $response, array $args): Response {
+        $orders = Auth::user()->commandes;
+
+        $this->view->render($response, 'pages/orders.twig', [
+            "orders" => $orders
+        ]);
+        return $response;
+    }
+
     public function createOrder(Request $request, Response $response, array $args): Response {
         try {
             if(Basket::count() === 0) throw new Exception("Votre panier est vide.");

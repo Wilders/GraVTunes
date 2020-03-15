@@ -141,6 +141,8 @@ $app->group('', function() {
      * Order
      */
     $this->get('/order/confirm', OrderController::class . ':showOrder')->setName("showAddOrder");
+    $this->get('/orders', OrderController::class . ':orders')->setName("showOrders");
+    $this->get('/order/{id:[0-9]+}', OrderController::class . ':order')->setName("showOrder");
     $this->post('/order/place', OrderController::class . ':createOrder')->setName("addOrder");
 
     /**
@@ -179,7 +181,6 @@ $app->group('', function() {
      */
     $this->get('/vinyles', VinyleController::class . ':vinyles')->setName("showVinyles");
     $this->get('/vinyles/add', VinyleController::class . ':showAddVinyle')->setName("showAddVinyle");
-
     $this->get('/vinyle/{id:[0-9]+}', VinyleController::class . ':vinyle')->setName("showVinyle");
     $this->get('/vinyle/{id:[0-9]+}/delete', VinyleController::class . ':deleteVinyle')->setName("deleteVinyle");
     $this->get('/vinyle/{id:[0-9]+}/delete/{trackId:[0-9]+}', VinyleController::class . ':deleteAttachedTrack')->setName('deleteTrackVinyle');
