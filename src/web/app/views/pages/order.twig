@@ -27,10 +27,22 @@
             <div class="pb-3 mb-sm-4">
                 <div class="row mb-3">
                     <div class="col-sm-4 mb-2">
-                        <div class="bg-secondary p-4 text-dark text-center"><span class="font-weight-semibold mr-2"><b>Total:</b></span>{{ order.total + 5 }} €</div>
+                        <div class="bg-secondary p-4 text-dark text-center"><span class="font-weight-semibold mr-2"><b>Total:</b></span>{{ order.total }} €</div>
                     </div>
                     <div class="col-sm-4 mb-2">
-                        <div class="bg-secondary p-4 text-dark text-center"><span class="font-weight-semibold mr-2"><b>Statut:</b></span>{{ order.statut }}</div>
+                        <div class="bg-secondary p-4 text-dark text-center"><span class="font-weight-semibold mr-2"><b>Statut:</b></span>
+                            {% if order.statut is same as(1) %}
+                                Commande reçue
+                            {% elseif order.statut is same as(2) %}
+                                Commande en préparation
+                            {% elseif order.statut is same as(3)  %}
+                                Contrôle qualité
+                            {% elseif order.statut is same as(4) %}
+                                Commande expédiée
+                            {% elseif order.statut is same as(5) %}
+                                Commande livrée
+                            {% endif %}
+                        </div>
                     </div>
                     <div class="col-sm-4 mb-2">
                         <div class="bg-secondary p-4 text-dark text-center"><span class="font-weight-semibold mr-2"><b>Date de commande:</b></span>{{ order.creationDate | date("d/m/Y") }}</div>
@@ -39,32 +51,100 @@
                 <div class="steps">
                     <div class="steps-header">
                         <div class="progress">
-                            <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar" role="progressbar" style="width:{% if order.statut is same as(5) %} 100% {% else %} {{ ((order.statut / 5) * 100) - 10 }}% {% endif %}" aria-valuenow="{{ order.statut * 10 }}" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
                     <div class="steps-body">
-                        <div class="step step-completed">
-                            <span class="step-indicator"><i class="fas fa-check"></i></span>
-                            <span class="step-icon"><i class="far fa-2x fa-check-circle"></i></span>
-                            Commande reçue
-                        </div>
-                        <div class="step step-completed">
-                            <span class="step-indicator"><i class="fas fa-check"></i></span>
-                            <span class="step-icon"><i class="fas fa-2x fa-cog"></i></span>
-                            Commande en préparation
-                        </div>
-                        <div class="step step-active">
-                            <span class="step-icon"><i class="fas fa-2x fa-award"></i></span>
-                            Contrôle qualité
-                        </div>
-                        <div class="step">
-                            <span class="step-icon"><i class="fas fa-2x fa-truck"></i></span>
-                            Commande expédiée
-                        </div>
-                        <div class="step">
-                            <span class="step-icon"><i class="fas fa-2x fa-home"></i></span>
-                            Commande livrée
-                        </div>
+                        {% if order.statut > 1 %}
+                            <div class="step step-completed">
+                                <span class="step-indicator"><i class="fas fa-check"></i></span>
+                                <span class="step-icon"><i class="far fa-2x fa-check-circle"></i></span>
+                                Commande reçue
+                            </div>
+                        {% elseif order.statut is same as(1) %}
+                            <div class="step step-completed step-active">
+                                <span class="step-indicator"><i class="fas fa-check"></i></span>
+                                <span class="step-icon"><i class="far fa-2x fa-check-circle"></i></span>
+                                Commande reçue
+                            </div>
+                        {% else %}
+                            <div class="step">
+                                <span class="step-icon"><i class="far fa-2x fa-check-circle"></i></span>
+                                Commande reçue
+                            </div>
+                        {% endif %}
+                        {% if order.statut > 2 %}
+                            <div class="step step-completed">
+                                <span class="step-indicator"><i class="fas fa-check"></i></span>
+                                <span class="step-icon"><i class="fas fa-2x fa-cog"></i></span>
+                                Commande en préparation
+                            </div>
+                        {% elseif order.statut is same as(2) %}
+                            <div class="step step-completed step-active">
+                                <span class="step-indicator"><i class="fas fa-check"></i></span>
+                                <span class="step-icon"><i class="fas fa-2x fa-cog"></i></span>
+                                Commande en préparation
+                            </div>
+                        {% else %}
+                            <div class="step">
+                                <span class="step-icon"><i class="fas fa-2x fa-cog"></i></span>
+                                Commande en préparation
+                            </div>
+                        {% endif %}
+                        {% if order.statut > 3 %}
+                            <div class="step step-completed">
+                                <span class="step-indicator"><i class="fas fa-check"></i></span>
+                                <span class="step-icon"><i class="fas fa-2x fa-award"></i></span>
+                                Contrôle qualité
+                            </div>
+                        {% elseif order.statut is same as(3) %}
+                            <div class="step step-completed step-active">
+                                <span class="step-indicator"><i class="fas fa-check"></i></span>
+                                <span class="step-icon"><i class="fas fa-2x fa-award"></i></span>
+                                Contrôle qualité
+                            </div>
+                        {% else %}
+                            <div class="step">
+                                <span class="step-icon"><i class="fas fa-2x fa-award"></i></span>
+                                Contrôle qualité
+                            </div>
+                        {% endif %}
+                        {% if order.statut > 4 %}
+                            <div class="step step-completed">
+                                <span class="step-indicator"><i class="fas fa-check"></i></span>
+                                <span class="step-icon"><i class="fas fa-2x fa-truck"></i></span>
+                                Commande expédiée
+                            </div>
+                        {% elseif order.statut is same as(4) %}
+                            <div class="step step-completed step-active">
+                                <span class="step-indicator"><i class="fas fa-check"></i></span>
+                                <span class="step-icon"><i class="fas fa-2x fa-truck"></i></span>
+                                Commande expédiée
+                            </div>
+                        {% else %}
+                            <div class="step">
+                                <span class="step-icon"><i class="fas fa-2x fa-truck"></i></span>
+                                Commande expédiée
+                            </div>
+                        {% endif %}
+                        {% if order.statut > 5 %}
+                            <div class="step step-completed">
+                                <span class="step-indicator"><i class="fas fa-check"></i></span>
+                                <span class="step-icon"><i class="fas fa-2x fa-home"></i></span>
+                                Commande livrée
+                            </div>
+                        {% elseif order.statut is same as(5) %}
+                            <div class="step step-completed step-active">
+                                <span class="step-indicator"><i class="fas fa-check"></i></span>
+                                <span class="step-icon"><i class="fas fa-2x fa-home"></i></span>
+                                Commande livrée
+                            </div>
+                        {% else %}
+                            <div class="step">
+                                <span class="step-icon"><i class="fas fa-2x fa-home"></i></span>
+                                Commande livrée
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

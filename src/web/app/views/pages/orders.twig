@@ -39,7 +39,19 @@
                     {% for order in orders %}
                         <tr>
                             <td><a href="{{ path_for('showOrder', {id: order.id}) }}">#{{ order.id }}</a></td>
-                            <td>{{ order.statut }}</td>
+                            <td>
+                                {% if order.statut is same as(1) %}
+                                    Commande reçue
+                                {% elseif order.statut is same as(2) %}
+                                    Commande en préparation
+                                {% elseif order.statut is same as(3)  %}
+                                    Contrôle qualité
+                                {% elseif order.statut is same as(4) %}
+                                    Commande expédiée
+                                {% elseif order.statut is same as(5) %}
+                                    Commande livrée
+                                {% endif %}
+                            </td>
                             <td>{{ order.creationDate | date("d/m/Y") }}</td>
                             <td>{{ order.total }} €</td>
                         </tr>

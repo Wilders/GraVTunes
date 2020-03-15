@@ -55,7 +55,7 @@ class OrderController extends Controller {
             $order = new Commande();
             $order->user_id = Auth::user()->id;
             $order->total = Basket::subtotal() + 5;
-            $order->statut = "Commande reçue";
+            $order->statut = 1;
             $order->creationDate = new DateTime();
             $order->save();
 
@@ -74,6 +74,9 @@ class OrderController extends Controller {
                 $order->paiement()->create([
                     'success' => true,
                     'transaction_id' => $result->transaction->id
+                ]);
+                $order->vinyles()->update([
+                    "locked" => true
                 ]);
             } else {
                 $order->vinyles()->detach();
