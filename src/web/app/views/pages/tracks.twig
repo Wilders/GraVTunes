@@ -10,10 +10,8 @@
     {{ parent() }}
     <script type="text/javascript" src="{{ base_url() }}/public/assets/js/dataTables.min.js"></script>
     <script type="text/javascript" src='{{ base_url() }}/public/assets/js/datatables.bootstrap.min.js'></script>
-    <script type="text/javascript" src='{{ base_url() }}/public/assets/js/player.js'></script>
     <script type="text/javascript" src='{{ base_url() }}/public/assets/js/stickyaudioplayerjquery.min.js'></script>
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
-
+    <script type="text/javascript" src='{{ base_url() }}/public/assets/js/player.js'></script>
 {% endblock %}
 
 {% block appcontent %}
@@ -44,7 +42,7 @@
                     <tbody>
                         {% for track in tracks %}
                             <tr>
-                                <td class="text-center" id="play"><i class="far fa-play-circle fa-3x" id="buttonPlayer"></i></td>
+                                <td class="text-center"><a class="playBtn" href="#" data-file="{{ base_url() }}/uploads/tracks/{{ track.file.path }}" data-title="{{ track.nom }}" data-cover="{{ base_url() }}/public/assets/media/images/logo.png"><i class="far fa-play-circle fa-3x" id="buttonPlayer"></i></a></td>
                                 <td>{{ track.nom }}</td>
                                 <td>{{ track.description }}</td>
                                 <td class="text-center">
