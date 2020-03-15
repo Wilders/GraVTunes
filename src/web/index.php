@@ -2,13 +2,12 @@
 
 use app\controllers\AccountController;
 use app\controllers\AppController;
-use app\controllers\MessageController;
 use app\controllers\OrderController;
 use app\helpers\Auth;
 use app\controllers\CartController;
 use app\controllers\AuthController;
 use app\controllers\ValidatorController;
-use app\controllers\TracksController;
+use app\controllers\TrackController;
 use app\controllers\PlaylistController;
 use app\controllers\VinyleController;
 use app\controllers\TicketController;
@@ -116,14 +115,15 @@ $app->group('', function() {
 // Authenticated
 $app->group('', function() {
 
-    $this->get('/home', AppController::class . ':showDashHome')->setName('appHome');
+    $this->get('/home', AppController::class . ':showDashHome')->setName('showHome');
     $this->get('/braintree/token', AppController::class . ':btToken')->setName("braintreeToken");
 
     /**
      * Account
      */
     $this->get('/logout', AuthController::class . ':logout')->setName('logout');
-    $this->get('/account', AccountController::class . ':showAccount')->setName('showAccount');
+    $this->get('/account', AccountController::class . ':account')->setName('showAccount');
+
     $this->post('/account/settings', AccountController::class . ':updateSettings')->setName('updateSettings');
     $this->post('/account/profile', AccountController::class . ':updateProfile')->setName('updateProfile');
     $this->post('/account/security', AccountController::class . ':updateSecurity')->setName('updateSecurity');
@@ -135,6 +135,7 @@ $app->group('', function() {
     $this->get('/cart/add/{id:[0-9]+}[/{quantity:[0-9]+}]', CartController::class . ':addCart')->setName("addCart");
     $this->get('/cart/clear', CartController::class . ':clearCart')->setName("clearCart");
     $this->get('/cart/delete/{id:[0-9]+}', CartController::class . ':deleteCart')->setName("deleteCart");
+
     $this->post('/cart/update/{id:[0-9]+}', CartController::class . ':updateCart')->setName("updateCart");
 
     /**
@@ -143,38 +144,33 @@ $app->group('', function() {
     $this->get('/order/confirm', OrderController::class . ':showAddOrder')->setName("showAddOrder");
     $this->get('/orders', OrderController::class . ':orders')->setName("showOrders");
     $this->get('/order/{id:[0-9]+}', OrderController::class . ':order')->setName("showOrder");
+
     $this->post('/order/place', OrderController::class . ':addOrder')->setName("addOrder");
 
     /**
      * Tracks
      */
-    $this->get('/tracks', TracksController::class . ':tracks')->setName("appTracks");
-    $this->get('/tracks/import', TracksController::class . ':importTracks')->setName("importTracks");
-    $this->get('/tracks/update/{id:[0-9]+}', TracksController::class . ':formUpdateTracks')->setName("formUpdateTracks");
+    $this->get('/tracks', TrackController::class . ':tracks')->setName("showTracks");
+    $this->get('/tracks/add', TrackController::class . ':showAddTrack')->setName("showAddTrack");
+    $this->get('/track/{id:[0-9]+}/update', TrackController::class . ':showUpdateTrack')->setName("showUpdateTrack");
 
-    $this->post('/importFile', TracksController::class . ':addFile')->setName("importFile");
-    $this->post('/updateFile/{id:[0-9]+}', TracksController::class . ':updateFile')->setName("updateFile");
-    $this->post('/deleteFile/{id:[0-9]+}', TracksController::class . ':deleteFile')->setName("deleteFile");
+    $this->post('/tracks/add', TrackController::class . ':addTrack')->setName("addTrack");
+    $this->post('/track/{id:[0-9]+}/update', TrackController::class . ':updateTrack')->setName("updateTrack");
+    $this->post('/track/{id:[0-9]+}/delete', TrackController::class . ':deleteTrack')->setName("deleteTrack");
 
     /**
      * Playlists
      */
-    $this->get('/playlists', PlaylistController::class . ':playlists')->setName("appPlaylist");
+    $this->get('/playlists', PlaylistController::class . ':playlists')->setName("showPlaylists");
+    $this->get('/playlists/add', PlaylistController::class . ':showAddPlaylist')->setName("showAddPlaylist");
+    $this->get('/playlist/{id:[0-9]+}', PlaylistController::class . ':playlist')->setName("showPlaylist");
+    $this->get('/playlist/{id:[0-9]+}/add', PlaylistController::class . ':showAddTrackPlaylist')->setName("showAddTrackPlaylist");
+    $this->get('/playlist/{id:[0-9]+}/update', PlaylistController::class . ':showUpdatePlaylist')->setName("showUpdatePlaylist");
 
-    //Ajouter une playliste
-    $this->get('/playlists/addPlaylist', PlaylistController::class . ':newPlay')->setName("newPlay");
-    $this->post('/playlists', PlaylistController::class . ':importPlay')->setName("importPlay");
-
-    //Supprimer une playliste
-    $this->post('/playlists/{id:[0-9]+}', PlaylistController::class . ':delPlay')->setName("deletePlay");
-
-    //Modifier une playliste
-    $this->get('/playlists/update/{id:[0-9]+}', PlaylistController::class . ':formUpdatePlay')->setName("formUpdatePlay");
-    $this->post('/playlists/update/{id:[0-9]+}', PlaylistController::class . ':updatePlay')->setName("updatePlay");
-
-    //Ajouter une track à une playliste
-    $this->get('/playlists/{id:[0-9]+}/addTrack', PlaylistController::class . ':formNewTrack')->setName("formNewTrack");
-    $this->post('/playlists/{id:[0-9]+}/newTrack', PlaylistController::class . ':importTrackPlay')->setName("importTrackPlay");
+    $this->post('/playlists/add', PlaylistController::class . ':addPlaylist')->setName("addPlaylist");
+    $this->post('/playlist/{id:[0-9]+}/delete', PlaylistController::class . ':deletePlaylist')->setName("deletePlaylist");
+    $this->post('/playlist/{id:[0-9]+}/update', PlaylistController::class . ':updatePlaylist')->setName("updatePlaylist");
+    $this->post('/playlist/{id:[0-9]+}/add', PlaylistController::class . ':addTrackPlaylist')->setName("addTrackPlaylist");
 
     /**
      * Vinyles
@@ -184,6 +180,7 @@ $app->group('', function() {
     $this->get('/vinyle/{id:[0-9]+}', VinyleController::class . ':vinyle')->setName("showVinyle");
     $this->get('/vinyle/{id:[0-9]+}/delete', VinyleController::class . ':deleteVinyle')->setName("deleteVinyle");
     $this->get('/vinyle/{id:[0-9]+}/delete/{trackId:[0-9]+}', VinyleController::class . ':deleteAttachedTrack')->setName('deleteTrackVinyle');
+
     $this->post('/vinyles/add', VinyleController::class . ':addVinyle')->setName("addVinyle");
     $this->post('/vinyle/{id:[0-9]+}/add', VinyleController::class . ':addTracks')->setName("addTracksVinyle");
     $this->post('/vinyle/{id:[0-9]+}/update', VinyleController::class . ':updateVinyle')->setName("updateVinyle");
@@ -192,18 +189,13 @@ $app->group('', function() {
      * Tickets
      */
 
-    $this->get('/tickets', TicketController::class . ':tickets')->setName("appTickets");
-    $this->get('/newTicket', TicketController::class . ':newTicket')->setName("newTicket");
-    $this->get('/closedTickets', TicketController::class . ':closedTickets')->setName("closedTickets");
+    $this->get('/tickets', TicketController::class . ':tickets')->setName("showTickets");
+    $this->get('/tickets/closed', TicketController::class . ':closedTickets')->setName("showClosedTickets");
+    $this->get('/tickets/add', TicketController::class . ':showAddTicket')->setName("showAddTicket");
+    $this->get('/ticket/{id:[0-9]+}', TicketController::class . ':ticket')->setName("showTicket");
 
-    $this->post('/closeTicket/{id:[0-9]+}', TicketController::class . ':closeTicket')->setName("closeTicket");
-    $this->post('/createTicket', TicketController::class . ':createTicket')->setName("createTicket");
-
-    /**
-     * Contact support
-     */
-
-    $this->get('/ticket/{id:[0-9]+}', MessageController::class . ':messages')->setName("contact");
+    $this->post('/tickets/add', TicketController::class . ':addTicket')->setName("addTicket");
+    $this->post('/ticket/{id:[0-9]+}/close', TicketController::class . ':closeTicket')->setName("closeTicket");
 
 })->add(new AuthMiddleware($container));
 

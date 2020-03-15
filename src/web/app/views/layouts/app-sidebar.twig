@@ -1,5 +1,5 @@
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ path_for("appHome") }}">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ path_for("showHome") }}">
         <div class="sidebar-brand-icon rotate-n-15">
             <i class="fas fa-record-vinyl"></i>
         </div>
@@ -9,7 +9,7 @@
     <hr class="sidebar-divider my-0">
 
     <li class="nav-item">
-        <a class="nav-link" href="{{ path_for("appHome") }}">
+        <a class="nav-link" href="{{ path_for("showHome") }}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Tableau de bord</span>
         </a>
@@ -22,14 +22,14 @@
     </div>
 
     <li class="nav-item">
-        <a class="nav-link" href="{{ path_for('appTracks') }}">
+        <a class="nav-link" href="{{ path_for('showTracks') }}">
             <i class="fas fa-file-audio"></i>
             <span>Titres</span>
         </a>
     </li>
 
     <li class="nav-item">
-        <a class="nav-link" href="{{ path_for('appPlaylist') }}">
+        <a class="nav-link" href="{{ path_for('showPlaylists') }}">
             <i class="fas fa-stream"></i>
             <span>Playlists</span>
         </a>
@@ -49,7 +49,7 @@
     </div>
 
     <li class="nav-item">
-        <a class="nav-link" href="{{ path_for('appTickets') }}">
+        <a class="nav-link" href="{{ path_for('showTickets') }}">
             <i class="fas fa-ticket-alt"></i>
             <span>Tickets</span>
         </a>

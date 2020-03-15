@@ -24,7 +24,7 @@ class GuestMiddleware extends Middleware {
             if (Auth::check()) throw new AuthException();
         } catch(AuthException $e) {
             $this->container->flash->addMessage('error', 'Vous ne pouvez pas effectuer cette action en étant connecté.');
-            return $response->withRedirect($this->container->router->pathFor('appHome'));
+            return $response->withRedirect($this->container->router->pathFor('showHome'));
         }
 
         $response = $next($request, $response);
