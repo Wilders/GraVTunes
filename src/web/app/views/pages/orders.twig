@@ -22,26 +22,26 @@
                     <thead>
                     <tr>
                         <th>Référence</th>
+                        <th>Statut</th>
                         <th>Date</th>
                         <th>Total</th>
-                        <th>Statut</th>
                     </tr>
                     </thead>
                     <tfoot>
                     <tr>
                         <th>Référence</th>
+                        <th>Statut</th>
                         <th>Date</th>
                         <th>Total</th>
-                        <th>Statut</th>
                     </tr>
                     </tfoot>
                     <tbody>
                     {% for order in orders %}
                         <tr>
                             <td><a href="{{ path_for('showOrder', {id: order.id}) }}">#{{ order.id }}</a></td>
-                            <td>{{ order.creationDate }}</td>
-                            <td>{{ order.total }} €</td>
                             <td>{{ order.statut }}</td>
+                            <td>{{ order.creationDate | date("d/m/Y") }}</td>
+                            <td>{{ order.total }} €</td>
                         </tr>
                     {% endfor %}
                     </tbody>

@@ -33,7 +33,7 @@
                         <div class="bg-secondary p-4 text-dark text-center"><span class="font-weight-semibold mr-2"><b>Statut:</b></span>{{ order.statut }}</div>
                     </div>
                     <div class="col-sm-4 mb-2">
-                        <div class="bg-secondary p-4 text-dark text-center"><span class="font-weight-semibold mr-2"><b>Date de commande:</b></span>{{ order.creationDate }}</div>
+                        <div class="bg-secondary p-4 text-dark text-center"><span class="font-weight-semibold mr-2"><b>Date de commande:</b></span>{{ order.creationDate | date("d/m/Y") }}</div>
                     </div>
                 </div>
                 <div class="steps">
