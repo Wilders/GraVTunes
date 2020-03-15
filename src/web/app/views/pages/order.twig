@@ -9,7 +9,7 @@
     {{ parent() }}
     <script src="{{ base_url() }}/public/assets/js/braintree-2.32.1.min.js"></script>
     <script>
-        fetch('braintree/token')
+        fetch('{{ base_url() }}/braintree/token')
             .then(response => {
                 return response.json();
             })
@@ -17,7 +17,11 @@
                 if(data.token) {
                     braintree.setup(data.token, 'dropin', {
                         container: 'payment'
-                    })
+                    });
+                    setTimeout(function () {
+                        $('#pay').prop("disabled", false);
+                    }, 1000);
+
                 }
             });
     </script>
@@ -64,7 +68,7 @@
                 </div>
                 <div class="col-md-8 order-md-1">
                     <h4 class="mb-3">Vérifier vos informations <small class="text-muted">(<a href="{{ path_for("showAccount") }}">Modifier</a>)</small></h4>
-                    <form method="POST" action="{{ path_for("createOrder") }}">
+                    <form method="POST" action="{{ path_for("addOrder") }}">
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="firstName">Prénom</label>
@@ -91,8 +95,10 @@
                         <h4 class="mb-3">Informations de paiement</h4>
 
                         <div id="payment"></div>
+
                         {{ csrf() | raw }}
-                        <button class="btn btn-primary btn-lg btn-block" type="submit">Procéder au paiement</button>
+
+                        <button id="pay" class="btn btn-primary btn-lg btn-block" type="submit" disabled>Procéder au paiement</button>
                     </form>
                 </div>
             </div>

@@ -72,7 +72,7 @@ class OrderController extends Controller {
             $response = $response->withRedirect($this->router->pathFor("appHome"));
         } catch(Exception $e) {
             $this->flash->addMessage('error', $e->getMessage());
-            $response = $response->withRedirect($this->router->pathFor("showOrder"));
+            $response = $response->withRedirect($this->router->pathFor("showAddOrder"));
         }
         return $response;
     }

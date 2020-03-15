@@ -140,8 +140,8 @@ $app->group('', function() {
     /**
      * Order
      */
-    $this->get('/order', OrderController::class . ':showOrder')->setName("showOrder");
-    $this->post('/order/create', OrderController::class . ':createOrder')->setName("createOrder");
+    $this->get('/order/confirm', OrderController::class . ':showOrder')->setName("showAddOrder");
+    $this->post('/order/place', OrderController::class . ':createOrder')->setName("addOrder");
 
     /**
      * Tracks
