@@ -15,9 +15,12 @@
 {% endblock %}
 
 {% block appcontent %}
+
+    {% include "layouts/flash.twig" %}
+
     <div class="card shadow mb-4" id="tableTracks">
         <div class="card-header py-3">
-            <a class="btn btn-outline-primary float-right" href="{{ path_for("importTracks") }}">Ajouter une musique</a>
+            <a class="btn btn-outline-primary float-right" href="{{ path_for("addTrack") }}">Ajouter une musique</a>
             <h6 class="m-0 font-weight-bold text-primary">Mes titres</h6>
         </div>
         <div class="card-body">
@@ -51,7 +54,7 @@
                                             <i class="fas fa-bars fa-2x"></i>
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                            <a href="{{ path_for('formUpdateTracks', {id: track.id}) }}"><button type="button" class="dropdown-item">Modifier</button></a>
+                                            <a href="{{ path_for('showUpdateTrack', {id: track.id}) }}"><button type="button" class="dropdown-item">Modifier</button></a>
                                             <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteTrackModal">Supprimer</button>
 
                                         </div>
@@ -60,7 +63,7 @@
                             </tr>
                             <div class="modal fade" id="deleteTrackModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
-                                    <form method="POST" action="{{ path_for("deleteFile", {id: track.id}) }}" id="deleteTrackForm" >
+                                    <form method="POST" action="{{ path_for("deleteTrack", {id: track.id}) }}" id="deleteTrackForm" >
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="exampleModalLabel">Êtes-vous sûr de supprimer cette chanson ?</h5>

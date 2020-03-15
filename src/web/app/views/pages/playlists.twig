@@ -17,60 +17,61 @@
 
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <a class="btn btn-outline-primary float-right" href="{{ path_for("showAddTicket") }}">Nouveau ticket</a>
-            <h6 class="m-0 font-weight-bold text-primary">Mes tickets</h6>
+            <a class="btn btn-outline-primary float-right" href="{{ path_for("showAddPlaylist") }}">Ajouter une playlist</a>
+            <h6 class="m-0 font-weight-bold text-primary">Mes Playlists</h6>
         </div>
         <div class="card-body">
-            <div class="btn-group mb-4" role="group">
-                <a class="btn btn-outline-primary float-left active" id="openedTickets" href="{{ path_for("showTickets") }}">Tickets ouverts</a>
-                <a class="btn btn-outline-primary float-left" id="closedTickets" href="{{ path_for("showClosedTickets") }}">Tickets fermés</a>
-            </div>
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Objet</th>
+                        <th></th>
+                        <th>Nom</th>
+                        <th>Description</th>
                         <th>Date de création</th>
-                        <th>Date de la dernière modification</th>
                         <th></th>
                     </tr>
                     </thead>
                     <tfoot>
                     <tr>
-                        <th>ID</th>
-                        <th>Objet</th>
+                        <th></th>
+                        <th>Nom</th>
+                        <th>Description</th>
                         <th>Date de création</th>
-                        <th>Date de la dernière modification</th>
                         <th></th>
                     </tr>
                     </tfoot>
                     <tbody>
-                    {% for ticket in tickets %}
+                    {% for playlist in playlists %}
                         <tr>
-                            <td>{{ ticket.id }}</td>
-                            <td>{{ ticket.objet }}</td>
-                            <td>{{ ticket.created_at }}</td>
-                            <td>{{ ticket.updated_at }}</td>
+                            <td class="text-center"><i class="far fa-play-circle fa-3x"></i></td>
+                            <td>{{ playlist.nom }}</td>
+                            <td>{{ playlist.description }}</td>
+                            <td>{{ playlist.creationDate }}</td>
                             <td>
                                 <div class="dropdown">
                                     <a  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <img src="{{ base_url() }}/public/assets/media/images/menulist.png" >
+                                        <i class="fas fa-bars fa-2x"></i>
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <a class="dropdown-item btn" href="{{ path_for("showTicket", {id: ticket.id}) }}">Accéder</a>
-                                        <button class="dropdown-item" data-toggle="modal" data-target="#closeTicketModal">Clore</button>
+                                        <a href="{{ path_for('showAddTrackPlaylist', {id: playlist.id}) }}">
+                                            <button type="button" class="dropdown-item">Ajouter une musique</button>
+                                        </a>
+                                        <a href="{{ path_for('showUpdatePlaylist', {id: playlist.id}) }}">
+                                            <button type="button" class="dropdown-item">Modifier</button>
+                                        </a>
+                                        <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deletePlaylistModal{{ playlist.id }}">Supprimer</button>
                                     </div>
                                 </div>
                             </td>
                         </tr>
 
-                        <div class="modal fade" id="closeTicketModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="deletePlaylistModal{{ playlist.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
-                                <form method="POST" action="{{ path_for("closeTicket", {id: ticket.id}) }}" id="closeTicketForm" >
+                                <form method="POST" action="{{ path_for("deletePlaylist", {id: playlist.id}) }}" id="deleteTrackForm" >
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" >Êtes-vous sûr de vouloir clore le ticket ?</h5>
+                                            <h5 class="modal-title" id="exampleModalLabel">Êtes-vous sûr de supprimer cette playliste ?</h5>
                                             <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">×</span>
                                             </button>
@@ -80,7 +81,7 @@
 
                                         <div class="modal-footer">
                                             <button class="btn btn-secondary" type="button" data-dismiss="modal">Fermer</button>
-                                            <button class="btn btn-primary" type="submit">Clore</button>
+                                            <button class="btn btn-primary" type="submit">Supprimer</button>
                                         </div>
                                     </div>
                                 </form>
@@ -93,6 +94,4 @@
             </div>
         </div>
     </div>
-
-
 {% endblock %}

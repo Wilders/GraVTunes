@@ -15,7 +15,7 @@ class AppController extends Controller {
 
     public function showHome(Request $request, Response $response, array $args): Response {
         if(Auth::check()) {
-            $response = $response->withRedirect($this->router->pathFor('appHome'));
+            $response = $response->withRedirect($this->router->pathFor('showHome'));
         } else {
             $response = $response->withRedirect($this->router->pathFor('login'));
         }

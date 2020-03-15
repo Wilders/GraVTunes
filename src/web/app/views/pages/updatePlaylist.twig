@@ -6,8 +6,11 @@
 {% endblock %}
 
 {%  block appcontent %}
+
+    {% include "layouts/flash.twig" %}
+
     <div class="card shadow mb-4">
-        <form method="POST" action="{{ path_for("updatePlay", {id:id}) }}" id="updateTrackForm">
+        <form method="POST" action="{{ path_for("updatePlaylist", {id:id}) }}" id="updateTrackForm">
             <div class="card-header py-3">
                 <h5>Modification d'une playliste</h5>
             </div>
