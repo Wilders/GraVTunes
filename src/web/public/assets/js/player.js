@@ -1,27 +1,20 @@
-/**
-    $(document).ready(function(){
-        $("#buttonPlayer").on('click',function (e) {
-           player.show();
-               //document.getElementById("content-wrapper").removeChild(document.getElementById("drivebar"));
-               let driveBar = document.createElement("footer");
-               driveBar.id = "drivebar";
-               driveBar.className = "sticky-footer bg-primary";
-               document.getElementById("content-wrapper").appendChild(driveBar);
+let player;
+$(function () {
+    $('.playBtn').each(function (i,e) {
+        if(i === 0) {
+            player = $('body').stickyAudioPlayer({
+                url: $(e).data('file'),
+                position: 'bottom',
+                text: $(e).data('title'),
+                image: $(e).data('cover'),
+                maxWidth: 1000
+            });
+        }
+        $(e).on('click', function () {
+            let file = $(this).data('file');
+            let title = $(this).data('title');
+            let cover = $(this).data('cover');
+            player.changeAudio(file, title, cover);
         });
     });
-
-*/
-
-var run;
-$(document).ready(function() {
-    run = $('body').stickyAudioPlayer(
-        {
-            url:       'http://tiendasdigitales.net/github/stickyaudioplayerjquery/bensound-goinghigher.mp3',
-            position:  'bottom', //'bottom'|'top'|'inline'
-            text:      'Bensound - Going Higher - Music: http://www.bensound.com',
-            image:     'http://tiendasdigitales.net/github/stickyaudioplayerjquery/images/cover.png',
-            volume:    40,
-            repeat:    false,
-        }
-    );
 });
