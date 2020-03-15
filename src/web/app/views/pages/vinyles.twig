@@ -12,6 +12,9 @@
 {% endblock %}
 
 {% block appcontent %}
+
+    {% include "layouts/flash.twig" %}
+
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <a class="btn btn-sm btn-outline-primary float-right" href="{{ path_for('addVinyle') }}">Créer un Vinyle</a>

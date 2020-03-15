@@ -6,8 +6,11 @@
 {% endblock %}
 
 {%  block appcontent %}
+
+    {% include "layouts/flash.twig" %}
+
     <div class="card shadow mb-4">
-        <form method="POST" action="{{ path_for("createTicket") }}" id="newTicketForm" enctype="multipart/form-data">
+        <form method="POST" action="{{ path_for("addTicket") }}" id="newTicketForm" enctype="multipart/form-data">
             <div class="card-header py-3">
                 <h5>Nouveau ticket</h5>
             </div>

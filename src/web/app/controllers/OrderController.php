@@ -99,7 +99,6 @@ class OrderController extends Controller {
         foreach ($items as $item) {
             $quantities[] = ['quantite' => $item->quantity];
         }
-
         return $quantities;
     }
 }

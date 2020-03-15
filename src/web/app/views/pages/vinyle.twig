@@ -141,7 +141,7 @@
                             <td>{{ track.file.duree }}</td>
                             <td class="text-center">
                                 <div class="btn-group" role="group">
-                                    <a href="{{ path_for('formUpdateTracks', {id: track.id}) }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                                    <a href="{{ path_for('showUpdateTrack', {id: track.id}) }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
                                     <a href="{{ path_for('deleteTrackVinyle', {id: vinyle.id, trackId: track.id}) }}" class="btn btn-danger"><i class="fas fa-times"></i></a>
                                 </div>
                             </td>

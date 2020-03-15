@@ -11,6 +11,9 @@
     <script type="text/javascript" src='{{ base_url() }}/public/assets/js/datatables.bootstrap.min.js'></script>
 {% endblock %}
 {% block appcontent %}
+
+    {% include "layouts/flash.twig" %}
+
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Ticket n°</h6>
