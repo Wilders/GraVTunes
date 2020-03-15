@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3308
--- Généré le :  Dim 15 mars 2020 à 16:10
+-- Généré le :  Dim 15 mars 2020 à 16:19
 -- Version du serveur :  8.0.18
 -- Version de PHP :  7.3.12
 
@@ -158,7 +158,7 @@ CREATE TABLE IF NOT EXISTS `tracks` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nom` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `archived` tinyint(1) NOT NULL,
+  `archived` tinyint(1) NOT NULL DEFAULT '0',
   `file_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
