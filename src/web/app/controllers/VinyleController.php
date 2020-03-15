@@ -107,8 +107,38 @@ class VinyleController extends Controller {
         return $response;
     }
 
-    public function updateVinyle() {
+    public function updateVinyle(Request $request, Response $response, array $args): Response {
+        try {
+            $vinyle = Vinyle::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
+            $name = filter_var($request->getParsedBodyParam('name'), FILTER_SANITIZE_STRING);
+            $description = filter_var($request->getParsedBodyParam('description'), FILTER_SANITIZE_STRING);
+            $files = $request->getUploadedFiles();
 
+            if (mb_strlen($name, 'utf8') > 75) throw new AuthException("Le nom du vinyle ne doit pas dépasser 75 caractères.");
+            if (mb_strlen($description, 'utf8') > 1000) throw new AuthException("La description du vinyle ne doit pas dépasser 1000 caractères.");
+
+            $vinyle->nom = $name;
+            $vinyle->description = $description;
+
+            if(isset($files['cover'])) {
+                $cover = $files['cover'];
+                if ($cover->getError() === UPLOAD_ERR_OK) {
+                    $coversPath = $this->uploadsPath . DIRECTORY_SEPARATOR . "covers";
+                    $extension = pathinfo($cover->getClientFilename(), PATHINFO_EXTENSION);
+                    $coverFileName = sprintf('%s.%0.8s', bin2hex(random_bytes(8)), $extension);
+                    $cover->moveTo($coversPath . DIRECTORY_SEPARATOR . $coverFileName);
+                    $vinyle->cover = $coverFileName;
+                }
+            }
+            $vinyle->save();
+
+            $this->flash->addMessage('success', "Votre vinyle a bien été modifié!");
+            $response = $response->withRedirect($this->router->pathFor('showVinyle', ['id' => $vinyle->id]));
+        } catch (ModelNotFoundException $e) {
+            $this->flash->addMessage('error', "Impossible de modifier ce vinyle.");
+            $response = $response->withRedirect($this->router->pathFor('showVinyle', ['id' => $args['id']]));
+        }
+        return $response;
     }
 
     /**

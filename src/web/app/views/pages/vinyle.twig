@@ -29,10 +29,51 @@
 
     {% include "layouts/flash.twig" %}
 
+    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateModalLabel">{{ vinyle.nom }} - Modification</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{{ path_for("updateVinyle", {id: vinyle.id}) }}" enctype="multipart/form-data">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="name">Nom du vinyle *</label>
+                                <input type="text" name="name" id="name" class="form-control" value="{{ vinyle.nom }}" required autofocus>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Couverture</label>
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="cover" name="cover">
+                                    <label for="cover" class="custom-file-label" data-browse="Parcourir">Choisir un fichier...</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea class="form-control" id="description" rows="3" name="description">{{ vinyle.description }}</textarea>
+                        </div>
+
+                        {{ csrf() | raw }}
+
+                        <hr>
+                        Les champs marqués d'un astérisque sont obligatoires.
+                        <button type="submit" class="btn btn-lg btn-primary float-right">Envoyer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <div class="btn-group btn-group-sm float-right" role="group">
-                <button type="button" class="btn btn-primary">Modifier <i class="fas fa-edit"></i></button>
+                <a href="{{ path_for('addCart', {id: vinyle.id}) }}" class="btn btn-success"><i class="fas fa-cart-plus"></i></a>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateModal">Modifier <i class="fas fa-edit"></i></button>
                 <a href="{{ path_for('deleteVinyle', {id: vinyle.id}) }}" class="btn btn-danger">Supprimer <i class="fas fa-times"></i></a>
             </div>
             <h6 class="m-0 font-weight-bold text-primary">Informations générales</h6>
