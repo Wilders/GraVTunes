@@ -17,7 +17,7 @@ use Slim\Http\Response;
 class TrackController extends Controller{
 
     public function tracks(Request $request, Response $response, array $args): Response {
-        $tracks = Auth::user()->tracks;
+        $tracks = Auth::user()->tracks()->where("archived", false)->get();
 
         $this->view->render($response, 'pages/tracks.twig', [
             "tracks" => $tracks
@@ -75,11 +75,15 @@ class TrackController extends Controller{
         return $response;
     }
 
+    /**
+     * @todo: Le titre doit être archivé, supprimé des playlists et supprimé des vinyles qui ne sont pas locked
+     */
     public function deleteTrack(Request $request, Response $response, array $args): Response {
         try {
             $track = Track::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
 
-            $track->archived = 1;
+            $track->archived = true;
+            $track->save();
 
             $this->flash->addMessage('success', "Vous venez de supprimer " . $track->nom . ".");
             $response = $response->withRedirect($this->router->pathFor("showTracks"));
