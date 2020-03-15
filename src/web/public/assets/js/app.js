@@ -45,6 +45,10 @@
 
 $(document).ready(function() {
   bsCustomFileInput.init();
+  let is = $("input[type='number']");
+  if(is.length) {
+    is.inputSpinner();
+  }
   let sw = $('#smartWizard');
   if(sw.length) {
     sw.smartWizard();

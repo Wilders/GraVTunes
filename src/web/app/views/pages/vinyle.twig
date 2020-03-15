@@ -1,0 +1,155 @@
+{% extends "layouts/app-layout.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/bootstrap-select.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/datatables.bootstrap.min.css">
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/bootstrap-select_fr_FR.min.js"></script>
+    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/dataTables.min.js"></script>
+    <script type="text/javascript" src='{{ base_url() }}/public/assets/js/datatables.bootstrap.min.js'></script>
+{% endblock %}
+
+{% block appcontent %}
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Vinyle #{{ vinyle.id }} - {{ vinyle.nom }}</h1>
+    </div>
+
+    {% include "layouts/flash.twig" %}
+
+    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateModalLabel">{{ vinyle.nom }} - Modification</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{{ path_for("updateVinyle", {id: vinyle.id}) }}" enctype="multipart/form-data">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="name">Nom du vinyle *</label>
+                                <input type="text" name="name" id="name" class="form-control" value="{{ vinyle.nom }}" required autofocus>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Couverture</label>
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="cover" name="cover">
+                                    <label for="cover" class="custom-file-label" data-browse="Parcourir">Choisir un fichier...</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea class="form-control" id="description" rows="3" name="description">{{ vinyle.description }}</textarea>
+                        </div>
+
+                        {{ csrf() | raw }}
+
+                        <hr>
+                        Les champs marqués d'un astérisque sont obligatoires.
+                        <button type="submit" class="btn btn-lg btn-primary float-right">Envoyer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <div class="btn-group btn-group-sm float-right" role="group">
+                <a href="{{ path_for('addCart', {id: vinyle.id}) }}" class="btn btn-success"><i class="fas fa-cart-plus"></i></a>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateModal">Modifier <i class="fas fa-edit"></i></button>
+                <a href="{{ path_for('deleteVinyle', {id: vinyle.id}) }}" class="btn btn-danger">Supprimer <i class="fas fa-times"></i></a>
+            </div>
+            <h6 class="m-0 font-weight-bold text-primary">Informations générales</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-2">
+                    <img src="{{ base_url() }}/uploads/covers/{{ vinyle.cover }}" alt="Couverture du vinyle" class="img-fluid img-thumbnail">
+                </div>
+                <div class="col-10">
+                    <div class="row">
+                        <h1>{{ vinyle.nom }}</h1>
+                    </div>
+                    <div class="row">
+                        <h3>{{ vinyle.description }}</h3>
+                    </div>
+                    <div class="row">
+                        <p>{{ vinyle.tracks.count }} titres</p>
+                    </div>
+                    <div class="row">
+                        <p>Durée totale de {% set duree = 0 %}{% for track in vinyle.tracks %}{% set duree = duree + track.file.duree %}{% endfor %}{{ duree }} secondes</p>
+                    </div>
+                    <div class="row">
+                        Prix: {{ vinyle.prix }} €
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <form action="{{ path_for('addTracksVinyle', {id: vinyle.id}) }}" class="float-right" method="POST">
+                <select name="tracks[]" class="selectpicker" id="tracks" data-live-search="true" title="Ajouter des titres" multiple>
+                    {% for track in addableTracks %}
+                        <option value="{{ track.id }}">{{ track.nom }}</option>
+                    {% endfor %}
+                </select>
+
+                {{ csrf() | raw }}
+
+                <button type="submit" class="ml-2 btn btn-primary">OK</button>
+            </form>
+            <h6 class="m-0 font-weight-bold text-primary">Contenu du vinyle</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nom</th>
+                        <th>Description</th>
+                        <th>Duree</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <th>#</th>
+                        <th>Nom</th>
+                        <th>Description</th>
+                        <th>Duree</th>
+                        <th>Action</th>
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                    {% set i = 1 %}
+                    {% for track in vinyle.tracks %}
+                        <tr>
+                            <td>{{ i }} {% set i = i + 1 %}</td>
+                            <td>{{ track.nom }}</td>
+                            <td>{{ track.description }}</td>
+                            <td>{{ track.file.duree }}</td>
+                            <td class="text-center">
+                                <div class="btn-group" role="group">
+                                    <a href="{{ path_for('formUpdateTracks', {id: track.id}) }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                                    <a href="{{ path_for('deleteTrackVinyle', {id: vinyle.id, trackId: track.id}) }}" class="btn btn-danger"><i class="fas fa-times"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
