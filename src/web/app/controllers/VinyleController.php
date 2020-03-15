@@ -2,11 +2,11 @@
 
 namespace app\controllers;
 
-use app\exceptions\AuthException;
 use app\helpers\Auth;
 use app\helpers\Basket;
 use app\models\Vinyle;
 use DateTime;
+use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -56,8 +56,8 @@ class VinyleController extends Controller {
             $files = $request->getUploadedFiles();
             $tracks = $request->getParsedBodyParam('tracks');
 
-            if (mb_strlen($name, 'utf8') > 75) throw new AuthException("Le nom du vinyle ne doit pas dépasser 75 caractères.");
-            if (mb_strlen($description, 'utf8') > 1000) throw new AuthException("La description du vinyle ne doit pas dépasser 1000 caractères.");
+            if (mb_strlen($name, 'utf8') > 75) throw new Exception("Le nom du vinyle ne doit pas dépasser 75 caractères.");
+            if (mb_strlen($description, 'utf8') > 1000) throw new Exception("La description du vinyle ne doit pas dépasser 1000 caractères.");
 
             $vinyle = new Vinyle();
             $vinyle->user_id = Auth::user()->id;
@@ -84,8 +84,9 @@ class VinyleController extends Controller {
 
             $this->flash->addMessage('success', "Votre vinyle a bien été créé!");
             $response = $response->withRedirect($this->router->pathFor('showVinyle', ['id' => $vinyle->id]));
-        } catch (\Exception $e) {
-
+        } catch (Exception $e) {
+            $this->flash->addMessage('error', $e->getMessage());
+            $response = $response->withRedirect($this->router->pathFor('showVinyle', ['id' => $args['id']]));
         }
         return $response;
     }
@@ -114,8 +115,8 @@ class VinyleController extends Controller {
             $description = filter_var($request->getParsedBodyParam('description'), FILTER_SANITIZE_STRING);
             $files = $request->getUploadedFiles();
 
-            if (mb_strlen($name, 'utf8') > 75) throw new AuthException("Le nom du vinyle ne doit pas dépasser 75 caractères.");
-            if (mb_strlen($description, 'utf8') > 1000) throw new AuthException("La description du vinyle ne doit pas dépasser 1000 caractères.");
+            if (mb_strlen($name, 'utf8') > 75) throw new Exception("Le nom du vinyle ne doit pas dépasser 75 caractères.");
+            if (mb_strlen($description, 'utf8') > 1000) throw new Exception("La description du vinyle ne doit pas dépasser 1000 caractères.");
 
             $vinyle->nom = $name;
             $vinyle->description = $description;
@@ -136,6 +137,9 @@ class VinyleController extends Controller {
             $response = $response->withRedirect($this->router->pathFor('showVinyle', ['id' => $vinyle->id]));
         } catch (ModelNotFoundException $e) {
             $this->flash->addMessage('error', "Impossible de modifier ce vinyle.");
+            $response = $response->withRedirect($this->router->pathFor('showVinyle', ['id' => $args['id']]));
+        } catch (Exception $e) {
+            $this->flash->addMessage('error', $e->getMessage());
             $response = $response->withRedirect($this->router->pathFor('showVinyle', ['id' => $args['id']]));
         }
         return $response;
