@@ -9,6 +9,18 @@
     {{ parent() }}
     <script type="text/javascript" src="{{ base_url() }}/public/assets/js/bs-custom-file-input.min.js"></script>
     <script type="text/javascript" src="{{ base_url() }}/public/assets/js/app.js"></script>
+    <script>
+        $(function () {
+            let dataTable = $('#dataTable');
+            if(dataTable.length) {
+                dataTable.DataTable({
+                    language: {
+                        url: '{{ base_url() }}/public/assets/js/datatables.french.json'
+                    }
+                });
+            }
+        });
+    </script>
 {% endblock %}
 
 {% block content %}

@@ -43,26 +43,18 @@
 
 })(jQuery);
 
-$(document).ready(function() {
+$(function () {
   bsCustomFileInput.init();
   let is = $("input[type='number']");
-  if(is.length) {
+  if (is.length) {
     is.inputSpinner();
   }
   let sw = $('#smartWizard');
-  if(sw.length) {
+  if (sw.length) {
     sw.smartWizard();
   }
   let track = $('.selectpicker');
-  if(track.length) {
+  if (track.length) {
     $('.selectpicker').selectpicker();
-  }
-  let dataTable = $('#dataTable');
-  if(dataTable.length) {
-    dataTable.DataTable({
-      language: {
-        url: 'public/assets/js/datatables.french.json'
-      }
-    });
   }
 });
