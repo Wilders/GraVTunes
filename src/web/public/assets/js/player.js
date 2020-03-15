@@ -1,7 +1,7 @@
 let player;
 $(function () {
     $('.playBtn').each(function (i,e) {
-        if(i === 1) {
+        if(i === 0) {
             player = $('body').stickyAudioPlayer({
                 url: $(e).data('file'),
                 position: 'bottom',
