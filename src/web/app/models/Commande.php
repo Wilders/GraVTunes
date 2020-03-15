@@ -30,6 +30,6 @@ class Commande extends Model {
     }
 
     public function vinyles(): BelongsToMany {
-        return $this->belongsToMany("\app\models\Vinyle");
+        return $this->belongsToMany("\app\models\Vinyle")->withPivot("quantite");
     }
 }

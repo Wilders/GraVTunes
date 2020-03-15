@@ -3,98 +3,192 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/datatables.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/tracking.css">
 {% endblock %}
 
 {% block scripts %}
     {{ parent() }}
-    <script src="{{ base_url() }}/public/assets/js/braintree-2.32.1.min.js"></script>
-    <script>
-        fetch('braintree/token')
-            .then(response => {
-                return response.json();
-            })
-            .then(data => {
-                if(data.token) {
-                    braintree.setup(data.token, 'dropin', {
-                        container: 'payment'
-                    })
-                }
-            });
-    </script>
+    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/dataTables.min.js"></script>
+    <script type="text/javascript" src='{{ base_url() }}/public/assets/js/datatables.bootstrap.min.js'></script>
 {% endblock %}
 
 {% block appcontent %}
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Commande #{{ order.id }}</h1>
+    </div>
 
     {% include "layouts/flash.twig" %}
 
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Récapitulatif de votre commande</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Informations générales</h6>
         </div>
         <div class="card-body">
-            <div class="row">
-                <div class="col-md-4 order-md-2 mb-4">
-                    <h4 class="d-flex justify-content-between align-items-center mb-3">
-                        <span class="text-muted">Votre panier</span>
-                        <span class="badge badge-primary badge-pill">{{ basket.count }}</span>
-                    </h4>
-                    <ul class="list-group mb-3">
-                        {% for item in basket.all %}
-                            <li class="list-group-item d-flex justify-content-between">
-                                <div>
-                                    <h6 class="my-0">{{ item.nom }}</h6>
-                                    <small class="text-muted">{{ item.description }}</small>
-                                </div>
-                                <span class="text-muted">{{ item.prix | number_format(2) }} € (Qt: {{ item.quantity }})</span>
-                            </li>
-                        {% endfor %}
-                        <li class="list-group-item d-flex justify-content-between">
-                            <span>Sous-total</span>
-                            <strong>{{ basket.subtotal | number_format(2) }} €</strong>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between">
-                            <span>Livraison</span>
-                            <strong>5.00 €</strong>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between list-group-item-secondary">
-                            <span>Total</span>
-                            <strong>{{ (basket.subtotal + 5) | number_format(2) }} €</strong>
-                        </li>
-                    </ul>
+            <div class="pb-3 mb-sm-4">
+                <div class="row mb-3">
+                    <div class="col-sm-4 mb-2">
+                        <div class="bg-secondary p-4 text-dark text-center"><span class="font-weight-semibold mr-2"><b>Total:</b></span>{{ order.total }} €</div>
+                    </div>
+                    <div class="col-sm-4 mb-2">
+                        <div class="bg-secondary p-4 text-dark text-center"><span class="font-weight-semibold mr-2"><b>Statut:</b></span>
+                            {% if order.statut is same as(1) %}
+                                Commande reçue
+                            {% elseif order.statut is same as(2) %}
+                                Commande en préparation
+                            {% elseif order.statut is same as(3)  %}
+                                Contrôle qualité
+                            {% elseif order.statut is same as(4) %}
+                                Commande expédiée
+                            {% elseif order.statut is same as(5) %}
+                                Commande livrée
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-sm-4 mb-2">
+                        <div class="bg-secondary p-4 text-dark text-center"><span class="font-weight-semibold mr-2"><b>Date de commande:</b></span>{{ order.creationDate | date("d/m/Y") }}</div>
+                    </div>
                 </div>
-                <div class="col-md-8 order-md-1">
-                    <h4 class="mb-3">Vérifier vos informations <small class="text-muted">(<a href="{{ path_for("showAccount") }}">Modifier</a>)</small></h4>
-                    <form method="POST" action="{{ path_for("createOrder") }}">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="firstName">Prénom</label>
-                                <input type="text" class="form-control" id="firstName" placeholder="" value="{{ auth.user.prenom }}" disabled>
+                <div class="steps">
+                    <div class="steps-header">
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width:{% if order.statut is same as(5) %} 100% {% else %} {{ ((order.statut / 5) * 100) - 10 }}% {% endif %}" aria-valuenow="{{ order.statut * 10 }}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div class="steps-body">
+                        {% if order.statut > 1 %}
+                            <div class="step step-completed">
+                                <span class="step-indicator"><i class="fas fa-check"></i></span>
+                                <span class="step-icon"><i class="far fa-2x fa-check-circle"></i></span>
+                                Commande reçue
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="lastName">Nom</label>
-                                <input type="text" class="form-control" id="lastName" placeholder="" value="{{ auth.user.nom }}" disabled>
+                        {% elseif order.statut is same as(1) %}
+                            <div class="step step-completed step-active">
+                                <span class="step-indicator"><i class="fas fa-check"></i></span>
+                                <span class="step-icon"><i class="far fa-2x fa-check-circle"></i></span>
+                                Commande reçue
                             </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="email">Adresse e-mail</label>
-                            <input type="email" class="form-control" id="email" value="{{ auth.user.email }}" disabled>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="address">Adresse de livraison</label>
-                            <input type="text" class="form-control" id="address" name="address" value="{{ auth.user.address }}" disabled>
-                        </div>
-
-                        <hr class="mb-4">
-
-                        <h4 class="mb-3">Informations de paiement</h4>
-
-                        <div id="payment"></div>
-                        {{ csrf() | raw }}
-                        <button class="btn btn-primary btn-lg btn-block" type="submit">Procéder au paiement</button>
-                    </form>
+                        {% else %}
+                            <div class="step">
+                                <span class="step-icon"><i class="far fa-2x fa-check-circle"></i></span>
+                                Commande reçue
+                            </div>
+                        {% endif %}
+                        {% if order.statut > 2 %}
+                            <div class="step step-completed">
+                                <span class="step-indicator"><i class="fas fa-check"></i></span>
+                                <span class="step-icon"><i class="fas fa-2x fa-cog"></i></span>
+                                Commande en préparation
+                            </div>
+                        {% elseif order.statut is same as(2) %}
+                            <div class="step step-completed step-active">
+                                <span class="step-indicator"><i class="fas fa-check"></i></span>
+                                <span class="step-icon"><i class="fas fa-2x fa-cog"></i></span>
+                                Commande en préparation
+                            </div>
+                        {% else %}
+                            <div class="step">
+                                <span class="step-icon"><i class="fas fa-2x fa-cog"></i></span>
+                                Commande en préparation
+                            </div>
+                        {% endif %}
+                        {% if order.statut > 3 %}
+                            <div class="step step-completed">
+                                <span class="step-indicator"><i class="fas fa-check"></i></span>
+                                <span class="step-icon"><i class="fas fa-2x fa-award"></i></span>
+                                Contrôle qualité
+                            </div>
+                        {% elseif order.statut is same as(3) %}
+                            <div class="step step-completed step-active">
+                                <span class="step-indicator"><i class="fas fa-check"></i></span>
+                                <span class="step-icon"><i class="fas fa-2x fa-award"></i></span>
+                                Contrôle qualité
+                            </div>
+                        {% else %}
+                            <div class="step">
+                                <span class="step-icon"><i class="fas fa-2x fa-award"></i></span>
+                                Contrôle qualité
+                            </div>
+                        {% endif %}
+                        {% if order.statut > 4 %}
+                            <div class="step step-completed">
+                                <span class="step-indicator"><i class="fas fa-check"></i></span>
+                                <span class="step-icon"><i class="fas fa-2x fa-truck"></i></span>
+                                Commande expédiée
+                            </div>
+                        {% elseif order.statut is same as(4) %}
+                            <div class="step step-completed step-active">
+                                <span class="step-indicator"><i class="fas fa-check"></i></span>
+                                <span class="step-icon"><i class="fas fa-2x fa-truck"></i></span>
+                                Commande expédiée
+                            </div>
+                        {% else %}
+                            <div class="step">
+                                <span class="step-icon"><i class="fas fa-2x fa-truck"></i></span>
+                                Commande expédiée
+                            </div>
+                        {% endif %}
+                        {% if order.statut > 5 %}
+                            <div class="step step-completed">
+                                <span class="step-indicator"><i class="fas fa-check"></i></span>
+                                <span class="step-icon"><i class="fas fa-2x fa-home"></i></span>
+                                Commande livrée
+                            </div>
+                        {% elseif order.statut is same as(5) %}
+                            <div class="step step-completed step-active">
+                                <span class="step-indicator"><i class="fas fa-check"></i></span>
+                                <span class="step-icon"><i class="fas fa-2x fa-home"></i></span>
+                                Commande livrée
+                            </div>
+                        {% else %}
+                            <div class="step">
+                                <span class="step-icon"><i class="fas fa-2x fa-home"></i></span>
+                                Commande livrée
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Contenu de la commande</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nom</th>
+                        <th>Description</th>
+                        <th>Quantité</th>
+                        <th>Prix</th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <th>#</th>
+                        <th>Nom</th>
+                        <th>Description</th>
+                        <th>Quantité</th>
+                        <th>Prix</th>
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                    {% set i = 1 %}
+                    {% for vinyle in order.vinyles %}
+                        <tr>
+                            <td>{{ i }} {% set i = i + 1 %}</td>
+                            <td>{{ vinyle.nom }}</td>
+                            <td>{{ vinyle.description }}</td>
+                            <td>{{ vinyle.pivot.quantite }}</td>
+                            <td>{{ vinyle.prix * vinyle.pivot.quantite }} €</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

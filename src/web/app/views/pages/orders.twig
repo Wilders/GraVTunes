@@ -1,0 +1,64 @@
+{% extends "layouts/app-layout.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/datatables.bootstrap.min.css">
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/dataTables.min.js"></script>
+    <script type="text/javascript" src='{{ base_url() }}/public/assets/js/datatables.bootstrap.min.js'></script>
+{% endblock %}
+
+{% block appcontent %}
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Mes Commandes</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable">
+                    <thead>
+                    <tr>
+                        <th>Référence</th>
+                        <th>Statut</th>
+                        <th>Date</th>
+                        <th>Total</th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <th>Référence</th>
+                        <th>Statut</th>
+                        <th>Date</th>
+                        <th>Total</th>
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                    {% for order in orders %}
+                        <tr>
+                            <td><a href="{{ path_for('showOrder', {id: order.id}) }}">#{{ order.id }}</a></td>
+                            <td>
+                                {% if order.statut is same as(1) %}
+                                    Commande reçue
+                                {% elseif order.statut is same as(2) %}
+                                    Commande en préparation
+                                {% elseif order.statut is same as(3)  %}
+                                    Contrôle qualité
+                                {% elseif order.statut is same as(4) %}
+                                    Commande expédiée
+                                {% elseif order.statut is same as(5) %}
+                                    Commande livrée
+                                {% endif %}
+                            </td>
+                            <td>{{ order.creationDate | date("d/m/Y") }}</td>
+                            <td>{{ order.total }} €</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
