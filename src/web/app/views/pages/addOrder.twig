@@ -1,0 +1,107 @@
+{% extends "layouts/app-layout.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/datatables.bootstrap.min.css">
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script src="{{ base_url() }}/public/assets/js/braintree-2.32.1.min.js"></script>
+    <script>
+        fetch('{{ base_url() }}/braintree/token')
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                if(data.token) {
+                    braintree.setup(data.token, 'dropin', {
+                        container: 'payment'
+                    });
+                    setTimeout(function () {
+                        $('#pay').prop("disabled", false);
+                    }, 1000);
+
+                }
+            });
+    </script>
+{% endblock %}
+
+{% block appcontent %}
+
+    {% include "layouts/flash.twig" %}
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Récapitulatif de votre commande</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 order-md-2 mb-4">
+                    <h4 class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-muted">Votre panier</span>
+                        <span class="badge badge-primary badge-pill">{{ basket.count }}</span>
+                    </h4>
+                    <ul class="list-group mb-3">
+                        {% for item in basket.all %}
+                            <li class="list-group-item d-flex justify-content-between">
+                                <div>
+                                    <h6 class="my-0">{{ item.nom }}</h6>
+                                    <small class="text-muted">{{ item.description }}</small>
+                                </div>
+                                <span class="text-muted">{{ item.prix | number_format(2) }} € (Qt: {{ item.quantity }})</span>
+                            </li>
+                        {% endfor %}
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Sous-total</span>
+                            <strong>{{ basket.subtotal | number_format(2) }} €</strong>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Livraison</span>
+                            <strong>5.00 €</strong>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between list-group-item-secondary">
+                            <span>Total</span>
+                            <strong>{{ (basket.subtotal + 5) | number_format(2) }} €</strong>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-8 order-md-1">
+                    <h4 class="mb-3">Vérifier vos informations <small class="text-muted">(<a href="{{ path_for("showAccount") }}">Modifier</a>)</small></h4>
+                    <form method="POST" action="{{ path_for("addOrder") }}">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="firstName">Prénom</label>
+                                <input type="text" class="form-control" id="firstName" placeholder="" value="{{ auth.user.prenom }}" disabled>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="lastName">Nom</label>
+                                <input type="text" class="form-control" id="lastName" placeholder="" value="{{ auth.user.nom }}" disabled>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email">Adresse e-mail</label>
+                            <input type="email" class="form-control" id="email" value="{{ auth.user.email }}" disabled>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="address">Adresse de livraison</label>
+                            <input type="text" class="form-control" id="address" name="address" value="{{ auth.user.address }}" disabled>
+                        </div>
+
+                        <hr class="mb-4">
+
+                        <h4 class="mb-3">Informations de paiement</h4>
+
+                        <div id="payment"></div>
+
+                        {{ csrf() | raw }}
+
+                        <button id="pay" class="btn btn-primary btn-lg btn-block" type="submit" disabled>Procéder au paiement</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

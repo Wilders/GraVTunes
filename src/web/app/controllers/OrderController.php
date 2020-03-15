@@ -17,15 +17,12 @@ use Slim\Http\Response;
  */
 class OrderController extends Controller {
 
-    public function showOrder(Request $request, Response $response, array $args): Response {
-        try {
-            if(Basket::count() === 0) throw new Exception("Votre panier est vide.");
+    public function order(Request $request, Response $response, array $args): Response {
+        $order = Commande::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
 
-            $this->view->render($response, 'pages/order.twig');
-        } catch(Exception $e) {
-            $this->flash->addMessage('error', $e->getMessage());
-            $response = $response->withRedirect($this->router->pathFor("showCart"));
-        }
+        $this->view->render($response, 'pages/order.twig', [
+            "order" => $order
+        ]);
         return $response;
     }
 
@@ -38,7 +35,19 @@ class OrderController extends Controller {
         return $response;
     }
 
-    public function createOrder(Request $request, Response $response, array $args): Response {
+    public function showAddOrder(Request $request, Response $response, array $args): Response {
+        try {
+            if(Basket::count() === 0) throw new Exception("Votre panier est vide.");
+
+            $this->view->render($response, 'pages/addOrder.twig');
+        } catch(Exception $e) {
+            $this->flash->addMessage('error', $e->getMessage());
+            $response = $response->withRedirect($this->router->pathFor("showCart"));
+        }
+        return $response;
+    }
+
+    public function addOrder(Request $request, Response $response, array $args): Response {
         try {
             if(Basket::count() === 0) throw new Exception("Votre panier est vide.");
             if(is_null($request->getParsedBodyParam('payment_method_nonce'))) throw new Exception("Une erreur est survenue lors du paiement. Vous n'avez pas été débité.");
@@ -46,8 +55,7 @@ class OrderController extends Controller {
             $order = new Commande();
             $order->user_id = Auth::user()->id;
             $order->total = Basket::subtotal() + 5;
-            $order->paid = false;
-            $order->statut = "créé";
+            $order->statut = "Commande reçue";
             $order->creationDate = new DateTime();
             $order->save();
 
@@ -62,23 +70,19 @@ class OrderController extends Controller {
             ]);
 
             if($result->success) {
-                $order->update([
-                    'paid' => true
-                ]);
                 Basket::clear();
                 $order->paiement()->create([
                     'success' => true,
                     'transaction_id' => $result->transaction->id
                 ]);
             } else {
-                $order->paiement()->create([
-                    'success' => false
-                ]);
-                throw new Exception("Votre paiement a été refusé.");
+                $order->vinyles()->detach();
+                $order->delete();
+                throw new Exception("Votre paiement a été refusé. Vous n'avez pas été débité.");
             }
 
             $this->flash->addMessage('success', "Votre paiement a été accepté et votre commande a été créée.");
-            $response = $response->withRedirect($this->router->pathFor("appHome"));
+            $response = $response->withRedirect($this->router->pathFor("showOrder", ['id' => $order->id]));
         } catch(Exception $e) {
             $this->flash->addMessage('error', $e->getMessage());
             $response = $response->withRedirect($this->router->pathFor("showAddOrder"));

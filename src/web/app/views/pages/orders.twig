@@ -38,7 +38,7 @@
                     <tbody>
                     {% for order in orders %}
                         <tr>
-                            <td>#{{ order.id }}</td>
+                            <td><a href="{{ path_for('showOrder', {id: order.id}) }}">#{{ order.id }}</a></td>
                             <td>{{ order.creationDate }}</td>
                             <td>{{ order.total }} €</td>
                             <td>{{ order.statut }}</td>

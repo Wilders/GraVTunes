@@ -140,10 +140,10 @@ $app->group('', function() {
     /**
      * Order
      */
-    $this->get('/order/confirm', OrderController::class . ':showOrder')->setName("showAddOrder");
+    $this->get('/order/confirm', OrderController::class . ':showAddOrder')->setName("showAddOrder");
     $this->get('/orders', OrderController::class . ':orders')->setName("showOrders");
     $this->get('/order/{id:[0-9]+}', OrderController::class . ':order')->setName("showOrder");
-    $this->post('/order/place', OrderController::class . ':createOrder')->setName("addOrder");
+    $this->post('/order/place', OrderController::class . ':addOrder')->setName("addOrder");
 
     /**
      * Tracks
