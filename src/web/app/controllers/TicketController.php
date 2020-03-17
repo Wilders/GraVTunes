@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\helpers\Auth;
+use app\models\Message;
 use app\models\Ticket;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Slim\Http\Request;
@@ -70,5 +71,22 @@ class TicketController extends Controller {
             $response = $response->withRedirect($this->router->pathFor("showTickets"));
         }
         return $response;
+    }
+
+    public function messages(Request $request, Response $response, array $args) : Response {
+        try{
+            $ticket = Ticket::where(["id" => $args['id']])->firstOrFail();
+            $messages = Message::where(['ticket_id' => $ticket->id])->get();
+
+            $this->view->render($response, 'pages/ticket.twig',[
+                "messages" => $messages,
+                "ticket" => $ticket
+            ]);
+            return $response;
+
+        }catch (ModelNotFoundException $e){
+            $this->flash->addMessage('error', $e->getMessage());
+            $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
+        }
     }
 }
