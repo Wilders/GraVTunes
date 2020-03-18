@@ -16,7 +16,7 @@
 
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Ticket n°</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Ticket n° . {{ ticket.id }}</h6>
         </div>
         <div class="card-body">
             <div class="row">
@@ -49,46 +49,6 @@
                                         <p class="small text-muted">12:30 PM | Fev 13</p>
                                     </div>
                                 </div>
-
-                                <!-- Sender Message-->
-                                <div class="media w-50 mb-3"><img
-                                            src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg"
-                                            alt="user" width="50" class="rounded-circle">
-                                    <div class="media-body ml-3">
-                                        <div class="bg-light rounded py-2 px-3 mb-2">
-                                            <p class="text-small mb-0 text-muted">D'accord on va voir ensemble ce que
-                                                l'on peut
-                                                faire. Commencez par suivre les étapes de ce lien -lien- puis revenez
-                                                ensuite
-                                                vers moi.</lien></p>
-                                        </div>
-                                        <p class="small text-muted">12:31 PM | Fev 13</p>
-                                    </div>
-                                </div>
-
-                                <!-- Reciever Message-->
-                                <div class="media w-50 ml-auto mb-3">
-                                    <div class="media-body">
-                                        <div class="bg-primary rounded py-2 px-3 mb-2">
-                                            <p class="text-small mb-0 text-white">Merci je vous recontacte dès que c'est
-                                                fini.</p>
-                                        </div>
-                                        <p class="small text-muted">12:31 PM | Fev 13</p>
-                                    </div>
-                                </div>
-
-                                <!-- Sender Message-->
-                                <div class="media w-50 mb-3"><img
-                                            src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg"
-                                            alt="user" width="50" class="rounded-circle">
-                                    <div class="media-body ml-3">
-                                        <div class="bg-light rounded py-2 px-3 mb-2">
-                                            <p class="text-small mb-0 text-muted">D'accord ! À tout à l'heure.</p>
-                                        </div>
-                                        <p class="small text-muted">12:31 PM | Fev 13</p>
-                                    </div>
-                                </div>
-
                                 <!-- Typing area -->
                                 <form action="#" class="bg-light">
                                     <div class="input-group">
@@ -105,6 +65,45 @@
                         </div>
                     </div>
                 </div>
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Objet</th>
+                        <th>Date de création</th>
+                        <th>Date de la dernière modification</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <th>ID</th>
+                        <th>Objet</th>
+                        <th>Date de création</th>
+                        <th>Date de la dernière modification</th>
+                        <th></th>
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                        <tr>
+                            <td>{{ ticket.id }}</td>
+                            <td>{{ ticket.objet }}</td>
+                            <td>{{ ticket.created_at }}</td>
+                            <td>{{ ticket.updated_at }}</td>
+                            <td>
+                                <div class="dropdown">
+                                    <a  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <img src="{{ base_url() }}/public/assets/media/images/menulist.png" >
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                        <a class="dropdown-item btn" href="{{ path_for("showTicket", {id: ticket.id}) }}">Accéder</a>
+                                        <button class="dropdown-item" data-toggle="modal" data-target="#closeTicketModal">Clore</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

@@ -59,7 +59,7 @@ class TicketController extends Controller {
 
     public function closeTicket(Request $request, Response $response, array $args): Response {
         try {
-            $ticket = Ticket::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
+            $ticket = Ticket::where(['id' => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
 
             $ticket->statut = 1;
             $ticket->save();
@@ -75,7 +75,7 @@ class TicketController extends Controller {
 
     public function messages(Request $request, Response $response, array $args) : Response {
         try{
-            $ticket = Ticket::where(["id" => $args['id']])->firstOrFail();
+            $ticket = Ticket::where(['id' => $args['id']])->firstOrFail();
             $messages = Message::where(['ticket_id' => $ticket->id])->get();
 
             $this->view->render($response, 'pages/ticket.twig',[
