@@ -3,7 +3,6 @@
 namespace app\controllers;
 
 use app\helpers\Auth;
-use app\models\Message;
 use app\models\Ticket;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Slim\Http\Request;
@@ -16,8 +15,18 @@ use Slim\Http\Response;
 class TicketController extends Controller {
 
     public function ticket(Request $request, Response $response, array $args): Response {
-        // Affiche un ticket
-        $this->view->render($response, 'pages/ticket.twig');
+        try {
+            $ticket = Auth::user()->tickets()->where('id', $args['id'])->firstOrFail();
+            $messages = $ticket->messages;
+
+            $this->view->render($response, 'pages/ticket.twig',[
+                "messages" => $messages,
+                "ticket" => $ticket
+            ]);
+        } catch (ModelNotFoundException $e){
+            $this->flash->addMessage('error', "Impossible de trouver ce ticket.");
+            $response = $response->withRedirect($this->router->pathFor("showTickets"));
+        }
         return $response;
     }
 
@@ -71,22 +80,5 @@ class TicketController extends Controller {
             $response = $response->withRedirect($this->router->pathFor("showTickets"));
         }
         return $response;
-    }
-
-    public function messages(Request $request, Response $response, array $args) : Response {
-        try{
-            $ticket = Ticket::where(['id' => $args['id']])->firstOrFail();
-            $messages = Message::where(['ticket_id' => $ticket->id])->get();
-
-            $this->view->render($response, 'pages/ticket.twig',[
-                "messages" => $messages,
-                "ticket" => $ticket
-            ]);
-            return $response;
-
-        }catch (ModelNotFoundException $e){
-            $this->flash->addMessage('error', $e->getMessage());
-            $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
-        }
     }
 }

@@ -16,47 +16,40 @@
 
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Ticket n° . {{ ticket.id }}</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Ticket #{{ ticket.id }} - Créé le {{ ticket.created_at | date('d/m/Y') }}</h6>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-8">
                     <div class="card shadow m-1">
-                        <!-- Chat Box-->
                         <div>
                             <div class="px-4 py-5 chat-box bg-white">
-                                <!-- Sender Message-->
-                                <div class="media w-50 mb-3"><img
-                                            src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg"
-                                            alt="user" width="50" class="rounded-circle">
+                                <div class="media w-50 mb-3"><img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="50" class="rounded-circle">
                                     <div class="media-body ml-3">
                                         <div class="bg-light rounded py-2 px-3 mb-2">
-                                            <p class="text-small mb-0 text-muted">Bonjour, comment puis-je vous aider
-                                                ?</p>
+                                            <p class="text-small mb-0 text-muted">Bonjour, comment puis-je vous aider ?</p>
                                         </div>
                                         <p class="small text-muted">12:30 | Fev 13</p>
                                     </div>
                                 </div>
 
-                                <!-- Reciever Message-->
-                                <div class="media w-50 ml-auto mb-3">
-                                    <div class="media-body">
-                                        <div class="bg-primary rounded py-2 px-3 mb-2">
-                                            <p class="text-small mb-0 text-white">Bonjour ! J'ai un problème avec
-                                                l'ajout de
-                                                titres, c'est toujours l'erreur avec ffmpeg. </p>
+                                {% for message in messages %}
+                                    <div class="media w-50 ml-auto mb-3">
+                                        <div class="media-body">
+                                            <div class="bg-primary rounded py-2 px-3 mb-2">
+                                                <p class="text-small mb-0 text-white">{{ message.message }}</p>
+                                            </div>
+                                            <p class="small text-muted">{{ message.creationDate | date("d/m/Y H:i") }}</p>
                                         </div>
-                                        <p class="small text-muted">12:30 PM | Fev 13</p>
                                     </div>
-                                </div>
+                                {% endfor %}
+
                                 <!-- Typing area -->
                                 <form action="#" class="bg-light">
                                     <div class="input-group">
-                                        <input type="text" placeholder="Aa" aria-describedby="button-addon2"
-                                               class="form-control rounded-0 border-0 py-4 bg-light">
+                                        <input type="text" placeholder="Aa" aria-describedby="button-addon2" class="form-control rounded-0 border-0 py-4 bg-light">
                                         <div class="input-group-append">
-                                            <button id="button-addon2" type="submit" class="btn btn-link"><i
-                                                        class="fa fa-paper-plane"></i></button>
+                                            <button id="button-addon2" type="submit" class="btn btn-link"><i class="fa fa-paper-plane"></i></button>
                                         </div>
                                     </div>
                                 </form>
@@ -65,45 +58,6 @@
                         </div>
                     </div>
                 </div>
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Objet</th>
-                        <th>Date de création</th>
-                        <th>Date de la dernière modification</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tfoot>
-                    <tr>
-                        <th>ID</th>
-                        <th>Objet</th>
-                        <th>Date de création</th>
-                        <th>Date de la dernière modification</th>
-                        <th></th>
-                    </tr>
-                    </tfoot>
-                    <tbody>
-                        <tr>
-                            <td>{{ ticket.id }}</td>
-                            <td>{{ ticket.objet }}</td>
-                            <td>{{ ticket.created_at }}</td>
-                            <td>{{ ticket.updated_at }}</td>
-                            <td>
-                                <div class="dropdown">
-                                    <a  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <img src="{{ base_url() }}/public/assets/media/images/menulist.png" >
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <a class="dropdown-item btn" href="{{ path_for("showTicket", {id: ticket.id}) }}">Accéder</a>
-                                        <button class="dropdown-item" data-toggle="modal" data-target="#closeTicketModal">Clore</button>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
         </div>
     </div>
