@@ -60,13 +60,35 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="modalInvitCollab" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Invitation à collaborer</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Partagez ce lien pour inviter un collaborateur</p>
+
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{{  uri.getAuthority() ~ path_for('showCollab', {shareKey: vinyle.shareKey}) }}" onclick="clipboard(this)" data-toggle="popover" data-content="<i class='fas fa-check-circle'></i></i> C'est copié !" data-placement="bottom" data-trigger="focus" readonly>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <div class="btn-group btn-group-sm float-right" role="group">
                 <a href="{{ path_for('addCart', {id: vinyle.id}) }}" class="btn btn-success"><i class="fas fa-cart-plus"></i></a>
                 <a href="#" class="btn btn-dark" data-toggle="modal" data-target="#modalInvitCollab"><i class="fas fa-share-square"></i></a>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateModal">Modifier <i class="fas fa-edit"></i></button>
+                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#updateModal">Modifier <i class="fas fa-edit"></i></a>
                 <a href="{{ path_for('deleteVinyle', {id: vinyle.id}) }}" class="btn btn-danger">Supprimer <i class="fas fa-times"></i></a>
             </div>
             <h6 class="m-0 font-weight-bold text-primary">Informations générales</h6>
@@ -139,7 +161,7 @@
                             <td>{{ i }} {% set i = i + 1 %}</td>
                             <td>{{ track.nom }}</td>
                             <td>{{ track.description }}</td>
-                            <td>{{ track.file.duree }}</td>
+                            <td>{{ track.file.duree }} secondes</td>
                             <td class="text-center">
                                 <div class="btn-group" role="group">
                                     <a href="{{ path_for('showUpdateTrack', {id: track.id}) }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
@@ -153,28 +175,4 @@
             </div>
         </div>
     </div>
-
-    <div class="modal fade" id="modalInvitCollab" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Invitation à collaborer</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <label >Lien à partager pour inviter un collaborateur : </label>
-
-                    <div class="form-group mx-sm-4 mb-4">
-                        <input type="text" readonly class="form-control" id="staticShowListe" value="{{  uri.getAuthority() ~ path_for('showCollab', {shareKey: vinyle.shareKey}) }}" onclick="clipboard(this)" data-toggle="popover" data-content="<i class='fas fa-check-circle'></i></i> C'est copié !" data-placement="bottom" data-trigger="focus">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
 {% endblock %}

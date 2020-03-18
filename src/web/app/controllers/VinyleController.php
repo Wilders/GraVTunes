@@ -43,7 +43,7 @@ class VinyleController extends Controller {
     }
 
     public function vinyleCollab(Request $request, Response $response, array $args): Response {
-        try{
+        try {
             $vinyle = Vinyle::where(["shareKey" => $args['shareKey']] )->firstOrFail();
             $tracks = Auth::user()->tracks->diff($vinyle->tracks);
 
@@ -51,12 +51,11 @@ class VinyleController extends Controller {
                 "vinyle" => $vinyle,
                 "tracks" => $tracks
             ]);
-        }catch(ModelNotFoundException $e){
+        } catch(ModelNotFoundException $e) {
             $this->flash->addMessage('error', "Ce vinyle n'existe pas.");
-            $response = $response->withRedirect($this->router->pathFor('appHome'));
+            $response = $response->withRedirect($this->router->pathFor('showHome'));
         }
         return $response;
-
     }
 
     public function showAddVinyle(Request $request, Response $response, array $args): Response {
@@ -69,17 +68,16 @@ class VinyleController extends Controller {
     }
 
     public function getVinyleCollab(Request $request, Response $response, array $args): Response {
-        try{
+        try {
             $key = filter_var($request->getParsedBodyParam('shareKey'), FILTER_SANITIZE_STRING);
 
-            $vinyle = Vinyle::where(["shareKey" => $key ] )->firstOrFail();
+            $vinyle = Vinyle::where(["shareKey" => $key])->firstOrFail();
             $response = $response->withRedirect($this->router->pathFor('showCollab', ['shareKey' => $vinyle->shareKey]));
-        }catch(ModelNotFoundException $e){
+        } catch(ModelNotFoundException $e) {
             $this->flash->addMessage('error', "Ce vinyle n'existe pas.");
             $response = $response->withRedirect($this->router->pathFor('showVinyles'));
         }
         return $response;
-
     }
 
     public function addVinyle(Request $request, Response $response, array $args): Response {
@@ -143,6 +141,12 @@ class VinyleController extends Controller {
 
     public function addTracksCollab(Request $request, Response $response, array $args): Response {
         try {
+            /**
+             * Ici tu fais un where avec le user_id pour trouver le vinyle, sauf que le gars veut modifier le vinyle d'un autre user, donc ton where ne marchera jamais mis à part si l'user
+             * collabore sur son propre vinyle (donc enleve le where user_id)
+             *
+             * De plus passe par la shakreKey car sinon ça sert a rien de créer une clé de sécurité.. :/
+             */
             $vinyle = Vinyle::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
             $tracks = $request->getParsedBodyParam('tracks');
 
@@ -154,7 +158,6 @@ class VinyleController extends Controller {
             $this->flash->addMessage('error', "Impossible de trouver ce vinyle.");
             $response = $response->withRedirect($this->router->pathFor('showVinyles'));
         }
-
         return $response;
     }
 
@@ -212,7 +215,6 @@ class VinyleController extends Controller {
             $this->flash->addMessage('error', "Impossible de supprimer ce vinyle.");
             $response = $response->withRedirect($this->router->pathFor('showVinyle', ['id' => $args['id']]));
         }
-
         return $response;
     }
 
@@ -233,7 +235,6 @@ class VinyleController extends Controller {
             $this->flash->addMessage('error', "Impossible de supprimer ce titre pour ce vinyle.");
             $response = $response->withRedirect($this->router->pathFor('showVinyle', ['id' => $args['id']]));
         }
-
         return $response;
     }
 }
