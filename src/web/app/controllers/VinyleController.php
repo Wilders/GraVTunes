@@ -23,7 +23,6 @@ class VinyleController extends Controller {
             $this->view->render($response, 'pages/vinyle.twig', [
                 "vinyle" => $vinyle,
                 "uri" => $request->getUri(),
-                //"route" => $app->getContainer()->get('router')->pathFor("showHome"),
                 "addableTracks" => Auth::user()->tracks->diff($vinyle->tracks)
             ]);
         } catch (ModelNotFoundException $e) {
@@ -37,7 +36,8 @@ class VinyleController extends Controller {
         $vinyles = Auth::user()->vinyles;
 
         $this->view->render($response, 'pages/vinyles.twig', [
-            "vinyles" => $vinyles
+            "vinyles" => $vinyles,
+            "uri" => $request->getUri()
         ]);
         return $response;
     }
@@ -70,11 +70,13 @@ class VinyleController extends Controller {
 
     public function getVinyleCollab(Request $request, Response $response, array $args): Response {
         try{
-            $vinyle = Vinyle::where(["shareKey" => filter_var($request->getParsedBodyParam('shareKey'), FILTER_SANITIZE_STRING)] )->firstOrFail();
+            $key = filter_var($request->getParsedBodyParam('shareKey'), FILTER_SANITIZE_STRING);
+
+            $vinyle = Vinyle::where(["shareKey" => $key ] )->firstOrFail();
             $response = $response->withRedirect($this->router->pathFor('showCollab', ['shareKey' => $vinyle->shareKey]));
         }catch(ModelNotFoundException $e){
             $this->flash->addMessage('error', "Ce vinyle n'existe pas.");
-            $response = $response->withRedirect($this->router->pathFor('appHome'));
+            $response = $response->withRedirect($this->router->pathFor('showVinyles'));
         }
         return $response;
 

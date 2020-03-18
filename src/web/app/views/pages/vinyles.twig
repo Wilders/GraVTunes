@@ -18,6 +18,7 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <a class="btn btn-sm btn-outline-primary float-right" href="{{ path_for('addVinyle') }}">Créer un Vinyle</a>
+            <button class="btn btn-sm btn-outline-primary float-right mr-lg-2 " type="button" data-toggle="modal" data-target="#modalCollab">Collaborer sur un Vinyle </button>
             <h6 class="m-0 font-weight-bold text-primary">Mes Vinyles</h6>
         </div>
         <div class="card-body">
@@ -49,10 +50,36 @@
                                     <div class="btn-group" role="group">
                                         <a href="{{ path_for('showVinyle', {id: vinyle.id}) }}" class="btn btn-success"><i class="fas fa-eye"></i></a>
                                         <a href="{{ path_for('addCart', {id: vinyle.id}) }}" class="btn btn-primary"><i class="fas fa-cart-plus"></i></a>
+                                        <a href="#" class="btn btn-dark" data-toggle="modal" data-target="#modalInvitCollab{{ vinyle.id }}"><i class="fas fa-share-square"></i></a>
                                         <a href="{{ path_for('deleteVinyle', {id: vinyle.id}) }}" class="btn btn-danger"><i class="fas fa-times"></i></a>
                                     </div>
                                 </td>
                             </tr>
+
+
+                            <div class="modal fade" id="modalInvitCollab{{ vinyle.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Invitation à collaborer</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <label >Lien à partager pour inviter un collaborateur : </label>
+
+                                            <div class="form-group mx-sm-4 mb-4">
+                                                <input type="text" readonly class="form-control" id="staticShowListe" value="{{  uri.getAuthority() ~ path_for('showCollab', {shareKey: vinyle.shareKey}) }}" onclick="clipboard(this)" data-toggle="popover" data-content="<i class='fas fa-check-circle'></i></i> C'est copié !" data-placement="bottom" data-trigger="focus">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         {% endfor %}
                     </tbody>
                 </table>
@@ -60,29 +87,34 @@
         </div>
     </div>
 
-    <p>
-        <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#multiCollapseExample1" aria-expanded="false" aria-controls="multiCollapseExample2">Collaborer sur un vinyle </button>
-    </p>
-    <div class="row">
-        <div class="col">
-            <div class="collapse multi-collapse" id="multiCollapseExample1">
-                <div class="card card-body">
-                    <label >Recherchez le vinyle sur lequel vous allez collaborer grâce au numéro que son créateur vous a envoyé : </label>
-                    <form class="form" action="{{ path_for("getCollab") }}" method="POST">
-                        <div class="form-group mb-4">
-                            <label for="staticEmail2" class="sr-only">Email</label>
-                        </div>
-                        <div class="form-group mx-sm-4 mb-4">
-                            <input type="password" class="form-control" name="shareKey" id="inputPassword2" placeholder="Clef du vinyle">
-                        </div>
-
-                        {{ csrf() | raw }}
-
-                        <button type="submit" class="btn btn-primary mb-3">Accéder au vinyle</button>
-                    </form>
+    <div class="modal fade" id="modalCollab" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Collaboration</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
+                <form class="form" action="{{ path_for("getCollab") }}" method="POST">
+                    <div class="modal-body">
+                            <label >Recherchez le vinyle sur lequel vous allez collaborer grâce au numéro que son créateur vous a envoyé : </label>
+
+                            <div class="form-group mx-sm-4 mb-4">
+                                <input type="text" class="form-control" name="shareKey" id="inputPassword2" placeholder="Clé du vinyle">
+                            </div>
+
+                            {{ csrf() | raw }}
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-primary ">Accéder au vinyle</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+
 
 {% endblock %}
