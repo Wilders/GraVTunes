@@ -23,3 +23,14 @@ $(function () {
     $('.selectpicker').selectpicker();
   }
 });
+
+function clipboard(item) {
+  var copyText = document.getElementById(item.id);
+  copyText.select();
+  document.execCommand("copy");
+}
+
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip();
+  $('[data-toggle="popover"]').popover({html: true});
+});

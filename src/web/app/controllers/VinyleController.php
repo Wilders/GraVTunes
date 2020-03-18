@@ -22,6 +22,7 @@ class VinyleController extends Controller {
             $vinyle = Vinyle::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
             $this->view->render($response, 'pages/vinyle.twig', [
                 "vinyle" => $vinyle,
+                "uri" => $request->getUri(),
                 "addableTracks" => Auth::user()->tracks->diff($vinyle->tracks)
             ]);
         } catch (ModelNotFoundException $e) {
@@ -35,8 +36,25 @@ class VinyleController extends Controller {
         $vinyles = Auth::user()->vinyles;
 
         $this->view->render($response, 'pages/vinyles.twig', [
-            "vinyles" => $vinyles
+            "vinyles" => $vinyles,
+            "uri" => $request->getUri()
         ]);
+        return $response;
+    }
+
+    public function vinyleCollab(Request $request, Response $response, array $args): Response {
+        try {
+            $vinyle = Vinyle::where(["shareKey" => $args['shareKey']] )->firstOrFail();
+            $tracks = Auth::user()->tracks->diff($vinyle->tracks);
+
+            $this->view->render($response, 'pages/vinyleCollab.twig',[
+                "vinyle" => $vinyle,
+                "tracks" => $tracks
+            ]);
+        } catch(ModelNotFoundException $e) {
+            $this->flash->addMessage('error', "Ce vinyle n'existe pas.");
+            $response = $response->withRedirect($this->router->pathFor('showHome'));
+        }
         return $response;
     }
 
@@ -46,6 +64,19 @@ class VinyleController extends Controller {
         $this->view->render($response, 'pages/addVinyle.twig', [
             "tracks" => $tracks
         ]);
+        return $response;
+    }
+
+    public function getVinyleCollab(Request $request, Response $response, array $args): Response {
+        try {
+            $key = filter_var($request->getParsedBodyParam('shareKey'), FILTER_SANITIZE_STRING);
+
+            $vinyle = Vinyle::where(["shareKey" => $key])->firstOrFail();
+            $response = $response->withRedirect($this->router->pathFor('showCollab', ['shareKey' => $vinyle->shareKey]));
+        } catch(ModelNotFoundException $e) {
+            $this->flash->addMessage('error', "Ce vinyle n'existe pas.");
+            $response = $response->withRedirect($this->router->pathFor('showVinyles'));
+        }
         return $response;
     }
 
@@ -108,6 +139,22 @@ class VinyleController extends Controller {
         return $response;
     }
 
+    public function addTracksCollab(Request $request, Response $response, array $args): Response {
+        try {
+            $vinyle = Vinyle::where([ "shareKey" => $args['shareKey'] ])->firstOrFail();
+            $tracks = $request->getParsedBodyParam('tracks');
+
+            $vinyle->tracks()->saveMany(Auth::user()->tracks->find($tracks));
+
+            $this->flash->addMessage('success', "Vos titres on bien été ajoutés");
+            $response = $response->withRedirect($this->router->pathFor('showCollab', ["shareKey" => $vinyle->shareKey]));
+        } catch (ModelNotFoundException $e) {
+            $this->flash->addMessage('error', "Impossible de trouver ce vinyle.");
+            $response = $response->withRedirect($this->router->pathFor('showVinyles'));
+        }
+        return $response;
+    }
+
     public function updateVinyle(Request $request, Response $response, array $args): Response {
         try {
             $vinyle = Vinyle::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
@@ -162,7 +209,6 @@ class VinyleController extends Controller {
             $this->flash->addMessage('error', "Impossible de supprimer ce vinyle.");
             $response = $response->withRedirect($this->router->pathFor('showVinyle', ['id' => $args['id']]));
         }
-
         return $response;
     }
 
@@ -183,7 +229,6 @@ class VinyleController extends Controller {
             $this->flash->addMessage('error', "Impossible de supprimer ce titre pour ce vinyle.");
             $response = $response->withRedirect($this->router->pathFor('showVinyle', ['id' => $args['id']]));
         }
-
         return $response;
     }
 }
