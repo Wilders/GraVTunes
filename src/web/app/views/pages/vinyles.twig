@@ -59,4 +59,30 @@
             </div>
         </div>
     </div>
+
+    <p>
+        <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#multiCollapseExample1" aria-expanded="false" aria-controls="multiCollapseExample2">Collaborer sur un vinyle </button>
+    </p>
+    <div class="row">
+        <div class="col">
+            <div class="collapse multi-collapse" id="multiCollapseExample1">
+                <div class="card card-body">
+                    <label >Recherchez le vinyle sur lequel vous allez collaborer grâce au numéro que son créateur vous a envoyé : </label>
+                    <form class="form" action="{{ path_for("getCollab") }}" method="POST">
+                        <div class="form-group mb-4">
+                            <label for="staticEmail2" class="sr-only">Email</label>
+                        </div>
+                        <div class="form-group mx-sm-4 mb-4">
+                            <input type="password" class="form-control" name="shareKey" id="inputPassword2" placeholder="Clef du vinyle">
+                        </div>
+
+                        {{ csrf() | raw }}
+
+                        <button type="submit" class="btn btn-primary mb-3">Accéder au vinyle</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}

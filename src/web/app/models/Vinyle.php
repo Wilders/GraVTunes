@@ -36,4 +36,5 @@ class Vinyle extends Model {
     public function commandes(): BelongsToMany {
         return $this->belongsToMany("\app\models\Commande");
     }
+    
 }
