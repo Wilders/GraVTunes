@@ -141,13 +141,7 @@ class VinyleController extends Controller {
 
     public function addTracksCollab(Request $request, Response $response, array $args): Response {
         try {
-            /**
-             * Ici tu fais un where avec le user_id pour trouver le vinyle, sauf que le gars veut modifier le vinyle d'un autre user, donc ton where ne marchera jamais mis à part si l'user
-             * collabore sur son propre vinyle (donc enleve le where user_id)
-             *
-             * De plus passe par la shakreKey car sinon ça sert a rien de créer une clé de sécurité.. :/
-             */
-            $vinyle = Vinyle::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
+            $vinyle = Vinyle::where([ "shareKey" => $args['shareKey'] ])->firstOrFail();
             $tracks = $request->getParsedBodyParam('tracks');
 
             $vinyle->tracks()->saveMany(Auth::user()->tracks->find($tracks));

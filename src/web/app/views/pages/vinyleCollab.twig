@@ -52,7 +52,7 @@
     </div>
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <form action="{{ path_for('addTracksVinyleCollab', {id: vinyle.id}) }}" class="float-right" method="POST">
+            <form action="{{ path_for('addTracksVinyleCollab', {shareKey: vinyle.shareKey}) }}" class="float-right" method="POST">
                 <select name="tracks[]" class="selectpicker" id="tracks" data-live-search="true" title="Ajouter des titres" multiple>
                     {% for track in tracks %}
                         <option value="{{ track.id }}">{{ track.nom }}</option>

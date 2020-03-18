@@ -190,9 +190,7 @@ $app->group('', function() {
      */
 
     $this->get('/collab/{shareKey:[a-zA-Z0-9]+}', VinyleController::class . ':vinyleCollab')->setName("showCollab");
-    // Ici c'est une grosse faille de sécu de prendre l'ID et pas la ShareKey, car si on connait l'ID (qui peut être facilement récupérable car en A_I su la table, on peut ajouter des musiques..)
-    // Modifie pour passer par la shareKey
-    $this->post('/collab/{id:[0-9]+}/add', VinyleController::class . ':addTracksCollab')->setName("addTracksVinyleCollab");
+    $this->post('/collab/{shareKey:[a-zA-Z0-9]+}/add', VinyleController::class . ':addTracksCollab')->setName("addTracksVinyleCollab");
     $this->post('/collab', VinyleController::class . ':getVinyleCollab')->setName("getCollab");
 
     /**
