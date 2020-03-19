@@ -8,6 +8,8 @@ use app\models\Vinyle;
 use DateTime;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception as PHPMailerException;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -150,6 +152,35 @@ class VinyleController extends Controller {
             $response = $response->withRedirect($this->router->pathFor('showCollab', ["shareKey" => $vinyle->shareKey]));
         } catch (ModelNotFoundException $e) {
             $this->flash->addMessage('error', "Impossible de trouver ce vinyle.");
+            $response = $response->withRedirect($this->router->pathFor('showVinyles'));
+        }
+        return $response;
+    }
+
+    public function sendInvitCollab(Request $request, Response $response, array $args): Response {
+        try {
+            $vinyle = Vinyle::where([ "shareKey" => $args['shareKey'] ])->firstOrFail();
+            $mailDest = filter_var($request->getParsedBodyParam('mailDest'), FILTER_SANITIZE_STRING);
+
+            $mail = new PHPMailer();
+            $mail->setFrom('anthony.pernot@hotmail.fr', 'Anthony PERNOT Serveur');
+            $mail->addAddress('anthony.pernot@hotmail.fr', 'Anthony PERNOT Client');
+            $mail->Subject  = 'First PHPMailer Message';
+            $mail->isHTML(true);
+            $mail->Body     = "Hi! This is my first e-mail <br> sent through PHPMailer.";
+            if(!$mail->send()) {
+                $this->flash->addMessage('error', "Impossible de trouver l'adresse mail : ".$mailDest.".");
+                $response = $response->withRedirect($this->router->pathFor('showVinyles'));
+            } else {
+                $this->flash->addMessage('success', "Le mail d'invitation à collaborer a bien été envoyer à ". $mailDest ." ! ");
+                $response = $response->withRedirect($this->router->pathFor('showVinyles'));
+            }
+
+        } catch (ModelNotFoundException $e) {
+            $this->flash->addMessage('error', "Impossible de trouver ce vinyle.");
+            $response = $response->withRedirect($this->router->pathFor('showVinyles'));
+        } catch (PHPMailerException $e) {
+            $this->flash->addMessage('error', "Impossible d'envoyer le mail, contactez le support pour avoir plus d'information. ");
             $response = $response->withRedirect($this->router->pathFor('showVinyles'));
         }
         return $response;
