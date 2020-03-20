@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\helpers\Auth;
+use app\models\Message;
 use app\models\Ticket;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Slim\Http\Request;
@@ -79,6 +80,20 @@ class TicketController extends Controller {
             $this->flash->addMessage('error', "Impossible de clore ce ticket.");
             $response = $response->withRedirect($this->router->pathFor("showTickets"));
         }
+        return $response;
+    }
+
+    public function addMessage(Request $request, Response $response, array $args): Response {
+
+        $contenu = filter_var($request->getParsedBodyParam('message'), FILTER_SANITIZE_SPECIAL_CHARS);
+
+        $message = new Message();
+        $message->message = $contenu;
+        $message->ticket_id = $args['id'];
+        $message->user_id = Auth::user()->id;
+        $message->save();
+
+        $response = $response->withRedirect($this->router->pathFor("showTickets"));
         return $response;
     }
 }

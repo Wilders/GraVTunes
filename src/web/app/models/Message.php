@@ -10,12 +10,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @package app\models
  */
 class Message extends Model {
-    public $timestamps = false;
+    public $timestamps = true;
     protected $table = "messages";
     protected $primaryKey = "id";
     protected $fillable = [
-        'message',
-        'creationDate'
+        'message'
     ];
 
     public function ticket(): BelongsTo {

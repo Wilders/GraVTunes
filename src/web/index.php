@@ -196,6 +196,7 @@ $app->group('', function() {
 
     $this->post('/tickets/add', TicketController::class . ':addTicket')->setName("addTicket");
     $this->post('/ticket/{id:[0-9]+}/close', TicketController::class . ':closeTicket')->setName("closeTicket");
+    $this->post('/ticket/{id:[0-9]+}/add', TicketController::class . ':addMessage')->setName("addMessage");
 
 })->add(new AuthMiddleware($container));
 
