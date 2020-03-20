@@ -83,11 +83,17 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <p>Vous avez la possibilité d'envoyer un mail au collaborateur que vous souhaitez. Il contiendra la clé du vinyle correspondant avec son lien </p>
-                                <label for="emailInput">Insérez l'adresse mail du collaborateur que vous souhaitez : </label>
-                                <div class="form-group">
-                                    <input type="text" class="form-control" id="inputMail" name="mailDest">
+                                <p><small>Vous avez la possibilité d'envoyer un mail au collaborateur que vous souhaitez. Il contiendra la clé du vinyle correspondant avec son lien</small></p>
+                                <label for="emailInput"><strong>Insérez l'adresse mail du collaborateur que vous souhaitez : </strong></label>
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" id="inputMail{{ vinyle.id }}" name="mailDest">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-secondary" type="button" id="buttonAddMail" data-value="{{ vinyle.id }}"><i class="fas fa-plus"></i></button>
+                                    </div>
                                 </div>
+                                <fieldset id="fieldsetMails{{ vinyle.id }}">
+                                    <legend class="lead" id="legMail"></legend>
+                                </fieldset>
                             </div>
 
                                 {{ csrf() | raw }}
