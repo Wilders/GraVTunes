@@ -132,9 +132,7 @@
                                 <td>{{ vinyle.prix }} €</td>
                                 <td class="text-center">
                                     <div class="btn-group" role="group">
-                                        <a href="{{ path_for('showVinyle', {id: vinyle.id}) }}" class="btn btn-success"><i class="fas fa-eye"></i></a>
-                                        <a href="{{ path_for('addCart', {id: vinyle.id}) }}" class="btn btn-primary"><i class="fas fa-cart-plus"></i></a>
-                                        <div class="dropdown">
+                                        <div class="dropdown mr-2">
                                             <a href="#" class="btn btn-dark dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <i class="fas fa-share-square"></i>
                                             </a>
@@ -143,6 +141,8 @@
                                                 <a  href="#" class="dropdown-item" data-toggle="modal" data-target="#modalSendInvitCollab{{ vinyle.id }}">Envoyer une invitation par mail</a>
                                             </div>
                                         </div>
+                                        <a href="{{ path_for('showVinyle', {id: vinyle.id}) }}" class="btn btn-success"><i class="fas fa-eye"></i></a>
+                                        <a href="{{ path_for('addCart', {id: vinyle.id}) }}" class="btn btn-primary"><i class="fas fa-cart-plus"></i></a>
                                         <a href="{{ path_for('deleteVinyle', {id: vinyle.id}) }}" class="btn btn-danger"><i class="fas fa-times"></i></a>
                                     </div>
                                 </td>
