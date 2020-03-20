@@ -19,10 +19,13 @@ class TicketController extends Controller {
         try {
             $ticket = Auth::user()->tickets()->where('id', $args['id'])->firstOrFail();
             $messages = $ticket->messages;
+            $user = Auth::user();
+
 
             $this->view->render($response, 'pages/ticket.twig',[
                 "messages" => $messages,
-                "ticket" => $ticket
+                "ticket" => $ticket,
+                "user" => $user
             ]);
         } catch (ModelNotFoundException $e){
             $this->flash->addMessage('error', "Impossible de trouver ce ticket.");
@@ -84,16 +87,21 @@ class TicketController extends Controller {
     }
 
     public function addMessage(Request $request, Response $response, array $args): Response {
+        try{
+            $contenu = filter_var($request->getParsedBodyParam('message'), FILTER_SANITIZE_SPECIAL_CHARS);
 
-        $contenu = filter_var($request->getParsedBodyParam('message'), FILTER_SANITIZE_SPECIAL_CHARS);
+            $message = new Message();
+            $message->message = $contenu;
+            $message->ticket_id = $args['id'];
+            $message->user_id = Auth::user()->id;
+            $message->save();
 
-        $message = new Message();
-        $message->message = $contenu;
-        $message->ticket_id = $args['id'];
-        $message->user_id = Auth::user()->id;
-        $message->save();
+            $response = $response->withRedirect($this->router->pathFor("showTicket", ["id" => $args['id']]));
+        } catch(ModelNotFoundException $e){
+            $this->flash->addMessage('error', "Impossible d'envoyer le message' ce ticket.");
+            $response = $response->withRedirect($this->router->pathFor("showTickets"));
+        }
 
-        $response = $response->withRedirect($this->router->pathFor("showTickets"));
         return $response;
     }
 }
