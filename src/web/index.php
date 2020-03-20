@@ -1,6 +1,7 @@
 <?php
 
 use app\controllers\AccountController;
+use app\controllers\AdminController;
 use app\controllers\AppController;
 use app\controllers\OrderController;
 use app\helpers\Auth;
@@ -14,6 +15,7 @@ use app\controllers\TicketController;
 use app\extensions\TwigCsrf;
 use app\extensions\TwigMessages;
 use app\helpers\Basket;
+use app\middlewares\AdminMiddleware;
 use app\middlewares\AuthMiddleware;
 use app\middlewares\GuestMiddleware;
 use app\middlewares\OldInputMiddleware;
@@ -206,5 +208,12 @@ $app->group('', function() {
     $this->post('/ticket/{id:[0-9]+}/close', TicketController::class . ':closeTicket')->setName("closeTicket");
 
 })->add(new AuthMiddleware($container));
+
+// Admin
+$app->group('/admin', function() {
+
+    $this->get('/home', AdminController::class . ':showHome')->setName('showAdminHome');
+
+})->add(new AdminMiddleware($container));
 
 $app->run();
