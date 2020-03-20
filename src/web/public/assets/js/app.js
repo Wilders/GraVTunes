@@ -37,21 +37,27 @@ $(function () {
 
 
 document.querySelectorAll("#buttonAddMail").forEach(function (e) {
-
     let i=0;
-    e.addEventListener('click',function(event){
+    let legMail = document.createElement("legend");
+    let fieldset = document.getElementById(String("fieldsetMails"+e.dataset.value));
+
+    e.addEventListener('click',function(){
 
         let mail = document.getElementById(String("inputMail"+e.dataset.value));
-        let legMail = document.getElementById("legMail");
-        let fieldset = document.getElementById(String("fieldsetMails"+e.dataset.value));
         let divInput = document.createElement("div");
         let divDelete = document.createElement("div");
         let buttonDelete = document.createElement("button");
         let input = document.createElement("input");
 
-        legMail.textContent="Adresses mails ajoutés :";
-
         if(mail.value !== ""){
+            if(legMail.textContent === "" ){
+                if(document.querySelectorAll("#buttonAddMail").length !== 0){
+                    legMail.setAttribute("class","lead");
+                    legMail.textContent="Adresses mails ajoutés :";
+                }else{
+                    legMail.textContent="";
+                }
+            }
 
             divInput.setAttribute("id", String(i+1));
             divInput.setAttribute("class","input-group mb-3");
@@ -68,6 +74,7 @@ document.querySelectorAll("#buttonAddMail").forEach(function (e) {
             input.value = mail.value;
             mail.value = "";
 
+
             fieldset.appendChild(divInput);
             divInput.appendChild(input);
             divInput.appendChild(divDelete);
@@ -78,5 +85,7 @@ document.querySelectorAll("#buttonAddMail").forEach(function (e) {
         }
 
     });
+
+    fieldset.appendChild(legMail);
 
 });
