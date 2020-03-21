@@ -177,42 +177,48 @@ class VinyleController extends Controller {
             $mail->setFrom($_ENV["SMTP_USER"], 'GraVTunes');
 
             foreach ($_POST['mailsDest'] as $m) {
-                /**
-                 * Sanitize email?
-                 */
-                $m = filter_var($m, FILTER_SANITIZE_STRING);
-                $user = User::where(['email' => $m])->firstOrFail();
-                $mail->addAddress($m, '' . $user->nom . ' ' . $user->prenom);
-                $link = $request->getUri()->getAuthority() . "" . $this->router->pathFor('showCollab', ['shareKey' => $vinyle->shareKey]);
-                $message = <<<EOD
-            Bonjour $user->prenom $user->nom ! <br><br>
-            Une invitation à collaborer sur un vinyle t'a été envoyé. Vous avez désormais la possibilité d'ajouter vos musiques importés sur le vinyle
-            de TEST afin de perfectionner son produit et d'y ajouter votre touche personnelle !<br>
-            Pour accéder manuellement au vinyle, il faut vous rendre sur la page de vos vinyles et sélectionnez le bouton "Collaborer sur un Vinyle". 
-            Il suffira seulement d'entrer la clé du vinyle et de faire valider le formulaire.
-            <br><br>
-            Voici les informations à conserver pour collaborer sur le vinyle $vinyle->nom :<br><br>
-            <strong>Clé du vinyle</strong> : $vinyle->shareKey<br><br>
-            Ou bien <a href="$link">cliquez ici</a> pour accéder à l'interface de la collaboration. <br><br>
-            On vous retrouve rapidement sur GraVTunes !
+
+                $m = filter_var($m, FILTER_SANITIZE_EMAIL);
+
+                if(filter_var($m,FILTER_VALIDATE_EMAIL)){
+
+                    $user = User::where(['email' => $m])->firstOrFail();
+                    $mail->addAddress($m, '' . $user->nom . ' ' . $user->prenom);
+                    $link = $request->getUri()->getAuthority() . "" . $this->router->pathFor('showCollab', ['shareKey' => $vinyle->shareKey]);
+                    $message = <<<EOD
+                        Bonjour $user->prenom $user->nom ! <br><br>
+                        Une invitation à collaborer sur un vinyle t'a été envoyé. Vous avez désormais la possibilité d'ajouter vos musiques importés sur le vinyle
+                        de $user->prenom $user->nom afin de perfectionner son produit et d'y ajouter votre touche personnelle !<br>
+                        Pour accéder manuellement au vinyle, il faut vous rendre sur la page de vos vinyles et sélectionnez le bouton "Collaborer sur un Vinyle". 
+                        Il suffira seulement d'entrer la clé du vinyle et de faire valider le formulaire.
+                        <br><br>
+                        Voici les informations à conserver pour collaborer sur le vinyle $vinyle->nom :<br><br>
+                        <strong>Clé du vinyle</strong> : $vinyle->shareKey<br><br>
+                        Ou bien <a href="$link">cliquez ici</a> pour accéder à l'interface de la collaboration. <br><br>
+                        On vous retrouve rapidement sur GraVTunes !
 EOD;
-                $mail->isHTML(true);
-                $mail->Subject = 'Invitation à une collaboration ! GraVTunes';
-                $mail->Body = $message;
-                if (!$mail->send()) {
-                    $this->flash->addMessage('error', "Impossible de trouver l'adresse mail : " . $m . ".");
-                    $response = $response->withRedirect($this->router->pathFor('showVinyles'));
-                } else {
-                    $this->flash->addMessage('success', "Le mail d'invitation à collaborer a bien été envoyer à " . $m . " ! ");
+                    $mail->isHTML(true);
+                    $mail->Subject = 'Invitation à une collaboration ! GraVTunes';
+                    $mail->Body = $message;
+                    if (!$mail->send()) {
+                        $this->flash->addMessage('error', "Impossible de trouver l'adresse mail : " . $m . ".");
+                        $response = $response->withRedirect($this->router->pathFor('showVinyles'));
+                    } else {
+                        $this->flash->addMessage('success', "Le mail d'invitation à collaborer a bien été envoyer à " . $m . " ! ");
+                        $response = $response->withRedirect($this->router->pathFor('showVinyles'));
+                    }
+                }else{
+                    $this->flash->addMessage('error', $m . " n'est pas une adresse email valide ! ");
                     $response = $response->withRedirect($this->router->pathFor('showVinyles'));
                 }
+
             }
 
         } catch (ModelNotFoundException $e) {
             $this->flash->addMessage('error', "Impossible de trouver cet utilisateur, assurez vous que le collaborateur que vous souhaitez ait bien un compte GraVTunes.");
             $response = $response->withRedirect($this->router->pathFor('showVinyles'));
         } catch (PHPMailerException $e) {
-            $this->flash->addMessage('error', $e->getMessage());  // "Impossible d'envoyer le mail, contactez le support pour avoir plus d'information. "
+            $this->flash->addMessage('error', "Impossible d'envoyer le mail, contactez le support pour avoir plus d'information. ");
             $response = $response->withRedirect($this->router->pathFor('showVinyles'));
         }
         return $response;
