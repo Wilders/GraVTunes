@@ -9,9 +9,8 @@ use app\models\Vinyle;
 use DateTime;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception as PHPMailerException;
-use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\PHPMailer;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -161,27 +160,30 @@ class VinyleController extends Controller {
 
     public function sendInvitCollab(Request $request, Response $response, array $args): Response {
         try {
-            $vinyle = Vinyle::where([ "shareKey" => $args['shareKey'] ])->firstOrFail();
+            $vinyle = Vinyle::where(["shareKey" => $args['shareKey']])->firstOrFail();
 
             $mail = new PHPMailer(true);
             $mail->setLanguage('fr', '../PHPMailer/language/');
             $mail->SMTPDebug = 0;
             $mail->isSMTP();
 
-            $mail->Host       = $_ENV["SMTP_HOST"];
+            $mail->Host = $_ENV["SMTP_HOST"];
             $mail->SMTPSecure = $_ENV["SMTP_SECURE"];
-            $mail->SMTPAuth   = true;
-            $mail->Username   = $_ENV["SMTP_USER"];
-            $mail->Password   = $_ENV["SMTP_PWD"];
-            $mail->Port       = $_ENV["SMTP_PORT"];
+            $mail->SMTPAuth = true;
+            $mail->Username = $_ENV["SMTP_USER"];
+            $mail->Password = $_ENV["SMTP_PWD"];
+            $mail->Port = $_ENV["SMTP_PORT"];
 
             $mail->setFrom($_ENV["SMTP_USER"], 'GraVTunes');
 
-             foreach($_POST['mailsDest'] as $m){
+            foreach ($_POST['mailsDest'] as $m) {
+                /**
+                 * Sanitize email?
+                 */
                 $m = filter_var($m, FILTER_SANITIZE_STRING);
-                $user = User::where([ 'email' => $m ])->firstOrFail();
-                $mail->addAddress($m, ''.$user->nom.' '.$user->prenom);
-                $link = $request->getUri()->getAuthority()."".$this->router->pathFor('showCollab', ['shareKey' => $vinyle->shareKey]);
+                $user = User::where(['email' => $m])->firstOrFail();
+                $mail->addAddress($m, '' . $user->nom . ' ' . $user->prenom);
+                $link = $request->getUri()->getAuthority() . "" . $this->router->pathFor('showCollab', ['shareKey' => $vinyle->shareKey]);
                 $message = <<<EOD
             Bonjour $user->prenom $user->nom ! <br><br>
             Une invitation à collaborer sur un vinyle t'a été envoyé. Vous avez désormais la possibilité d'ajouter vos musiques importés sur le vinyle
@@ -195,13 +197,13 @@ class VinyleController extends Controller {
             On vous retrouve rapidement sur GraVTunes !
 EOD;
                 $mail->isHTML(true);
-                $mail->Subject  = 'Invitation à une collaboration ! GraVTunes';
-                $mail->Body     = $message;
-                if(!$mail->send()) {
-                    $this->flash->addMessage('error', "Impossible de trouver l'adresse mail : ".$m.".");
+                $mail->Subject = 'Invitation à une collaboration ! GraVTunes';
+                $mail->Body = $message;
+                if (!$mail->send()) {
+                    $this->flash->addMessage('error', "Impossible de trouver l'adresse mail : " . $m . ".");
                     $response = $response->withRedirect($this->router->pathFor('showVinyles'));
                 } else {
-                    $this->flash->addMessage('success', "Le mail d'invitation à collaborer a bien été envoyer à ". $m ." ! ");
+                    $this->flash->addMessage('success', "Le mail d'invitation à collaborer a bien été envoyer à " . $m . " ! ");
                     $response = $response->withRedirect($this->router->pathFor('showVinyles'));
                 }
             }
@@ -210,7 +212,7 @@ EOD;
             $this->flash->addMessage('error', "Impossible de trouver cet utilisateur, assurez vous que le collaborateur que vous souhaitez ait bien un compte GraVTunes.");
             $response = $response->withRedirect($this->router->pathFor('showVinyles'));
         } catch (PHPMailerException $e) {
-            $this->flash->addMessage('error', $e->getMessage() );  // "Impossible d'envoyer le mail, contactez le support pour avoir plus d'information. "
+            $this->flash->addMessage('error', $e->getMessage());  // "Impossible d'envoyer le mail, contactez le support pour avoir plus d'information. "
             $response = $response->withRedirect($this->router->pathFor('showVinyles'));
         }
         return $response;

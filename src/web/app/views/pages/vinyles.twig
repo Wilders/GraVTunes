@@ -94,7 +94,7 @@
                                 <fieldset id="fieldsetMails{{ vinyle.id }}"></fieldset>
                             </div>
 
-                                {{ csrf() | raw }}
+                            {{ csrf() | raw }}
 
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
@@ -132,10 +132,10 @@
                                 <td>{{ vinyle.prix }} €</td>
                                 <td class="text-center">
                                     <div class="btn-group" role="group">
-                                        <div class="dropdown mr-2">
-                                            <a href="#" class="btn btn-dark dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <div class="btn-group" role="group">
+                                            <button id="btnGroupDrop1" type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <i class="fas fa-share-square"></i>
-                                            </a>
+                                            </button>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                                                 <a href="#" class="dropdown-item" data-toggle="modal" data-target="#modalInvitCollab{{ vinyle.id }}">Partager le lien</a>
                                                 <a  href="#" class="dropdown-item" data-toggle="modal" data-target="#modalSendInvitCollab{{ vinyle.id }}">Envoyer une invitation par mail</a>
