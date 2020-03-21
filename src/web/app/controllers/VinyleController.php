@@ -178,10 +178,9 @@ class VinyleController extends Controller {
 
             foreach ($_POST['mailsDest'] as $m) {
 
-                $m = filter_var($m, FILTER_SANITIZE_EMAIL);
-
                 if(filter_var($m,FILTER_VALIDATE_EMAIL)){
 
+                    $m = filter_var($m, FILTER_SANITIZE_EMAIL);
                     $user = User::where(['email' => $m])->firstOrFail();
                     $mail->addAddress($m, '' . $user->nom . ' ' . $user->prenom);
                     $link = $request->getUri()->getAuthority() . "" . $this->router->pathFor('showCollab', ['shareKey' => $vinyle->shareKey]);
