@@ -16,25 +16,19 @@ use Slim\Http\Response;
  */
 class PlaylistController extends Controller {
 
-    public function playlist(Request $request, Response $response){
-        $this->view->render($response, 'pages/playlist.twig');
-    }
-
     public function playlists(Request $request, Response $response, array $args): Response {
         $playlist = Auth::user()->playlists;
-
         $this->view->render($response, 'pages/playlists.twig', [
             "playlists" => $playlist
         ]);
         return $response;
     }
 
-    public function showAddPlaylist(Request $request, Response $response) {
-        $this->view->render($response, 'pages/addPlaylist.twig');
-        return $response;
+    public function newPlay(Request $request, Response $response){
+        $this->view->render($response, 'pages/playlistAdd.twig');
     }
 
-    public function addPlaylist(Request $request, Response $response, array $args): Response {
+    public function importPlay(Request $request, Response $response, array $args): Response {
         try {
             $titre = filter_var($request->getParsedBodyParam('name'), FILTER_SANITIZE_STRING);
             $descr = filter_var($request->getParsedBodyParam('descr'), FILTER_SANITIZE_STRING);
@@ -49,7 +43,7 @@ class PlaylistController extends Controller {
             $playlist->save();
 
             $this->flash->addMessage('success', "Votre playlist a bien été créée.");
-            $response = $response->withRedirect($this->router->pathFor("showPlaylist", ["id" => $playlist->id]));
+            $response = $response->withRedirect($this->router->pathFor("showPlaylists", ["id" => $playlist->id]));
         } catch (ModelNotFoundException $e) {
             $this->flash->addMessage('error', $e->getMessage());
             $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
@@ -57,7 +51,7 @@ class PlaylistController extends Controller {
         return $response;
     }
 
-    public function deletePlaylist(Request $request, Response $response, array $args): Response {
+    public function deletePlay(Request $request, Response $response, array $args): Response {
         try {
             $play = Playlist::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
 
@@ -72,14 +66,23 @@ class PlaylistController extends Controller {
         return $response;
     }
 
-    public function showUpdatePlaylist(Request $request, Response $response, array $args): Response {
-        $this->view->render($response, 'pages/updatePlaylist.twig', [
-            "id" => $args['id']
-        ]);
+    public function formUpdatePlay(Request $request, Response $response, array $args) :Response{
+        try {
+            //$id = filter_var($args['id'], FILTER_SANITIZE_NUMBER_INT);
+
+            //$play = Playlist::where(["id" => $id, "user_id" => Auth::user()->id])->firstOrFail();
+
+            $this->view->render($response, 'pages/playlistUpdate.twig',[
+                "id" => $args['id']
+            ]);
+        }catch (ModelNotFoundException $e){
+            $this->flash->addMessage('error', $e->getMessage());
+            $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
+        }
         return $response;
     }
 
-    public function updatePlaylist(Request $request, Response $response, array $args): Response {
+    public function updatePlay(Request $request, Response $response, array $args): Response {
         try {
             $play = Playlist::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
 
@@ -92,7 +95,7 @@ class PlaylistController extends Controller {
             $play->save();
 
             $this->flash->addMessage('success', "Votre playlist a bien été modifiée.");
-            $response = $response->withRedirect($this->router->pathFor("showPlaylist", ["id" => $play->id]));
+            $response = $response->withRedirect($this->router->pathFor("showPlaylists", ["id" => $play->id]));
         } catch (ModelNotFoundException $e) {
             $this->flash->addMessage('error', "Impossible de modifier cette playlist.");
             $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
@@ -101,36 +104,43 @@ class PlaylistController extends Controller {
     }
 
 
-    public function showAddTrackPlaylist(Request $request, Response $response, array $args): Response {
+    public function newTrackPlay(Request $request, Response $response, array $args): Response {
         $tracks = Auth::user()->tracks;
-
-        $this->view->render($response, 'pages/addTrackPlaylist.twig', [
+        $this->view->render($response, 'pages/playlistAddTrack.twig', [
             "tracks" => $tracks,
             "id" => $args['id']
         ]);
         return $response;
     }
 
-    public function addTrackPlaylist(Request $request, Response $response, array $args): Response {
+    public function importTrackPlay(Request $request, Response $response, array $args): Response {
         try {
-            $titre = filter_var($request->getParsedBodyParam('title'), FILTER_SANITIZE_SPECIAL_CHARS);
-            $descr = filter_var($request->getParsedBodyParam('descr'), FILTER_SANITIZE_SPECIAL_CHARS);
+            $play = Playlist::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
+            $tracks = $request->getParsedBodyParam('file');
 
-            $track->id = Track::count() + 1;
-            $track->nom = $titre;
-            $track->description = $descr;
-            $track->file_id = File::count() + 1;
-            $track->user_id = Auth::user()->id;
-
-            $track->save();
-            $fichier->save();
+            $play->tracks()->saveMany(Auth::user()->tracks->find($tracks));
 
             $this->flash->addMessage('success', "Félicitations, votre fichier a bien été ajouté à votre playlist. Vous pouvez le consulter depuis votre playliste.");
-            $response = $response->withRedirect($this->router->pathFor("appPlaylist"));
+            $response = $response->withRedirect($this->router->pathFor("showPlaylists"));
         } catch (ModelNotFoundException $e) {
             $this->flash->addMessage('error', $e->getMessage());
             $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
         }
         return $response;
     }
+
+    /*public function showPlay(Request $request, Response $response, array $args) : Response{
+        try {
+            $id = filter_var($args['id'], FILTER_SANITIZE_NUMBER_INT);
+            $playT= Track::join()where(["playlist_id" => $id])->get();
+            $this->view->render($response, 'pages/playlistShowTracks.twig', [
+                "t" => $playT
+            ]);
+        }catch (ModelNotFoundException $e){
+            $this->flash->addMessage('error', $e->getMessage());
+            $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
+        }
+        return $response;
+    }*/
+
 }

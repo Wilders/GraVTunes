@@ -10,14 +10,14 @@
     {% include "layouts/flash.twig" %}
 
     <div class="card shadow mb-4">
-        <form method="POST" action="{{ path_for("addTrackPlaylist", {id:id}) }}" id="importTrackForm">
+        <form method="POST" action="{{ path_for("importTrackPlay", {id:id}) }}" id="importTrackForm">
             <div class="card-header py-3">
-                <h5>Ajout d'une musique sur votre playliste {{ playlist.nom }}</h5>
+                <h5>Ajout d'une musique sur votre playliste</h5>
             </div>
             <div class="card-body">
                 <div class="form-group">
                     <label for="file">Fichier</label>
-                    <select name="file">
+                    <select name="file" id="selectFile">
                         <option selected>Aucun fichier choisi</option>
                         {% for t in tracks %}
                             <option>{{ t.nom }}</option>

@@ -161,16 +161,26 @@ $app->group('', function() {
     /**
      * Playlists
      */
+    //Afficher les playlistes
     $this->get('/playlists', PlaylistController::class . ':playlists')->setName("showPlaylists");
-    $this->get('/playlists/add', PlaylistController::class . ':showAddPlaylist')->setName("showAddPlaylist");
-    $this->get('/playlist/{id:[0-9]+}', PlaylistController::class . ':playlist')->setName("showPlaylist");
-    $this->get('/playlist/{id:[0-9]+}/add', PlaylistController::class . ':showAddTrackPlaylist')->setName("showAddTrackPlaylist");
-    $this->get('/playlist/{id:[0-9]+}/update', PlaylistController::class . ':showUpdatePlaylist')->setName("showUpdatePlaylist");
 
-    $this->post('/playlists/add', PlaylistController::class . ':addPlaylist')->setName("addPlaylist");
-    $this->post('/playlist/{id:[0-9]+}/delete', PlaylistController::class . ':deletePlaylist')->setName("deletePlaylist");
-    $this->post('/playlist/{id:[0-9]+}/update', PlaylistController::class . ':updatePlaylist')->setName("updatePlaylist");
-    $this->post('/playlist/{id:[0-9]+}/add', PlaylistController::class . ':addTrackPlaylist')->setName("addTrackPlaylist");
+    //Afficher les tracks d'une playliste
+    $this->get('/playlist/{id:[0-9]+}/tracks', PlaylistController::class . ':showPlay')->setName("showPlay");
+
+    //Ajouter une playliste
+    $this->get('/playlists/add', PlaylistController::class . ':newPlay')->setName("newPlay");
+    $this->post('/playlists', PlaylistController::class . ':importPlay')->setName("importPlay");
+
+    //Supprimer une playliste
+    $this->post('/playlists/{id:[0-9]+}', PlaylistController::class . ':deletePlay')->setName("deletePlay");
+
+    //Modifier une playliste
+    $this->get('/playlists/update/{id:[0-9]+}', PlaylistController::class . ':formUpdatePlay')->setName("formUpdatePlay");
+    $this->post('/playlists/update/{id:[0-9]+}', PlaylistController::class . ':updatePlay')->setName("updatePlay");
+
+    //Ajouter une musique dans une playliste
+    $this->get('/playlist/{id:[0-9]+}/add', PlaylistController::class . ':newTrackPlay')->setName("newTrackPlay");
+    $this->post('/playlist/{id:[0-9]+}/add', PlaylistController::class . ':importTrackPlay')->setName("importTrackPlay");
 
     /**
      * Vinyles
