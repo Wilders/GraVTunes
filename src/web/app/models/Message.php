@@ -14,7 +14,8 @@ class Message extends Model {
     protected $table = "messages";
     protected $primaryKey = "id";
     protected $fillable = [
-        'message'
+        'message',
+        'user_id'
     ];
 
     public function ticket(): BelongsTo {

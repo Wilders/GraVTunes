@@ -22,4 +22,6 @@ $(function () {
   if (track.length) {
     $('.selectpicker').selectpicker();
   }
+  $('[data-toggle="tooltip"]').tooltip();
+  $('[data-toggle="popover"]').popover({html: true});
 });

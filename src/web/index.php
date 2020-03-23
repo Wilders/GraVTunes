@@ -188,14 +188,13 @@ $app->group('', function() {
     /**
      * Tickets
      */
-
     $this->get('/tickets', TicketController::class . ':tickets')->setName("showTickets");
     $this->get('/tickets/closed', TicketController::class . ':closedTickets')->setName("showClosedTickets");
     $this->get('/tickets/add', TicketController::class . ':showAddTicket')->setName("showAddTicket");
     $this->get('/ticket/{id:[0-9]+}', TicketController::class . ':ticket')->setName("showTicket");
+    $this->get('/ticket/{id:[0-9]+}/close', TicketController::class . ':closeTicket')->setName("closeTicket");
 
     $this->post('/tickets/add', TicketController::class . ':addTicket')->setName("addTicket");
-    $this->post('/ticket/{id:[0-9]+}/close', TicketController::class . ':closeTicket')->setName("closeTicket");
     $this->post('/ticket/{id:[0-9]+}/add', TicketController::class . ':addMessage')->setName("addMessage");
 
 })->add(new AuthMiddleware($container));

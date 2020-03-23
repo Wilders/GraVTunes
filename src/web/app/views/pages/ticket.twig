@@ -22,53 +22,51 @@
             <div class="row">
                 <div class="col-8">
                     <div class="card shadow m-1">
-                        <div>
-                            <div class="px-4 py-5 chat-box bg-white">
-                                <div class="media w-50 mb-3"><img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="50" class="rounded-circle">
-                                    <div class="media-body ml-3">
-                                        <div class="bg-light rounded py-2 px-3 mb-2">
-                                            <p class="text-small mb-0 text-muted">Bonjour, comment puis-je vous aider ?</p>
-                                        </div>
-                                        <p class="small text-muted">12:30 | Fev 13</p>
+                        <div class="px-4 py-5 chat-box bg-white">
+                            <div class="media w-50 mb-3"><img src="{{ base_url() }}/public/assets/media/images/ticket_image.svg" alt="Avatar" width="50" class="rounded-circle">
+                                <div class="media-body ml-3">
+                                    <div class="bg-light rounded py-2 px-3 mb-2">
+                                        <p class="text-small mb-0 text-muted">Bonjour, comment puis-je vous aider ?</p>
                                     </div>
+                                    <p class="small text-muted">Message automatique</p>
                                 </div>
+                            </div>
 
-                                {% for message in messages %}
-                                    {% if message.user_id == user.id%}
+                            {% for message in messages %}
+                                {% if message.user_id == auth.user.id %}
                                     <div class="media w-50 ml-auto mb-3">
-                                        <div class="media-body">
+                                        <div class="media-body mr-2">
                                             <div class="bg-primary rounded py-2 px-3 mb-2">
                                                 <p class="text-small mb-0 text-white">{{ message.message }}</p>
                                             </div>
                                             <p class="small text-muted">{{ message.created_at | date("d/m/Y H:i") }}</p>
                                         </div>
+                                        <img src="{{ base_url() }}/uploads/avatars/{{ auth.user.avatar }}" alt="Avatar" width="50" class="rounded-circle">
                                     </div>
-                                    {% else %}
-                                        <div class="media w-50 mb-3"><img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="50" class="rounded-circle">
-                                            <div class="media-body ml-3">
-                                                <div class="bg-light rounded py-2 px-3 mb-2">
-                                                    <p class="text-small mb-0 text-muted">{{ message.message }}</p>
-                                                </div>
-                                                <p class="small text-muted">{{ message.created_at | date("d/m/Y H:i") }}</p>
+                                {% else %}
+                                    <div class="media w-50 mb-3"><img src="{{ base_url() }}/uploads/avatars/{{ message.user.avatar }}" alt="Avatar" width="50" class="rounded-circle">
+                                        <div class="media-body ml-3">
+                                            <div class="bg-light rounded py-2 px-3 mb-2">
+                                                <p class="text-small mb-0 text-muted">{{ message.message }}</p>
                                             </div>
-                                        </div>
-                                    {% endif %}
-                                {% endfor %}
-
-                                <!-- Typing area -->
-                                <form method="POST" action="{{ path_for("addMessage", {id: ticket.id}) }}" id="addMessageForm" enctype="multipart/form-data" class="bg-light">
-                                    <div class="input-group">
-                                        <input type="text" id="message" placeholder="Aa" class="form-control rounded-0 border-0 py-4 bg-light" name="message">
-
-                                        {{ csrf() | raw }}
-
-                                        <div class="input-group-append">
-                                            <button id="send" type="submit" class="btn btn-link"><i class="fa fa-paper-plane"></i></button>
+                                            <p class="small text-muted">{{ message.created_at | date("d/m/Y H:i") }}</p>
                                         </div>
                                     </div>
-                                </form>
+                                {% endif %}
+                            {% endfor %}
+                            {% if ticket.statut == 0 %}
+                            <form method="POST" action="{{ path_for("addMessage", {id: ticket.id}) }}" id="addMessageForm" class="bg-light">
+                                <div class="input-group">
+                                    <input type="text" id="message" placeholder="Envoyer une réponse" class="form-control rounded-0 border-0 py-4 bg-light" name="message">
 
-                            </div>
+                                    {{ csrf() | raw }}
+
+                                    <div class="input-group-append">
+                                        <button id="send" type="submit" class="btn btn-link"><i class="fa fa-paper-plane"></i></button>
+                                    </div>
+                                </div>
+                            </form>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -76,4 +74,3 @@
         </div>
     </div>
 {% endblock %}
-
