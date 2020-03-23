@@ -61,11 +61,74 @@
         </div>
     </div>
 
+        <div class="modal fade" id="modalInvitCollab{{ vinyle.id }}" tabindex="-1" role="dialog" aria-labelledby="modalInvitCollab" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalInvitCollab">Invitation à collaborer</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Partagez ce lien pour inviter un collaborateur</p>
+                        <div class="form-group">
+                            <input type="text" class="form-control" value="{{  uri.getAuthority() ~ path_for('showCollab', {shareKey: vinyle.shareKey}) }}" onclick="clipboard(this)" data-toggle="popover" data-content="<i class='fas fa-check-circle'></i></i> C'est copié !" data-placement="bottom" data-trigger="focus" readonly>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="modalSendInvitCollab{{ vinyle.id }}" tabindex="-1" role="dialog" aria-labelledby="modalSendInvitCollab" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <form action="{{ path_for("sendInvitCollab", {shareKey: vinyle.shareKey}) }}" method="POST" id="sendInvitForm{{ vinyle.id }}">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalInvitCollab">Envoi d'invitation à collaborer</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p><small>Vous avez la possibilité d'envoyer un mail au collaborateur que vous souhaitez. Il contiendra la clé du vinyle correspondant avec son lien</small></p>
+                            <label for="emailInput"><strong>Insérez l'adresse mail du collaborateur que vous souhaitez : </strong></label>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" id="inputMail{{ vinyle.id }}" name="mailDest">
+                                <div class="input-group-append">
+                                    <button class="btn btn-secondary" type="button" id="buttonAddMail" data-value="{{ vinyle.id }}"><i class="fas fa-plus"></i></button>
+                                </div>
+                            </div>
+                            <fieldset id="fieldsetMails{{ vinyle.id }}"></fieldset>
+                        </div>
+
+                        {{ csrf() | raw }}
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                            <button type="submit" class="btn btn-primary">Envoyer</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <div class="btn-group btn-group-sm float-right" role="group">
+                <div class="btn-group btn-group-sm" role="group">
+                    <button id="btnGroupDrop1" type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-share-square"></i>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                        <a href="#" class="dropdown-item" data-toggle="modal" data-target="#modalInvitCollab{{ vinyle.id }}">Partager le lien</a>
+                        <a  href="#" class="dropdown-item" data-toggle="modal" data-target="#modalSendInvitCollab{{ vinyle.id }}">Envoyer une invitation par mail</a>
+                    </div>
+                </div>
                 <a href="{{ path_for('addCart', {id: vinyle.id}) }}" class="btn btn-success"><i class="fas fa-cart-plus"></i></a>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateModal">Modifier <i class="fas fa-edit"></i></button>
+                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#updateModal">Modifier <i class="fas fa-edit"></i></a>
                 <a href="{{ path_for('deleteVinyle', {id: vinyle.id}) }}" class="btn btn-danger">Supprimer <i class="fas fa-times"></i></a>
             </div>
             <h6 class="m-0 font-weight-bold text-primary">Informations générales</h6>
@@ -138,7 +201,7 @@
                             <td>{{ i }} {% set i = i + 1 %}</td>
                             <td>{{ track.nom }}</td>
                             <td>{{ track.description }}</td>
-                            <td>{{ track.file.duree }}</td>
+                            <td>{{ track.file.duree }} secondes</td>
                             <td class="text-center">
                                 <div class="btn-group" role="group">
                                     <a href="{{ path_for('showUpdateTrack', {id: track.id}) }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>

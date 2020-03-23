@@ -186,6 +186,15 @@ $app->group('', function() {
     $this->post('/vinyle/{id:[0-9]+}/update', VinyleController::class . ':updateVinyle')->setName("updateVinyle");
 
     /**
+     * Collaborations
+     */
+
+    $this->get('/collab/{shareKey:[a-zA-Z0-9]+}', VinyleController::class . ':vinyleCollab')->setName("showCollab");
+    $this->post('/collab/{shareKey:[a-zA-Z0-9]+}/add', VinyleController::class . ':addTracksCollab')->setName("addTracksVinyleCollab");
+    $this->post('/collab', VinyleController::class . ':getVinyleCollab')->setName("getCollab");
+    $this->post('/collab/{shareKey:[a-zA-Z0-9]+}/sendInvitCollab', VinyleController::class . ':sendInvitCollab')->setName("sendInvitCollab");
+
+    /**
      * Tickets
      */
     $this->get('/tickets', TicketController::class . ':tickets')->setName("showTickets");
