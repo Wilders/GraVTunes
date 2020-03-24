@@ -16,8 +16,7 @@ class Ticket extends Model {
     protected $primaryKey = "id";
     protected $fillable = [
         'objet',
-        'statut',
-        'user_id'
+        'statut'
     ];
 
     public function messages(): HasMany {

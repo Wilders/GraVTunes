@@ -3,7 +3,7 @@
 namespace app\controllers;
 
 use app\helpers\Auth;
-use app\models\Ticket;
+use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -15,13 +15,23 @@ use Slim\Http\Response;
 class TicketController extends Controller {
 
     public function ticket(Request $request, Response $response, array $args): Response {
-        // Affiche un ticket
-        $this->view->render($response, 'pages/ticket.twig');
+        try {
+            $ticket = Auth::user()->tickets()->where('id', $args['id'])->firstOrFail();
+            $messages = $ticket->messages;
+
+            $this->view->render($response, 'pages/ticket.twig',[
+                "messages" => $messages,
+                "ticket" => $ticket
+            ]);
+        } catch (ModelNotFoundException $e){
+            $this->flash->addMessage('error', "Impossible de trouver ce ticket.");
+            $response = $response->withRedirect($this->router->pathFor("showTickets"));
+        }
         return $response;
     }
 
     public function tickets(Request $request, Response $response, array $args): Response {
-        $tickets = Ticket::where(['user_id' => Auth::user()->id, 'statut' => 0])->get();
+        $tickets = Auth::user()->tickets()->where('statut', 0)->get();
 
         $this->view->render($response, 'pages/tickets.twig', [
             "tickets" => $tickets
@@ -30,7 +40,7 @@ class TicketController extends Controller {
     }
 
     public function closedTickets(Request $request, Response $response, array $args): Response {
-        $tickets = Ticket::where(['user_id' => Auth::user()->id, 'statut' => 1])->get();
+        $tickets = Auth::user()->tickets()->where('statut', 1)->get();
 
         $this->view->render($response, 'pages/closedTickets.twig', [
             "tickets" => $tickets
@@ -46,10 +56,9 @@ class TicketController extends Controller {
     public function addTicket(Request $request, Response $response, array $args): Response {
         $objet = filter_var($request->getParsedBodyParam('title'), FILTER_SANITIZE_STRING);
 
-        $ticket = new Ticket();
-        $ticket->objet = $objet;
-        $ticket->user_id = Auth::user()->id;
-        $ticket->save();
+        Auth::user()->tickets()->create([
+            "objet" => $objet
+        ]);
 
         $this->flash->addMessage('success', "Votre ticket a bien été créé.");
         $response = $response->withRedirect($this->router->pathFor("showTickets"));
@@ -58,7 +67,7 @@ class TicketController extends Controller {
 
     public function closeTicket(Request $request, Response $response, array $args): Response {
         try {
-            $ticket = Ticket::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
+            $ticket = Auth::user()->tickets()->where('id', $args['id'])->firstOrFail();
 
             $ticket->statut = 1;
             $ticket->save();
@@ -68,6 +77,30 @@ class TicketController extends Controller {
         } catch (ModelNotFoundException $e) {
             $this->flash->addMessage('error', "Impossible de clore ce ticket.");
             $response = $response->withRedirect($this->router->pathFor("showTickets"));
+        }
+        return $response;
+    }
+
+    public function addMessage(Request $request, Response $response, array $args): Response {
+        try{
+            $contenu = filter_var($request->getParsedBodyParam('message'), FILTER_SANITIZE_STRING);
+
+            $ticket = Auth::user()->tickets()->where('id', $args['id'])->firstOrFail();
+            if($ticket->statut == 1) throw new Exception("Impossible d'ajouter un message à un ticket clos.");
+            $ticket->messages()->create([
+                'message' => $contenu,
+                'user_id' => Auth::user()->id
+            ]);
+            $ticket->touch();
+
+            $this->flash->addMessage('success', "Votre message a bien été envoyé.");
+            $response = $response->withRedirect($this->router->pathFor("showTicket", ["id" => $args['id']]));
+        } catch (ModelNotFoundException $e){
+            $this->flash->addMessage('error', "Impossible d'ajouter un message à ce ticket.");
+            $response = $response->withRedirect($this->router->pathFor("showTickets"));
+        } catch (Exception $e) {
+            $this->flash->addMessage('error', $e->getMessage());
+            $response = $response->withRedirect($this->router->pathFor("showClosedTickets"));
         }
         return $response;
     }

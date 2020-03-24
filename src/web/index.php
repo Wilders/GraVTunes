@@ -31,6 +31,7 @@ use Slim\Views\TwigExtension;
 require_once(__DIR__ . '/vendor/autoload.php');
 
 session_start();
+date_default_timezone_set('Europe/Paris');
 
 $env = Dotenv\Dotenv::createImmutable(__DIR__);
 $env->load();
@@ -155,24 +156,24 @@ $app->group('', function() {
     $this->get('/tracks', TrackController::class . ':tracks')->setName("showTracks");
     $this->get('/tracks/add', TrackController::class . ':showAddTrack')->setName("showAddTrack");
     $this->get('/track/{id:[0-9]+}/update', TrackController::class . ':showUpdateTrack')->setName("showUpdateTrack");
+    $this->get('/track/{id:[0-9]+}/delete', TrackController::class . ':deleteTrack')->setName("deleteTrack");
 
     $this->post('/tracks/add', TrackController::class . ':addTrack')->setName("addTrack");
     $this->post('/track/{id:[0-9]+}/update', TrackController::class . ':updateTrack')->setName("updateTrack");
-    $this->post('/track/{id:[0-9]+}/delete', TrackController::class . ':deleteTrack')->setName("deleteTrack");
 
     /**
      * Playlists
      */
+
     $this->get('/playlists', PlaylistController::class . ':playlists')->setName("showPlaylists");
     $this->get('/playlists/add', PlaylistController::class . ':showAddPlaylist')->setName("showAddPlaylist");
     $this->get('/playlist/{id:[0-9]+}', PlaylistController::class . ':playlist')->setName("showPlaylist");
-    $this->get('/playlist/{id:[0-9]+}/add', PlaylistController::class . ':showAddTrackPlaylist')->setName("showAddTrackPlaylist");
-    $this->get('/playlist/{id:[0-9]+}/update', PlaylistController::class . ':showUpdatePlaylist')->setName("showUpdatePlaylist");
+    $this->get('/playlist/{id:[0-9]+}/delete', PlaylistController::class . ':deletePlaylist')->setName("deletePlaylist");
+    $this->get('/playlist/{id:[0-9]+}/delete/{trackId:[0-9]+}', PlaylistController::class . ':deleteAttachedTrack')->setName('deleteTrackPlaylist');
 
     $this->post('/playlists/add', PlaylistController::class . ':addPlaylist')->setName("addPlaylist");
-    $this->post('/playlist/{id:[0-9]+}/delete', PlaylistController::class . ':deletePlaylist')->setName("deletePlaylist");
+    $this->post('/playlist/{id:[0-9]+}/add', PlaylistController::class . ':addTracksPlaylist')->setName("addTracksPlaylist");
     $this->post('/playlist/{id:[0-9]+}/update', PlaylistController::class . ':updatePlaylist')->setName("updatePlaylist");
-    $this->post('/playlist/{id:[0-9]+}/add', PlaylistController::class . ':addTrackPlaylist')->setName("addTrackPlaylist");
 
     /**
      * Vinyles
@@ -199,14 +200,14 @@ $app->group('', function() {
     /**
      * Tickets
      */
-
     $this->get('/tickets', TicketController::class . ':tickets')->setName("showTickets");
     $this->get('/tickets/closed', TicketController::class . ':closedTickets')->setName("showClosedTickets");
     $this->get('/tickets/add', TicketController::class . ':showAddTicket')->setName("showAddTicket");
     $this->get('/ticket/{id:[0-9]+}', TicketController::class . ':ticket')->setName("showTicket");
+    $this->get('/ticket/{id:[0-9]+}/close', TicketController::class . ':closeTicket')->setName("closeTicket");
 
     $this->post('/tickets/add', TicketController::class . ':addTicket')->setName("addTicket");
-    $this->post('/ticket/{id:[0-9]+}/close', TicketController::class . ':closeTicket')->setName("closeTicket");
+    $this->post('/ticket/{id:[0-9]+}/add', TicketController::class . ':addMessage')->setName("addMessage");
 
 })->add(new AuthMiddleware($container));
 

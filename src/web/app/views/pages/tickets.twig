@@ -29,38 +29,35 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>Référence</th>
                         <th>Objet</th>
                         <th>Date de création</th>
-                        <th>Date de la dernière modification</th>
+                        <th>Date du dernier message</th>
                         <th></th>
                     </tr>
                     </thead>
                     <tfoot>
                     <tr>
-                        <th>ID</th>
+                        <th>Référence</th>
                         <th>Objet</th>
                         <th>Date de création</th>
-                        <th>Date de la dernière modification</th>
+                        <th>Date du dernier message</th>
                         <th></th>
                     </tr>
                     </tfoot>
                     <tbody>
                     {% for ticket in tickets %}
                         <tr>
-                            <td>{{ ticket.id }}</td>
+                            <td>#{{ ticket.id }}</td>
                             <td>{{ ticket.objet }}</td>
-                            <td>{{ ticket.created_at }}</td>
-                            <td>{{ ticket.updated_at }}</td>
-                            <td>
-                                <div class="dropdown">
-                                    <a  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <img src="{{ base_url() }}/public/assets/media/images/menulist.png" >
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <a class="dropdown-item btn" href="{{ path_for("showTicket", {id: ticket.id}) }}">Accéder</a>
-                                        <button class="dropdown-item" data-toggle="modal" data-target="#closeTicketModal">Clore</button>
-                                    </div>
+                            <td>{{ ticket.created_at | date("d/m/Y H:i") }}</td>
+                            <td>{{ ticket.updated_at | date("d/m/Y H:i") }}</td>
+                            <td class="text-center">
+                                <div class="btn-group" role="group">
+                                    <a href="{{ path_for('showTicket', {id: ticket.id}) }}" class="btn btn-success"><i class="fas fa-eye"></i></a>
+                                    <button type="submit" class="btn btn-danger" data-toggle="popover" title="<i class='fas fa-exclamation-triangle'></i> Êtes-vous sûr?" data-placement="bottom" data-trigger="focus" data-content="<div class='btn-group btn-group-sm' role='group'><a class='btn btn-sm btn-danger' href='{{ path_for('closeTicket', {id: ticket.id}) }}'>Confirmer</a><a class='btn btn-sm btn-primary' href='#'>Annuler</a></div>">
+                                        <i class="fas fa-times"></i>
+                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -86,13 +83,10 @@
                                 </form>
                             </div>
                         </div>
-
                     {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-
-
 {% endblock %}

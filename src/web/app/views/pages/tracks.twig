@@ -49,39 +49,12 @@
                                 <td>{{ track.nom }}</td>
                                 <td>{{ track.description }}</td>
                                 <td class="text-center">
-                                    <div class="dropdown">
-                                        <a  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-bars fa-2x"></i>
-                                        </a>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                            <a href="{{ path_for('showUpdateTrack', {id: track.id}) }}"><button type="button" class="dropdown-item">Modifier</button></a>
-                                            <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deleteTrackModal">Supprimer</button>
-
-                                        </div>
+                                    <div class="btn-group" role="group">
+                                        <a href="{{ path_for('showUpdateTrack', {id: track.id}) }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                                        <a href="{{ path_for('deleteTrack', {id: track.id}) }}" class="btn btn-danger"><i class="fas fa-times"></i></a>
                                     </div>
                                 </td>
                             </tr>
-                            <div class="modal fade" id="deleteTrackModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <form method="POST" action="{{ path_for("deleteTrack", {id: track.id}) }}" id="deleteTrackForm" >
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Êtes-vous sûr de supprimer cette chanson ?</h5>
-                                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">×</span>
-                                                </button>
-                                            </div>
-
-                                            {{ csrf() | raw }}
-
-                                            <div class="modal-footer">
-                                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Fermer</button>
-                                                <button class="btn btn-primary" type="submit">Supprimer</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
                         {% endfor %}
                     </tbody>
                 </table>
