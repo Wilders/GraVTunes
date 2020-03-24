@@ -153,10 +153,10 @@ $app->group('', function() {
     $this->get('/tracks', TrackController::class . ':tracks')->setName("showTracks");
     $this->get('/tracks/add', TrackController::class . ':showAddTrack')->setName("showAddTrack");
     $this->get('/track/{id:[0-9]+}/update', TrackController::class . ':showUpdateTrack')->setName("showUpdateTrack");
+    $this->get('/track/{id:[0-9]+}/delete', TrackController::class . ':deleteTrack')->setName("deleteTrack");
 
     $this->post('/tracks/add', TrackController::class . ':addTrack')->setName("addTrack");
     $this->post('/track/{id:[0-9]+}/update', TrackController::class . ':updateTrack')->setName("updateTrack");
-    $this->post('/track/{id:[0-9]+}/delete', TrackController::class . ':deleteTrack')->setName("deleteTrack");
 
     /**
      * Playlists
