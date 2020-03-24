@@ -163,14 +163,14 @@ $app->group('', function() {
      */
 
     $this->get('/playlists', PlaylistController::class . ':playlists')->setName("showPlaylists");
-    $this->get('/playlist/{id:[0-9]+}', PlaylistController::class . ':playlist')->setName("showPlaylist");
     $this->get('/playlists/add', PlaylistController::class . ':showAddPlaylist')->setName("showAddPlaylist");
-    $this->get('/playlists/{id:[0-9]+}/delete', PlaylistController::class . ':deletePlaylist')->setName("deletePlaylist");
+    $this->get('/playlist/{id:[0-9]+}', PlaylistController::class . ':playlist')->setName("showPlaylist");
+    $this->get('/playlist/{id:[0-9]+}/delete', PlaylistController::class . ':deletePlaylist')->setName("deletePlaylist");
     $this->get('/playlist/{id:[0-9]+}/delete/{trackId:[0-9]+}', PlaylistController::class . ':deleteAttachedTrack')->setName('deleteTrackPlaylist');
 
     $this->post('/playlists/add', PlaylistController::class . ':addPlaylist')->setName("addPlaylist");
     $this->post('/playlist/{id:[0-9]+}/add', PlaylistController::class . ':addTracksPlaylist')->setName("addTracksPlaylist");
-    $this->post('/playlists/{id:[0-9]+}/update', PlaylistController::class . ':updatePlaylist')->setName("updatePlaylist");
+    $this->post('/playlist/{id:[0-9]+}/update', PlaylistController::class . ':updatePlaylist')->setName("updatePlaylist");
 
     /**
      * Vinyles

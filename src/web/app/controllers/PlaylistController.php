@@ -3,9 +3,8 @@
 namespace app\controllers;
 
 use app\helpers\Auth;
-use app\models\Playlist;
-use app\models\Track;
 use DateTime;
+use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -27,9 +26,10 @@ class PlaylistController extends Controller {
 
     public function playlist(Request $request, Response $response, array $args) : Response{
         try {
-            $playlist = Playlist::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
+            $playlist = Auth::user()->playlists()->where('id', $args['id'])->firstOrFail();
+
             $this->view->render($response, 'pages/playlist.twig', [
-                "playlist" => $playlist ,
+                "playlist" => $playlist,
                 "addableTracks" => Auth::user()->tracks->diff($playlist->tracks)
             ]);
         } catch (ModelNotFoundException $e) {
@@ -40,9 +40,8 @@ class PlaylistController extends Controller {
     }
 
     public function showAddPlaylist(Request $request, Response $response, array $args) : Response {
-
         $this->view->render($response, 'pages/addPlaylist.twig');
-
+        return $response;
     }
 
     public function addPlaylist(Request $request, Response $response, array $args): Response {
@@ -50,21 +49,22 @@ class PlaylistController extends Controller {
             $titre = filter_var($request->getParsedBodyParam('name'), FILTER_SANITIZE_STRING);
             $descr = filter_var($request->getParsedBodyParam('descr'), FILTER_SANITIZE_STRING);
 
-            $playlist = new Playlist();
+            if (mb_strlen($titre, 'utf8') > 75) throw new Exception("Le nom de la playlist ne doit pas dépasser 75 caractères.");
+            if (mb_strlen($descr, 'utf8') > 1000) throw new Exception("La description de la playlist ne doit pas dépasser 1000 caractères.");
 
-            $playlist->nom = $titre;
-            $playlist->description = $descr;
-            $playlist->user_id = Auth::user()->id;
-            $playlist->creationDate = new DateTime();
-
-            $playlist->save();
+            Auth::user()->playlists()->create([
+                'nom' => $titre,
+                'description' => $descr,
+                'creationDate' => new DateTime()
+            ]);
 
             $this->flash->addMessage('success', "Votre playlist a bien été créée.");
-            $response = $response->withRedirect($this->router->pathFor("showPlaylists", ["id" => $playlist->id]));
-        } catch (ModelNotFoundException $e) {
-            $this->flash->addMessage('error', "Impossible de créer votre playlist.");
-            $response = $response->withRedirect($this->router->pathFor('showPlaylists'));
+            $response = $response->withRedirect($this->router->pathFor("showPlaylists"));
+        } catch (Exception $e) {
+            $this->flash->addMessage('error', $e->getMessage());
+            $response = $response->withRedirect($this->router->pathFor('showAddPlaylist'));
         }
+
         return $response;
     }
 
@@ -73,7 +73,10 @@ class PlaylistController extends Controller {
             $name = filter_var($request->getParsedBodyParam("name"), FILTER_SANITIZE_STRING);
             $descr = filter_var($request->getParsedBodyParam("descr"), FILTER_SANITIZE_STRING);
 
-            $playlist = Playlist::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
+            if (mb_strlen($name, 'utf8') > 75) throw new Exception("Le nom de la playlist ne doit pas dépasser 75 caractères.");
+            if (mb_strlen($descr, 'utf8') > 1000) throw new Exception("La description de la playlist ne doit pas dépasser 1000 caractères.");
+
+            $playlist = Auth::user()->playlists()->where('id', $args['id'])->firstOrFail();
 
             $playlist->nom = $name;
             $playlist->description = $descr;
@@ -85,18 +88,21 @@ class PlaylistController extends Controller {
         } catch (ModelNotFoundException $e) {
             $this->flash->addMessage('error', "Impossible de modifier votre playlist.");
             $response = $response->withRedirect($this->router->pathFor('showPlaylist', ["id" => $args["id"] ]));
+        } catch (Exception $e) {
+            $this->flash->addMessage('error', $e->getMessage());
+            $response = $response->withRedirect($this->router->pathFor('showPlaylist', ["id" => $args["id"] ]));
         }
         return $response;
     }
 
     public function deletePlaylist(Request $request, Response $response, array $args): Response {
         try {
-            $playlist = Playlist::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
+            $playlist = Auth::user()->playlists()->where('id', $args['id'])->firstOrFail();
 
             $playlist->tracks()->detach();
             $playlist->delete();
 
-            $this->flash->addMessage('success', "Vous venez de supprimer " . $playlist->nom . ".");
+            $this->flash->addMessage('success', "Vous venez de supprimer la playlist " . $playlist->nom . ".");
             $response = $response->withRedirect($this->router->pathFor("showPlaylists"));
         } catch (ModelNotFoundException $e) {
             $this->flash->addMessage('error', "Impossible de supprimer votre playlist.");
@@ -109,11 +115,11 @@ class PlaylistController extends Controller {
         try {
             $tracks = $request->getParsedBodyParam('tracks');
 
-            $playlist = Playlist::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
+            $playlist = Auth::user()->playlists()->where('id', $args['id'])->firstOrFail();
 
             $playlist->tracks()->saveMany(Auth::user()->tracks->find($tracks));
 
-            $this->flash->addMessage('success', "Félicitations, votre fichier a bien été ajouté. Vous pouvez désormais le consulter depuis votre playlist.");
+            $this->flash->addMessage('success', "Vos titres ont bien été ajouté à votre playlist.");
             $response = $response->withRedirect($this->router->pathFor("showPlaylist", ["id" => $playlist->id]));
         } catch (ModelNotFoundException $e) {
             $this->flash->addMessage('error', "Impossible d'ajouter des titres à votre playlist.");
@@ -124,20 +130,18 @@ class PlaylistController extends Controller {
 
     public function deleteAttachedTrack(Request $request, Response $response, array $args): Response {
         try {
-            $playlist = Playlist::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
+            $playlist = Auth::user()->playlists()->where('id', $args['id'])->firstOrFail();
 
             if(!$playlist->tracks->contains($args['trackId'])) throw new ModelNotFoundException();
 
             $playlist->tracks()->detach($args['trackId']);
 
-            $this->flash->addMessage('success', "Le titre a bien été supprimé du vinyle.");
+            $this->flash->addMessage('success', "Le titre a bien été supprimé de la playlist.");
             $response = $response->withRedirect($this->router->pathFor('showPlaylist', ['id' => $args['id']]));
         } catch (ModelNotFoundException $e) {
-            $this->flash->addMessage('error', "Impossible de supprimer ce titre pour ce vinyle.");
+            $this->flash->addMessage('error', "Impossible de supprimer ce titre pour cette playlist.");
             $response = $response->withRedirect($this->router->pathFor('showPlaylist', ['id' => $args['id']]));
         }
         return $response;
     }
-
-
 }

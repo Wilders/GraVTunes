@@ -31,12 +31,10 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ path_for("updatePlaylist", {id: playlist.id}) }}" enctype="multipart/form-data">
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="name">Nom de la playlist *</label>
-                                <input type="text" name="name" id="name" class="form-control" value="{{ playlist.nom }}" required autofocus>
-                            </div>
+                    <form method="POST" action="{{ path_for("updatePlaylist", {id: playlist.id}) }}">
+                        <div class="form-group">
+                            <label for="name">Nom de la playlist *</label>
+                            <input type="text" name="name" id="name" class="form-control" value="{{ playlist.nom }}" required autofocus>
                         </div>
                         <div class="form-group">
                             <label for="descr">Description</label>
@@ -47,7 +45,7 @@
 
                         <hr>
                         Les champs marqués d'un astérisque sont obligatoires.
-                        <button type="submit" class="btn btn-lg btn-primary float-right">Envoyer</button>
+                        <button type="submit" class="btn btn-lg btn-primary float-right">Modifier</button>
                     </form>
                 </div>
             </div>
@@ -58,7 +56,9 @@
         <div class="card-header py-3">
             <div class="btn-group btn-group-sm float-right" role="group">
                 <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#updateModal">Modifier <i class="fas fa-edit"></i></a>
-                <a href="{{ path_for('deletePlaylist', {id: playlist.id}) }}" class="btn btn-danger">Supprimer <i class="fas fa-times"></i></a>
+                <button type="submit" class="btn btn-danger" data-toggle="popover" title="<i class='fas fa-exclamation-triangle'></i> Êtes-vous sûr?" data-placement="bottom" data-trigger="focus" data-content="<div class='btn-group btn-group-sm' role='group'><a class='btn btn-sm btn-danger' href='{{ path_for('deletePlaylist', {id: playlist.id}) }}'>Confirmer</a><a class='btn btn-sm btn-primary' href='#'>Annuler</a></div>">
+                    Supprimer <i class="fas fa-times"></i>
+                </button>
             </div>
             <h6 class="m-0 font-weight-bold text-primary">Informations générales</h6>
         </div>
@@ -104,7 +104,7 @@
                         <th>#</th>
                         <th>Nom</th>
                         <th>Description</th>
-                        <th>Duree</th>
+                        <th>Durée</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -113,7 +113,7 @@
                         <th>#</th>
                         <th>Nom</th>
                         <th>Description</th>
-                        <th>Duree</th>
+                        <th>Durée</th>
                         <th>Action</th>
                     </tr>
                     </tfoot>
@@ -128,7 +128,9 @@
                             <td class="text-center">
                                 <div class="btn-group" role="group">
                                     <a href="{{ path_for('showUpdateTrack', {id: track.id}) }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
-                                    <a href="{{ path_for('deleteTrackPlaylist', {id: playlist.id, trackId: track.id}) }}" class="btn btn-danger"><i class="fas fa-times"></i></a>
+                                    <button type="submit" class="btn btn-danger" data-toggle="popover" title="<i class='fas fa-exclamation-triangle'></i> Êtes-vous sûr?" data-placement="bottom" data-trigger="focus" data-content="<div class='btn-group btn-group-sm' role='group'><a class='btn btn-sm btn-danger' href='{{ path_for('deleteTrackPlaylist', {id: playlist.id, trackId: track.id}) }}'>Confirmer</a><a class='btn btn-sm btn-primary' href='#'>Annuler</a></div>">
+                                        <i class="fas fa-times"></i>
+                                    </button>
                                 </div>
                             </td>
                         </tr>
