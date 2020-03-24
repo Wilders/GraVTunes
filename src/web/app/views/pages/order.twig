@@ -51,7 +51,7 @@
                 <div class="steps">
                     <div class="steps-header">
                         <div class="progress">
-                            <div class="progress-bar" role="progressbar" style="width:{% if order.statut is same as(5) %} 100% {% else %} {{ ((order.statut / 5) * 100) - 10 }}% {% endif %}" aria-valuenow="{{ order.statut * 10 }}" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar" role="progressbar" aria-valuenow="{% if order.statut is same as(5) %}100{% else %}{{((order.statut / 5) * 100) - 10 }}{% endif %}" data-level="{% if order.statut is same as(5) %}100%{% else %}{{((order.statut / 5) * 100) - 10 }}%{% endif %}" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
                     <div class="steps-body">
