@@ -1,1 +1,141 @@
-Affichage d'une playlist
+{% extends "layouts/app-layout.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/bootstrap-select.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/datatables.bootstrap.min.css">
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/bootstrap-select_fr_FR.min.js"></script>
+    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/dataTables.min.js"></script>
+    <script type="text/javascript" src='{{ base_url() }}/public/assets/js/datatables.bootstrap.min.js'></script>
+{% endblock %}
+
+{% block appcontent %}
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Playlist #{{ play.id }} - {{ play.nom }}</h1>
+    </div>
+
+    {% include "layouts/flash.twig" %}
+
+    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateModalLabel">{{ play.nom }} - Modification</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{{ path_for("updatePlay", {id: play.id}) }}" enctype="multipart/form-data">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="name">Nom de la playliste *</label>
+                                <input type="text" name="name" id="name" class="form-control" value="{{ play.nom }}" required autofocus>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="descr">Description</label>
+                            <textarea class="form-control" id="description" rows="3" name="descr">{{ play.description }}</textarea>
+                        </div>
+
+                        {{ csrf() | raw }}
+
+                        <hr>
+                        Les champs marqués d'un astérisque sont obligatoires.
+                        <button type="submit" class="btn btn-lg btn-primary float-right">Envoyer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <div class="btn-group btn-group-sm float-right" role="group">
+                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#updateModal">Modifier <i class="fas fa-edit"></i></a>
+                <a href="{{ path_for('deletePlay', {id: play.id}) }}" class="btn btn-danger">Supprimer <i class="fas fa-times"></i></a>
+            </div>
+            <h6 class="m-0 font-weight-bold text-primary">Informations générales</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-10">
+                    <div class="row">
+                        <h1>{{ play.nom }}</h1>
+                    </div>
+                    <div class="row">
+                        <h3>{{ play.description }}</h3>
+                    </div>
+                    <div class="row">
+                        <p>{{ play.tracks.count }} titres</p>
+                    </div>
+                    <div class="row">
+                        <p>Durée totale de {% set duree = 0 %}{% for track in play.tracks %}{% set duree = duree + track.file.duree %}{% endfor %}{{ duree }} secondes</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <form action="{{ path_for('importTrackPlay', {id: play.id}) }}" class="float-right" method="POST">
+                <select name="tracks[]" class="selectpicker" id="tracks" data-live-search="true" title="Ajouter des titres" multiple>
+                    {% for track in addableTracks %}
+                        <option value="{{ track.id }}">{{ track.nom }}</option>
+                    {% endfor %}
+                </select>
+
+                {{ csrf() | raw }}
+
+                <button type="submit" class="ml-2 btn btn-primary">OK</button>
+            </form>
+            <h6 class="m-0 font-weight-bold text-primary">Contenu de la playliste</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nom</th>
+                        <th>Description</th>
+                        <th>Duree</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <th>#</th>
+                        <th>Nom</th>
+                        <th>Description</th>
+                        <th>Duree</th>
+                        <th>Action</th>
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                    {% set i = 1 %}
+                    {% for track in vinyle.tracks %}
+                        <tr>
+                            <td>{{ i }} {% set i = i + 1 %}</td>
+                            <td>{{ track.nom }}</td>
+                            <td>{{ track.description }}</td>
+                            <td>{{ track.file.duree }} secondes</td>
+                            <td class="text-center">
+                                <div class="btn-group" role="group">
+                                    <a href="{{ path_for('showUpdateTrack', {id: track.id}) }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                                    <a href="{{ path_for('deleteTrackVinyle', {id: play.id, trackId: track.id}) }}" class="btn btn-danger"><i class="fas fa-times"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

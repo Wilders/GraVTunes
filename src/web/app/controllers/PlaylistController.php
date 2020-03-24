@@ -55,6 +55,7 @@ class PlaylistController extends Controller {
         try {
             $play = Playlist::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
 
+            $play->tracks()->detach();
             $play->delete();
 
             $this->flash->addMessage('success', "Vous venez de supprimer " . $play->nom . ".");
@@ -66,21 +67,6 @@ class PlaylistController extends Controller {
         return $response;
     }
 
-    public function formUpdatePlay(Request $request, Response $response, array $args) :Response{
-        try {
-            //$id = filter_var($args['id'], FILTER_SANITIZE_NUMBER_INT);
-
-            //$play = Playlist::where(["id" => $id, "user_id" => Auth::user()->id])->firstOrFail();
-
-            $this->view->render($response, 'pages/playlistUpdate.twig',[
-                "id" => $args['id']
-            ]);
-        }catch (ModelNotFoundException $e){
-            $this->flash->addMessage('error', $e->getMessage());
-            $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
-        }
-        return $response;
-    }
 
     public function updatePlay(Request $request, Response $response, array $args): Response {
         try {
@@ -95,21 +81,11 @@ class PlaylistController extends Controller {
             $play->save();
 
             $this->flash->addMessage('success', "Votre playlist a bien été modifiée.");
-            $response = $response->withRedirect($this->router->pathFor("showPlaylists", ["id" => $play->id]));
+            $response = $response->withRedirect($this->router->pathFor("showPlay", ["id" => $play->id]));
         } catch (ModelNotFoundException $e) {
             $this->flash->addMessage('error', "Impossible de modifier cette playlist.");
             $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
         }
-        return $response;
-    }
-
-
-    public function newTrackPlay(Request $request, Response $response, array $args): Response {
-        $tracks = Auth::user()->tracks;
-        $this->view->render($response, 'pages/playlistAddTrack.twig', [
-            "tracks" => $tracks,
-            "id" => $args['id']
-        ]);
         return $response;
     }
 
@@ -121,7 +97,7 @@ class PlaylistController extends Controller {
             $play->tracks()->saveMany(Auth::user()->tracks->find($tracks));
 
             $this->flash->addMessage('success', "Félicitations, votre fichier a bien été ajouté à votre playlist. Vous pouvez le consulter depuis votre playliste.");
-            $response = $response->withRedirect($this->router->pathFor("showPlaylists"));
+            $response = $response->withRedirect($this->router->pathFor("showPlay", ["id" => $play->id]));
         } catch (ModelNotFoundException $e) {
             $this->flash->addMessage('error', $e->getMessage());
             $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
@@ -129,18 +105,17 @@ class PlaylistController extends Controller {
         return $response;
     }
 
-    /*public function showPlay(Request $request, Response $response, array $args) : Response{
+    public function showPlay(Request $request, Response $response, array $args) : Response{
         try {
-            $id = filter_var($args['id'], FILTER_SANITIZE_NUMBER_INT);
-            $playT= Track::join()where(["playlist_id" => $id])->get();
-            $this->view->render($response, 'pages/playlistShowTracks.twig', [
-                "t" => $playT
+            $play = Playlist::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
+            $this->view->render($response, 'pages/playlist.twig', [
+                "play" => $play,
+                "addableTracks" => Auth::user()->tracks->diff($play->tracks)
             ]);
-        }catch (ModelNotFoundException $e){
-            $this->flash->addMessage('error', $e->getMessage());
-            $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
+        } catch (ModelNotFoundException $e) {
+            $this->flash->addMessage('error', "Ce vinyle n'existe pas.");
+            $response = $response->withRedirect($this->router->pathFor('appHome'));
         }
         return $response;
-    }*/
-
+    }
 }

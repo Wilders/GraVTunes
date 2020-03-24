@@ -172,7 +172,7 @@ $app->group('', function() {
     $this->post('/playlists', PlaylistController::class . ':importPlay')->setName("importPlay");
 
     //Supprimer une playliste
-    $this->post('/playlists/{id:[0-9]+}', PlaylistController::class . ':deletePlay')->setName("deletePlay");
+    $this->get('/playlists/{id:[0-9]+}', PlaylistController::class . ':deletePlay')->setName("deletePlay");
 
     //Modifier une playliste
     $this->get('/playlists/update/{id:[0-9]+}', PlaylistController::class . ':formUpdatePlay')->setName("formUpdatePlay");
