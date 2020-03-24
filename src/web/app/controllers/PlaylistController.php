@@ -18,17 +18,34 @@ class PlaylistController extends Controller {
 
     public function playlists(Request $request, Response $response, array $args): Response {
         $playlist = Auth::user()->playlists;
+
         $this->view->render($response, 'pages/playlists.twig', [
             "playlists" => $playlist
         ]);
         return $response;
     }
 
-    public function newPlay(Request $request, Response $response){
-        $this->view->render($response, 'pages/playlistAdd.twig');
+    public function playlist(Request $request, Response $response, array $args) : Response{
+        try {
+            $playlist = Playlist::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
+            $this->view->render($response, 'pages/playlist.twig', [
+                "playlist" => $playlist ,
+                "addableTracks" => Auth::user()->tracks->diff($playlist->tracks)
+            ]);
+        } catch (ModelNotFoundException $e) {
+            $this->flash->addMessage('error', "Cette playlist n'existe pas.");
+            $response = $response->withRedirect($this->router->pathFor('showPlaylists'));
+        }
+        return $response;
     }
 
-    public function importPlay(Request $request, Response $response, array $args): Response {
+    public function showAddPlaylist(Request $request, Response $response, array $args) : Response {
+
+        $this->view->render($response, 'pages/addPlaylist.twig');
+
+    }
+
+    public function addPlaylist(Request $request, Response $response, array $args): Response {
         try {
             $titre = filter_var($request->getParsedBodyParam('name'), FILTER_SANITIZE_STRING);
             $descr = filter_var($request->getParsedBodyParam('descr'), FILTER_SANITIZE_STRING);
@@ -45,77 +62,82 @@ class PlaylistController extends Controller {
             $this->flash->addMessage('success', "Votre playlist a bien été créée.");
             $response = $response->withRedirect($this->router->pathFor("showPlaylists", ["id" => $playlist->id]));
         } catch (ModelNotFoundException $e) {
-            $this->flash->addMessage('error', $e->getMessage());
-            $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
+            $this->flash->addMessage('error', "Impossible de créer votre playlist.");
+            $response = $response->withRedirect($this->router->pathFor('showPlaylists'));
         }
         return $response;
     }
 
-    public function deletePlay(Request $request, Response $response, array $args): Response {
+    public function updatePlaylist(Request $request, Response $response, array $args): Response {
         try {
-            $play = Playlist::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
-
-            $play->tracks()->detach();
-            $play->delete();
-
-            $this->flash->addMessage('success', "Vous venez de supprimer " . $play->nom . ".");
-            $response = $response->withRedirect($this->router->pathFor("showPlaylists"));
-        } catch (ModelNotFoundException $e) {
-            $this->flash->addMessage('error', "Impossible de supprimer cette playlist.");
-            $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
-        }
-        return $response;
-    }
-
-
-    public function updatePlay(Request $request, Response $response, array $args): Response {
-        try {
-            $play = Playlist::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
-
             $name = filter_var($request->getParsedBodyParam("name"), FILTER_SANITIZE_STRING);
             $descr = filter_var($request->getParsedBodyParam("descr"), FILTER_SANITIZE_STRING);
 
-            $play->nom = $name;
-            $play->description = $descr;
+            $playlist = Playlist::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
 
-            $play->save();
+            $playlist->nom = $name;
+            $playlist->description = $descr;
+
+            $playlist->save();
 
             $this->flash->addMessage('success', "Votre playlist a bien été modifiée.");
-            $response = $response->withRedirect($this->router->pathFor("showPlay", ["id" => $play->id]));
+            $response = $response->withRedirect($this->router->pathFor("showPlaylist", ["id" => $playlist->id]));
         } catch (ModelNotFoundException $e) {
-            $this->flash->addMessage('error', "Impossible de modifier cette playlist.");
-            $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
+            $this->flash->addMessage('error', "Impossible de modifier votre playlist.");
+            $response = $response->withRedirect($this->router->pathFor('showPlaylist', ["id" => $args["id"] ]));
         }
         return $response;
     }
 
-    public function importTrackPlay(Request $request, Response $response, array $args): Response {
+    public function deletePlaylist(Request $request, Response $response, array $args): Response {
         try {
-            $play = Playlist::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
-            $tracks = $request->getParsedBodyParam('file');
+            $playlist = Playlist::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
 
-            $play->tracks()->saveMany(Auth::user()->tracks->find($tracks));
+            $playlist->tracks()->detach();
+            $playlist->delete();
 
-            $this->flash->addMessage('success', "Félicitations, votre fichier a bien été ajouté à votre playlist. Vous pouvez le consulter depuis votre playliste.");
-            $response = $response->withRedirect($this->router->pathFor("showPlay", ["id" => $play->id]));
+            $this->flash->addMessage('success', "Vous venez de supprimer " . $playlist->nom . ".");
+            $response = $response->withRedirect($this->router->pathFor("showPlaylists"));
         } catch (ModelNotFoundException $e) {
-            $this->flash->addMessage('error', $e->getMessage());
-            $response = $response->withRedirect($this->router->pathFor($e->getRoute()));
+            $this->flash->addMessage('error', "Impossible de supprimer votre playlist.");
+            $response = $response->withRedirect($this->router->pathFor('showPlaylist', ["id" => $args["id"] ]));
         }
         return $response;
     }
 
-    public function showPlay(Request $request, Response $response, array $args) : Response{
+    public function addTracksPlaylist(Request $request, Response $response, array $args): Response {
         try {
-            $play = Playlist::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
-            $this->view->render($response, 'pages/playlist.twig', [
-                "play" => $play,
-                "addableTracks" => Auth::user()->tracks->diff($play->tracks)
-            ]);
+            $tracks = $request->getParsedBodyParam('tracks');
+
+            $playlist = Playlist::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
+
+            $playlist->tracks()->saveMany(Auth::user()->tracks->find($tracks));
+
+            $this->flash->addMessage('success', "Félicitations, votre fichier a bien été ajouté. Vous pouvez désormais le consulter depuis votre playlist.");
+            $response = $response->withRedirect($this->router->pathFor("showPlaylist", ["id" => $playlist->id]));
         } catch (ModelNotFoundException $e) {
-            $this->flash->addMessage('error', "Ce vinyle n'existe pas.");
-            $response = $response->withRedirect($this->router->pathFor('appHome'));
+            $this->flash->addMessage('error', "Impossible d'ajouter des titres à votre playlist.");
+            $response = $response->withRedirect($this->router->pathFor('showPlaylist', ["id" => $args["id"] ]));
         }
         return $response;
     }
+
+    public function deleteAttachedTrack(Request $request, Response $response, array $args): Response {
+        try {
+            $playlist = Playlist::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
+
+            if(!$playlist->tracks->contains($args['trackId'])) throw new ModelNotFoundException();
+
+            $playlist->tracks()->detach($args['trackId']);
+
+            $this->flash->addMessage('success', "Le titre a bien été supprimé du vinyle.");
+            $response = $response->withRedirect($this->router->pathFor('showPlaylist', ['id' => $args['id']]));
+        } catch (ModelNotFoundException $e) {
+            $this->flash->addMessage('error', "Impossible de supprimer ce titre pour ce vinyle.");
+            $response = $response->withRedirect($this->router->pathFor('showPlaylist', ['id' => $args['id']]));
+        }
+        return $response;
+    }
+
+
 }

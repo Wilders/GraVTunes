@@ -15,8 +15,8 @@
 {% endblock %}
 
 {% block appcontent %}
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Playlist #{{ play.id }} - {{ play.nom }}</h1>
+    <div class="d-sm-flex align-items-center justify-content-between mb-4 ">
+        <h1 class="h3 mb-0 text-gray-800">Playlist #{{ playlist.id }} - {{ playlist.nom }}</h1>
     </div>
 
     {% include "layouts/flash.twig" %}
@@ -25,22 +25,22 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="updateModalLabel">{{ play.nom }} - Modification</h5>
+                    <h5 class="modal-title" id="updateModalLabel">{{ playlist.nom }} - Modification</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ path_for("updatePlay", {id: play.id}) }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ path_for("updatePlaylist", {id: playlist.id}) }}" enctype="multipart/form-data">
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <label for="name">Nom de la playliste *</label>
-                                <input type="text" name="name" id="name" class="form-control" value="{{ play.nom }}" required autofocus>
+                                <label for="name">Nom de la playlist *</label>
+                                <input type="text" name="name" id="name" class="form-control" value="{{ playlist.nom }}" required autofocus>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="descr">Description</label>
-                            <textarea class="form-control" id="description" rows="3" name="descr">{{ play.description }}</textarea>
+                            <textarea class="form-control" id="description" rows="3" name="descr">{{ playlist.description }}</textarea>
                         </div>
 
                         {{ csrf() | raw }}
@@ -58,24 +58,24 @@
         <div class="card-header py-3">
             <div class="btn-group btn-group-sm float-right" role="group">
                 <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#updateModal">Modifier <i class="fas fa-edit"></i></a>
-                <a href="{{ path_for('deletePlay', {id: play.id}) }}" class="btn btn-danger">Supprimer <i class="fas fa-times"></i></a>
+                <a href="{{ path_for('deletePlaylist', {id: playlist.id}) }}" class="btn btn-danger">Supprimer <i class="fas fa-times"></i></a>
             </div>
             <h6 class="m-0 font-weight-bold text-primary">Informations générales</h6>
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-10">
+                <div class="col-10 ml-4">
                     <div class="row">
-                        <h1>{{ play.nom }}</h1>
+                        <h1>{{ playlist.nom }}</h1>
                     </div>
                     <div class="row">
-                        <h3>{{ play.description }}</h3>
+                        <h3>{{ playlist.description }}</h3>
                     </div>
                     <div class="row">
-                        <p>{{ play.tracks.count }} titres</p>
+                        <p>{{ playlist.tracks.count }} titres</p>
                     </div>
                     <div class="row">
-                        <p>Durée totale de {% set duree = 0 %}{% for track in play.tracks %}{% set duree = duree + track.file.duree %}{% endfor %}{{ duree }} secondes</p>
+                        <p>Durée totale de {% set duree = 0 %}{% for track in playlist.tracks %}{% set duree = duree + track.file.duree %}{% endfor %}{{ duree }} secondes</p>
                     </div>
                 </div>
             </div>
@@ -83,7 +83,7 @@
     </div>
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <form action="{{ path_for('importTrackPlay', {id: play.id}) }}" class="float-right" method="POST">
+            <form action="{{ path_for('addTracksPlaylist', {id: playlist.id}) }}" class="float-right" method="POST">
                 <select name="tracks[]" class="selectpicker" id="tracks" data-live-search="true" title="Ajouter des titres" multiple>
                     {% for track in addableTracks %}
                         <option value="{{ track.id }}">{{ track.nom }}</option>
@@ -94,7 +94,7 @@
 
                 <button type="submit" class="ml-2 btn btn-primary">OK</button>
             </form>
-            <h6 class="m-0 font-weight-bold text-primary">Contenu de la playliste</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Contenu de la playlist</h6>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -119,7 +119,7 @@
                     </tfoot>
                     <tbody>
                     {% set i = 1 %}
-                    {% for track in vinyle.tracks %}
+                    {% for track in playlist.tracks %}
                         <tr>
                             <td>{{ i }} {% set i = i + 1 %}</td>
                             <td>{{ track.nom }}</td>
@@ -128,7 +128,7 @@
                             <td class="text-center">
                                 <div class="btn-group" role="group">
                                     <a href="{{ path_for('showUpdateTrack', {id: track.id}) }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
-                                    <a href="{{ path_for('deleteTrackVinyle', {id: play.id, trackId: track.id}) }}" class="btn btn-danger"><i class="fas fa-times"></i></a>
+                                    <a href="{{ path_for('deleteTrackPlaylist', {id: playlist.id, trackId: track.id}) }}" class="btn btn-danger"><i class="fas fa-times"></i></a>
                                 </div>
                             </td>
                         </tr>

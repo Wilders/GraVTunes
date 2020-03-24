@@ -161,26 +161,16 @@ $app->group('', function() {
     /**
      * Playlists
      */
-    //Afficher les playlistes
+
     $this->get('/playlists', PlaylistController::class . ':playlists')->setName("showPlaylists");
+    $this->get('/playlist/{id:[0-9]+}', PlaylistController::class . ':playlist')->setName("showPlaylist");
+    $this->get('/playlists/add', PlaylistController::class . ':showAddPlaylist')->setName("showAddPlaylist");
+    $this->get('/playlists/{id:[0-9]+}/delete', PlaylistController::class . ':deletePlaylist')->setName("deletePlaylist");
+    $this->get('/playlist/{id:[0-9]+}/delete/{trackId:[0-9]+}', PlaylistController::class . ':deleteAttachedTrack')->setName('deleteTrackPlaylist');
 
-    //Afficher les tracks d'une playliste
-    $this->get('/playlist/{id:[0-9]+}/tracks', PlaylistController::class . ':showPlay')->setName("showPlay");
-
-    //Ajouter une playliste
-    $this->get('/playlists/add', PlaylistController::class . ':newPlay')->setName("newPlay");
-    $this->post('/playlists', PlaylistController::class . ':importPlay')->setName("importPlay");
-
-    //Supprimer une playliste
-    $this->get('/playlists/{id:[0-9]+}', PlaylistController::class . ':deletePlay')->setName("deletePlay");
-
-    //Modifier une playliste
-    $this->get('/playlists/update/{id:[0-9]+}', PlaylistController::class . ':formUpdatePlay')->setName("formUpdatePlay");
-    $this->post('/playlists/update/{id:[0-9]+}', PlaylistController::class . ':updatePlay')->setName("updatePlay");
-
-    //Ajouter une musique dans une playliste
-    $this->get('/playlist/{id:[0-9]+}/add', PlaylistController::class . ':newTrackPlay')->setName("newTrackPlay");
-    $this->post('/playlist/{id:[0-9]+}/add', PlaylistController::class . ':importTrackPlay')->setName("importTrackPlay");
+    $this->post('/playlists/add', PlaylistController::class . ':addPlaylist')->setName("addPlaylist");
+    $this->post('/playlist/{id:[0-9]+}/add', PlaylistController::class . ':addTracksPlaylist')->setName("addTracksPlaylist");
+    $this->post('/playlists/{id:[0-9]+}/update', PlaylistController::class . ':updatePlaylist')->setName("updatePlaylist");
 
     /**
      * Vinyles
