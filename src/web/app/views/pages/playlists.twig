@@ -17,7 +17,7 @@
 
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <a class="btn btn-outline-primary float-right" href="{{ path_for("showAddPlaylist") }}">Ajouter une playlist</a>
+            <a class="btn btn-sm btn-outline-primary float-right" href="{{ path_for("showAddPlaylist") }}">Créer une Playlist</a>
             <h6 class="m-0 font-weight-bold text-primary">Mes Playlists</h6>
         </div>
         <div class="card-body">
@@ -29,7 +29,7 @@
                         <th>Nom</th>
                         <th>Description</th>
                         <th>Date de création</th>
-                        <th></th>
+                        <th>Action</th>
                     </tr>
                     </thead>
                     <tfoot>
@@ -38,56 +38,25 @@
                         <th>Nom</th>
                         <th>Description</th>
                         <th>Date de création</th>
-                        <th></th>
+                        <th>Action</th>
                     </tr>
                     </tfoot>
                     <tbody>
                     {% for playlist in playlists %}
                         <tr>
-                            <td class="text-center"><i class="far fa-play-circle fa-3x"></i></td>
+                            <td class="text-center"><a class="playBtn" href="#" data-file="{{ base_url() }}/uploads/tracks/{{ track.file.path }}" data-title="{{ track.nom }}" data-cover="{{ base_url() }}/public/assets/media/images/logo.png"><i class="far fa-play-circle fa-3x" id="buttonPlayer"></i></a></td>
                             <td>{{ playlist.nom }}</td>
                             <td>{{ playlist.description }}</td>
-                            <td>{{ playlist.creationDate }}</td>
-                            <td>
-                                <div class="dropdown">
-                                    <a  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-bars fa-2x"></i>
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <a href="{{ path_for('showAddTrackPlaylist', {id: playlist.id}) }}">
-                                            <button type="button" class="dropdown-item">Ajouter une musique</button>
-                                        </a>
-                                        <a href="{{ path_for('showUpdatePlaylist', {id: playlist.id}) }}">
-                                            <button type="button" class="dropdown-item">Modifier</button>
-                                        </a>
-                                        <button type="button" class="dropdown-item" data-toggle="modal" data-target="#deletePlaylistModal{{ playlist.id }}">Supprimer</button>
-                                    </div>
+                            <td>{{ playlist.creationDate | date("d/m/Y") }}</td>
+                            <td class="text-center">
+                                <div class="btn-group" role="group">
+                                    <a href="{{ path_for('showPlaylist', {id: playlist.id}) }}" class="btn btn-success"><i class="fas fa-eye"></i></a>
+                                    <button type="submit" class="btn btn-danger" data-toggle="popover" title="<i class='fas fa-exclamation-triangle'></i> Êtes-vous sûr?" data-placement="bottom" data-trigger="focus" data-content="<div class='btn-group btn-group-sm' role='group'><a class='btn btn-sm btn-danger' href='{{ path_for('deletePlaylist', {id: playlist.id}) }}'>Confirmer</a><a class='btn btn-sm btn-primary' href='#'>Annuler</a></div>">
+                                        <i class="fas fa-times"></i>
+                                    </button>
                                 </div>
                             </td>
                         </tr>
-
-                        <div class="modal fade" id="deletePlaylistModal{{ playlist.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <form method="POST" action="{{ path_for("deletePlaylist", {id: playlist.id}) }}" id="deleteTrackForm" >
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Êtes-vous sûr de supprimer cette playliste ?</h5>
-                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">×</span>
-                                            </button>
-                                        </div>
-
-                                        {{ csrf() | raw }}
-
-                                        <div class="modal-footer">
-                                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Fermer</button>
-                                            <button class="btn btn-primary" type="submit">Supprimer</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-
                     {% endfor %}
                     </tbody>
                 </table>
