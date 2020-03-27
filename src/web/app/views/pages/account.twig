@@ -2,8 +2,8 @@
 
 {% block scripts %}
     {{ parent() }}
-    <script src="https://cdn.jsdelivr.net/npm/places.js@1.17.1"></script>
-    <script src="{{ base_url() }}/public/assets/js/places.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/places.js@1.17.1"></script>
+    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/places.js"></script>
 {% endblock %}
 
 {% block appcontent %}
@@ -42,8 +42,8 @@
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label for="pseudo">Nom *</label>
-                                        <input type="text" id="pseudo" class="form-control" name="name" value="{{ auth.user.nom }}" required>
+                                        <label for="name">Nom *</label>
+                                        <input type="text" id="name" class="form-control" name="name" value="{{ auth.user.nom }}" required>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="forename">Prénom *</label>
@@ -62,7 +62,7 @@
 
                                 <hr>
                                 Les champs marqués d'un astérisque sont obligatoires.
-                                <button type="submit" class="btn btn-lg btn-primary float-right">Envoyer</button>
+                                <button type="submit" class="btn btn-lg btn-primary float-right">Modifier</button>
                             </form>
                         </div>
                     </div>

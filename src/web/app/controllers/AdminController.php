@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\exceptions\AuthException;
 use app\models\Commande;
 use app\models\Ticket;
 use app\models\Track;
@@ -18,7 +19,7 @@ class AdminController extends Controller {
 
     public function showHome(Request $request, Response $response, array $args): Response {
         $files = [];
-        foreach (Track::all() as $track) {
+        foreach (Track::where(['archived' => false])->get() as $track) {
             $files[] = $track->file->size;
         }
 
@@ -110,6 +111,52 @@ class AdminController extends Controller {
             $response = $response->withRedirect($this->router->pathFor("showAdminHome"));
         }
         return $response;
+    }
+
+    public function updateUser(Request $request, Response $response, array $args): Response {
+        try {
+            $id = filter_var($request->getParsedBodyParam('id'), FILTER_SANITIZE_NUMBER_INT);
+            $pseudo = filter_var($request->getParsedBodyParam('pseudo'), FILTER_SANITIZE_STRING);
+            $name = filter_var($request->getParsedBodyParam('name'), FILTER_SANITIZE_STRING);
+            $forename = filter_var($request->getParsedBodyParam('forename'), FILTER_SANITIZE_STRING);
+            $address = filter_var($request->getParsedBodyParam('address'), FILTER_SANITIZE_STRING);
+            $email = filter_var($request->getParsedBodyParam('email'), FILTER_SANITIZE_EMAIL);
+
+            $user = User::where(['id' => $id])->firstOrFail();
+
+            if (mb_strlen($pseudo, 'utf8') < 3 || mb_strlen($pseudo, 'utf8') > 35) throw new AuthException("Votre pseudo doit contenir entre 3 et 35 caractères.");
+            if (mb_strlen($name, 'utf8') < 2 || mb_strlen($name, 'utf8') > 50) throw new AuthException("Votre nom doit contenir entre 2 et 50 caractères.");
+            if (mb_strlen($forename, 'utf8') < 2 || mb_strlen($forename, 'utf8') > 50) throw new AuthException("Votre prénom doit contenir entre 2 et 50 caractères.");
+            if (User::where('pseudo', '=', $pseudo)->exists()) throw new AuthException("Ce pseudo est déjà pris.");
+
+            if ($user->email != $email) {
+                if (User::where('email', '=', $email)->exists()) throw new AuthException("Cet email est déjà utilisée.");
+            }
+
+            if ($user->pseudo != $pseudo) {
+                if (User::where('pseudo', '=', $pseudo)->exists()) throw new AuthException("Ce nom d'utilisateur est déjà utilisée.");
+            }
+
+            $user->pseudo = $pseudo;
+            $user->nom = $name;
+            $user->prenom = $forename;
+            $user->email = $email;
+            $user->address = $address;
+            $user->save();
+
+            $this->flash->addMessage('success', "Les modifications apportées à $user->pseudo ont été enregistrées !");
+            $response = $response->withRedirect($this->router->pathFor('showAdminHome'));
+        } catch (ModelNotFoundException $e) {
+            $this->flash->addMessage('error', "Impossible de trouver cet utilisateur.");
+            $response = $response->withRedirect($this->router->pathFor("showAdminHome"));
+        } catch (AuthException $e) {
+            $this->flash->addMessage('error', $e->getMessage());
+            $response = $response->withRedirect($this->router->pathFor("showAdminHome"));
+        }
+        return $response;
+    }
+    public function deleteUser(Request $request, Response $response, array $args): Response {
+
     }
 
 }

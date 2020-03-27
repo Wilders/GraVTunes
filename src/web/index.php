@@ -216,6 +216,8 @@ $app->group('/admin', function() {
 
     $this->get('/home', AdminController::class . ':showHome')->setName('showAdminHome');
 
+    $this->post('/user/update', AdminController::class . ':updateUser')->setName('adminUpdateUser');
+
     $this->get('/track/{id:[0-9]+}/delete', AdminController::class . ':deleteTrack')->setName("adminDeleteTrack");
 
     $this->get('/order/{id:[0-9]+}', AdminController::class . ':showOrder')->setName("adminShowOrder");

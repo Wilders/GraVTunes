@@ -83,7 +83,24 @@ $(function () {
     });
 });
 function clipboard(item) {
-    var copyText = document.getElementById(item.id);
+    let copyText = document.getElementById(item.id);
     copyText.select();
     document.execCommand("copy");
 }
+$('#userModal').on('show.bs.modal', function (event) {
+    let button = $(event.relatedTarget);
+    let id = button.data('id');
+    let pseudo = button.data('pseudo');
+    let email = button.data('email');
+    let nom = button.data('nom');
+    let prenom = button.data('prenom');
+    let adresse = button.data('adresse');
+    let modal = $(this);
+    modal.find('.modal-title').text(pseudo + ' - Modification');
+    modal.find('#userId').val(id);
+    modal.find('#pseudo').val(pseudo);
+    modal.find('#email').val(email);
+    modal.find('#name').val(nom);
+    modal.find('#forename').val(prenom);
+    modal.find('#address').val(adresse);
+});
