@@ -1,0 +1,321 @@
+{% extends "layouts/app-layout.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/datatables.bootstrap.min.css">
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/dataTables.min.js"></script>
+    <script type="text/javascript" src='{{ base_url() }}/public/assets/js/datatables.bootstrap.min.js'></script>
+{% endblock %}
+
+{% block appcontent %}
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Administration</h1>
+    </div>
+
+    {% include "layouts/flash.twig" %}
+
+    <div class="row">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Titres stockés</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ tracks.count }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-file-audio fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Commandes</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ orders.count }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-shipping-fast fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Stockage</div>
+                            <div class="row no-gutters align-items-center">
+                                <div class="col-auto">
+                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ arroundDiskSpace }} Mo</div>
+                                </div>
+                                <div class="col">
+                                    <div class="progress progress-sm mr-2">
+                                        <div class="progress-bar bg-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-hdd fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Tickets</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ tickets.count }} </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-2">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active" id="v-pills-users-tab" data-toggle="pill" href="#v-pills-users" role="tab" aria-controls="v-pills-users" aria-selected="true">Utilisateurs</a>
+                <a class="nav-link" id="v-pills-tracks-tab" data-toggle="pill" href="#v-pills-tracks" role="tab" aria-controls="v-pills-tracks" aria-selected="false">Titres & Fichiers</a>
+                <a class="nav-link" id="v-pills-orders-tab" data-toggle="pill" href="#v-pills-orders" role="tab" aria-controls="v-pills-orders" aria-selected="false">Commandes</a>
+                <a class="nav-link" id="v-pills-tickets-tab" data-toggle="pill" href="#v-pills-tickets" role="tab" aria-controls="v-pills-tickets" aria-selected="false">Tickets</a>
+            </div>
+        </div>
+        <div class="col-10">
+            <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="v-pills-users" role="tabpanel" aria-labelledby="v-pills-users-tab">
+                    <div class="card">
+                        <div class="card-header bg-gradient-primary text-white">
+                            Utilisateurs
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Pseudo</th>
+                                            <th>Nom</th>
+                                            <th>Prénom</th>
+                                            <th>Email</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Pseudo</th>
+                                            <th>Nom</th>
+                                            <th>Prénom</th>
+                                            <th>Email</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                    {% for user in users %}
+                                        <tr>
+                                            <td>{{ user.pseudo }}</td>
+                                            <td>{{ user.nom }}</td>
+                                            <td>{{ user.prenom }}</td>
+                                            <td>{{ user.email }}</td>
+                                            <td class="text-center">
+                                                <div class="btn-group" role="group">
+                                                    <a href="" class="btn btn-success"><i class="fas fa-eye"></i></a>
+                                                    <a href="" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                                                    <a href="" class="btn btn-danger"><i class="fas fa-times"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="v-pills-tracks" role="tabpanel" aria-labelledby="v-pills-tracks-tab">
+                    <div class="card">
+                        <div class="card-header bg-gradient-primary text-white">
+                            Titres & Fichiers
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable">
+                                    <thead>
+                                    <tr>
+                                        <th>Nom</th>
+                                        <th>Description</th>
+                                        <th>Utilisateur</th>
+                                        <th>Fichier</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tfoot>
+                                    <tr>
+                                        <th>Nom</th>
+                                        <th>Description</th>
+                                        <th>Utilisateur</th>
+                                        <th>Fichier</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </tfoot>
+                                    <tbody>
+                                    {% for track in tracks %}
+                                        <tr>
+                                            <td>{{ track.nom }}</td>
+                                            <td>{{ track.description }}</td>
+                                            <td>{{ track.user.pseudo }}</td>
+                                            <td>{{ track.file.path }} | {{ (track.file.size / (1024*1024)) | round(2, 'floor') }} Mo</td>
+                                            <td class="text-center">
+                                                <div class="btn-group" role="group">
+                                                    <a href="" class="btn btn-success"><i class="fas fa-play-circle"></i></a>
+                                                    <a href="" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                                                    <a href="" class="btn btn-danger"><i class="fas fa-times"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="v-pills-orders" role="tabpanel" aria-labelledby="v-pills-orders-tab">
+                    <div class="card">
+                        <div class="card-header bg-gradient-primary text-white">
+                            Commandes
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable">
+                                    <thead>
+                                    <tr>
+                                        <th>Référence</th>
+                                        <th>Utilisateur</th>
+                                        <th>Statut</th>
+                                        <th>Date</th>
+                                        <th>Total</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tfoot>
+                                    <tr>
+                                        <th>Référence</th>
+                                        <th>Utilisateur</th>
+                                        <th>Statut</th>
+                                        <th>Date</th>
+                                        <th>Total</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </tfoot>
+                                    <tbody>
+                                    {% for order in orders %}
+                                        <tr>
+                                            <td><a href="{{ path_for('showOrder', {id: order.id}) }}">#{{ order.id }}</a></td>
+                                            <td>{{ order.user.pseudo }}</td>
+                                            <td>
+                                                {% if order.statut is same as(1) %}
+                                                    Commande reçue
+                                                {% elseif order.statut is same as(2) %}
+                                                    Commande en préparation
+                                                {% elseif order.statut is same as(3)  %}
+                                                    Contrôle qualité
+                                                {% elseif order.statut is same as(4) %}
+                                                    Commande expédiée
+                                                {% elseif order.statut is same as(5) %}
+                                                    Commande livrée
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ order.creationDate | date("d/m/Y") }}</td>
+                                            <td>{{ order.total }} €</td>
+                                            <td class="text-center">
+                                                <div class="btn-group" role="group">
+                                                    <a href="" class="btn btn-success"><i class="fas fa-forward"></i></a>
+                                                    <a href="" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="v-pills-tickets" role="tabpanel" aria-labelledby="v-pills-tickets-tab">
+                    <div class="card">
+                        <div class="card-header bg-gradient-primary text-white">
+                            Tickets
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered" id="dataTable">
+                                <thead>
+                                <tr>
+                                    <th>Référence</th>
+                                    <th>Utilisateur</th>
+                                    <th>Statut</th>
+                                    <th>Date</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tfoot>
+                                <tr>
+                                    <th>Référence</th>
+                                    <th>Utilisateur</th>
+                                    <th>Statut</th>
+                                    <th>Date</th>
+                                    <th>Action</th>
+                                </tr>
+                                </tfoot>
+                                <tbody>
+                                {% for ticket in tickets %}
+                                    <tr>
+                                        <td>#{{ ticket.id }}</td>
+                                        <td>{{ ticket.user.pseudo }}</td>
+                                        <td>
+                                            {% if ticket.statut is same as(0) %}
+                                                Ticket ouvert
+                                            {% else %}
+                                                Ticket fermé
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ ticket.created_at | date("d/m/Y H:i") }}</td>
+                                        <td class="text-center">
+                                            <div class="btn-group" role="group">
+                                                <a href="" class="btn btn-success"><i class="fas fa-eye"></i></a>
+                                                {% if ticket.statut is same as(0) %}
+                                                    <a href="" class="btn btn-danger"><i class="fas fa-times"></i></a>
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
