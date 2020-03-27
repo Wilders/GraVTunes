@@ -251,7 +251,6 @@
                                             <td class="text-center">
                                                 <div class="btn-group" role="group">
                                                     <a href="{{ path_for('adminShowOrder', {id: order.id}) }}" class="btn btn-success"><i class="fas fa-eye"></i></a>
-                                                    <a href="" class="btn btn-primary"><i class="fas fa-edit"></i></a>
                                                     {% if( order.statut < 5) %}
                                                         <a href="{{ path_for('adminNextStepOrder', {id: order.id}) }}" class="btn btn-dark"><i class="fas fa-forward"></i></a>
                                                     {% endif %}
