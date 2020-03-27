@@ -11,14 +11,14 @@
     <script type="text/javascript" src="{{ base_url() }}/public/assets/js/app.js"></script>
     <script>
         $(function () {
-            let dataTable = $('#dataTable');
-            if(dataTable.length) {
-                dataTable.DataTable({
+            let tables = $('.table');
+            tables.each(function () {
+                $(this).DataTable({
                     language: {
                         url: '{{ base_url() }}/public/assets/js/datatables.french.json'
                     }
                 });
-            }
+            });
         });
     </script>
 {% endblock %}

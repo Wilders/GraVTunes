@@ -1,0 +1,55 @@
+{% extends "layouts/app-layout.twig" %}
+{% block appcontent %}
+    <div class="my-3 my-md-5">
+        <div class="container">
+            <div class="card mb-4">
+                <div class="card-body text-center">
+                    <img class="img-profile rounded-circle" src="{{ base_url() }}/uploads/avatars/{{ auth.user.avatar }}" height="60">
+                    <h3 class="mb-1">{{ user.pseudo }}</h3>
+                    <h5 class="mb-3">
+                        {% if user.role is same as(1) %}
+                            <span class="badge badge-dark">ADMIN</span>
+                        {% endif %}
+                    </h5>
+                    <p class="mb-4">
+                        {{ user.description }}
+                    </p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    {% if user.public is same as (0) %}
+                        Malheureusement cet utilisateur n'a pas déclaré son profil en public.
+                    {% else %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Identifiant</label>
+                                    <input type="text" class="form-control" placeholder="Nom d'utilisateur" name="username" value="{{ user.pseudo }}" disabled>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Adresse e-mail</label>
+                                    <input type="email" class="form-control" placeholder="Adresse e-mail" name="email" value="{{ user.email }}" disabled>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Nom</label>
+                                    <input type="text" class="form-control" placeholder="Nom" name="name" value="{{ user.nom }}" disabled>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Prénom</label>
+                                    <input type="text" class="form-control" placeholder="Prénom" name="forename" value="{{ user.prenom }}" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

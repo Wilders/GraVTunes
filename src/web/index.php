@@ -1,6 +1,7 @@
 <?php
 
 use app\controllers\AccountController;
+use app\controllers\AdminController;
 use app\controllers\AppController;
 use app\controllers\OrderController;
 use app\helpers\Auth;
@@ -14,6 +15,7 @@ use app\controllers\TicketController;
 use app\extensions\TwigCsrf;
 use app\extensions\TwigMessages;
 use app\helpers\Basket;
+use app\middlewares\AdminMiddleware;
 use app\middlewares\AuthMiddleware;
 use app\middlewares\GuestMiddleware;
 use app\middlewares\OldInputMiddleware;
@@ -118,6 +120,7 @@ $app->group('', function() {
 
     $this->get('/home', AppController::class . ':showDashHome')->setName('showHome');
     $this->get('/braintree/token', AppController::class . ':btToken')->setName("braintreeToken");
+    $this->get('/u/{username}', AccountController::class . ':showProfile')->setName('showProfile');
 
     /**
      * Account
@@ -208,5 +211,22 @@ $app->group('', function() {
     $this->post('/ticket/{id:[0-9]+}/add', TicketController::class . ':addMessage')->setName("addMessage");
 
 })->add(new AuthMiddleware($container));
+
+// Admin
+$app->group('/admin', function() {
+
+    $this->get('/home', AdminController::class . ':showHome')->setName('showAdminHome');
+
+    $this->post('/user/update', AdminController::class . ':updateUser')->setName('adminUpdateUser');
+
+    $this->get('/track/{id:[0-9]+}/delete', AdminController::class . ':deleteTrack')->setName("adminDeleteTrack");
+
+    $this->get('/order/{id:[0-9]+}', AdminController::class . ':showOrder')->setName("adminShowOrder");
+    $this->get('/order/{id:[0-9]+}/next', AdminController::class . ':nextStepOrder')->setName("adminNextStepOrder");
+
+    $this->get('/ticket/{id:[0-9]+}', AdminController::class . ':showTicket')->setName("adminShowTicket");
+    $this->get('/ticket/{id:[0-9]+}/close', AdminController::class . ':closeTicket')->setName("adminCloseTicket");
+
+})->add(new AdminMiddleware($container));
 
 $app->run();

@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\helpers\Auth;
+use app\models\Ticket;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Slim\Http\Request;
@@ -84,8 +85,11 @@ class TicketController extends Controller {
     public function addMessage(Request $request, Response $response, array $args): Response {
         try{
             $contenu = filter_var($request->getParsedBodyParam('message'), FILTER_SANITIZE_STRING);
-
-            $ticket = Auth::user()->tickets()->where('id', $args['id'])->firstOrFail();
+            if(Auth::user()->role == 1) {
+                $ticket = Ticket::where('id', $args['id'])->firstOrFail();
+            } else {
+                $ticket = Auth::user()->tickets()->where('id', $args['id'])->firstOrFail();
+            }
             if($ticket->statut == 1) throw new Exception("Impossible d'ajouter un message à un ticket clos.");
             $ticket->messages()->create([
                 'message' => $contenu,
@@ -94,7 +98,11 @@ class TicketController extends Controller {
             $ticket->touch();
 
             $this->flash->addMessage('success', "Votre message a bien été envoyé.");
-            $response = $response->withRedirect($this->router->pathFor("showTicket", ["id" => $args['id']]));
+            if(Auth::user()->role == 1) {
+                $response = $response->withRedirect($this->router->pathFor("adminShowTicket", ["id" => $args['id']]));
+            } else {
+                $response = $response->withRedirect($this->router->pathFor("showTicket", ["id" => $args['id']]));
+            }
         } catch (ModelNotFoundException $e){
             $this->flash->addMessage('error', "Impossible d'ajouter un message à ce ticket.");
             $response = $response->withRedirect($this->router->pathFor("showTickets"));
