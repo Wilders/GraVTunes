@@ -215,6 +215,10 @@ $app->group('', function() {
 $app->group('/admin', function() {
 
     $this->get('/home', AdminController::class . ':showHome')->setName('showAdminHome');
+    $this->get('/order/{id:[0-9]+}', AdminController::class . ':showOrder')->setName("adminShowOrder");
+    $this->get('/order/{id:[0-9]+}/next', AdminController::class . ':nextStepOrder')->setName("adminNextStepOrder");
+    $this->get('/ticket/{id:[0-9]+}', AdminController::class . ':showTicket')->setName("adminShowTicket");
+    $this->get('/ticket/{id:[0-9]+}/close', AdminController::class . ':closeTicket')->setName("adminCloseTicket");
 
 })->add(new AdminMiddleware($container));
 

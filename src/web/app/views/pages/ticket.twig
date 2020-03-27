@@ -17,9 +17,15 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             {% if ticket.statut == 0 %}
-                <button type="submit" class="btn btn-sm btn-danger float-right" data-toggle="popover" title="<i class='fas fa-exclamation-triangle'></i> Êtes-vous sûr?" data-placement="bottom" data-trigger="focus" data-content="<div class='btn-group btn-group-sm' role='group'><a class='btn btn-sm btn-danger' href='{{ path_for('closeTicket', {id: ticket.id}) }}'>Confirmer</a><a class='btn btn-sm btn-primary' href='#'>Annuler</a></div>">
-                    Clore <i class="fas fa-times"></i>
-                </button>
+                {% if auth.user.role == 1 %}
+                    <button type="submit" class="btn btn-sm btn-danger float-right" data-toggle="popover" title="<i class='fas fa-exclamation-triangle'></i> Êtes-vous sûr?" data-placement="bottom" data-trigger="focus" data-content="<div class='btn-group btn-group-sm' role='group'><a class='btn btn-sm btn-danger' href='{{ path_for('adminCloseTicket', {id: ticket.id}) }}'>Confirmer</a><a class='btn btn-sm btn-primary' href='#'>Annuler</a></div>">
+                        Clore <i class="fas fa-times"></i>
+                    </button>
+                {% else %}
+                    <button type="submit" class="btn btn-sm btn-danger float-right" data-toggle="popover" title="<i class='fas fa-exclamation-triangle'></i> Êtes-vous sûr?" data-placement="bottom" data-trigger="focus" data-content="<div class='btn-group btn-group-sm' role='group'><a class='btn btn-sm btn-danger' href='{{ path_for('closeTicket', {id: ticket.id}) }}'>Confirmer</a><a class='btn btn-sm btn-primary' href='#'>Annuler</a></div>">
+                        Clore <i class="fas fa-times"></i>
+                    </button>
+                {% endif %}
             {% endif %}
             <h6 class="m-0 font-weight-bold text-primary">Ticket #{{ ticket.id }} - Créé le {{ ticket.created_at | date('d/m/Y') }}</h6>
         </div>
