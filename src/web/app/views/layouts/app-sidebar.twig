@@ -10,10 +10,18 @@
 
     <li class="nav-item">
         <a class="nav-link" href="{{ path_for("showHome") }}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <i class="fas fa-tachometer-alt"></i>
             <span>Tableau de bord</span>
         </a>
     </li>
+    {% if auth.user.role is same as(1) %}
+    <li class="nav-item">
+        <a class="nav-link" href="{{ path_for("showAdminHome") }}">
+            <i class="fas fa-cogs"></i>
+            <span>Administration</span>
+        </a>
+    </li>
+    {% endif %}
 
     <hr class="sidebar-divider">
 

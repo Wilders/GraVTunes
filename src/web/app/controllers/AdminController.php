@@ -10,7 +10,7 @@ use Slim\Http\Response;
  * Class AdminController
  * @package app\controllers
  */
-class AdminController {
+class AdminController extends Controller {
 
     public function showHome(Request $request, Response $response, array $args): Response {
         $this->view->render($response, 'pages/admin/home.twig');
