@@ -24,11 +24,27 @@ class AdminController extends Controller {
 
         $this->view->render($response, 'pages/admin/home.twig', [
             "users" => User::all(),
-            "tracks" => Track::all(),
+            "tracks" => Track::where(['archived' => false])->get(),
             "orders" => Commande::all(),
             "tickets" => Ticket::all(),
             "arroundDiskSpace" => round(array_sum($files)/(1024*1024),2)
         ]);
+        return $response;
+    }
+
+    public function deleteTrack(Request $request, Response $response, array $args): Response {
+        try {
+            $track = Track::where(["id" => $args['id']])->firstOrFail();
+
+            $track->archived = true;
+            $track->save();
+
+            $this->flash->addMessage('success', "Vous venez de supprimer " . $track->nom . ".");
+            $response = $response->withRedirect($this->router->pathFor("showAdminHome"));
+        } catch (ModelNotFoundException $e) {
+            $this->flash->addMessage('error', "Impossible de supprimer ce titre");
+            $response = $response->withRedirect($this->router->pathFor("showAdminHome"));
+        }
         return $response;
     }
 

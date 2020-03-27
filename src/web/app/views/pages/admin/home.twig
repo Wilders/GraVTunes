@@ -3,12 +3,15 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/datatables.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/stickyaudioplayerjquery.min.css">
 {% endblock %}
 
 {% block scripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ base_url() }}/public/assets/js/dataTables.min.js"></script>
     <script type="text/javascript" src='{{ base_url() }}/public/assets/js/datatables.bootstrap.min.js'></script>
+    <script type="text/javascript" src='{{ base_url() }}/public/assets/js/stickyaudioplayerjquery.min.js'></script>
+    <script type="text/javascript" src='{{ base_url() }}/public/assets/js/player.js'></script>
 {% endblock %}
 
 {% block appcontent %}
@@ -187,9 +190,10 @@
                                             <td>{{ track.file.path }} | {{ (track.file.size / (1024*1024)) | round(2, 'floor') }} Mo</td>
                                             <td class="text-center">
                                                 <div class="btn-group" role="group">
-                                                    <a href="" class="btn btn-success"><i class="fas fa-play-circle"></i></a>
-                                                    <a href="" class="btn btn-primary"><i class="fas fa-edit"></i></a>
-                                                    <a href="" class="btn btn-danger"><i class="fas fa-times"></i></a>
+                                                    <a href="#" class="btn btn-success playBtn" data-file="{{ base_url() }}/uploads/tracks/{{ track.file.path }}" data-title="{{ track.nom }}" data-cover="{{ base_url() }}/public/assets/media/images/logo.png"><i class="fas fa-play-circle"></i></a>
+                                                    <button type="submit" class="btn btn-danger" data-toggle="popover" title="<i class='fas fa-exclamation-triangle'></i> Êtes-vous sûr?" data-placement="bottom" data-trigger="focus" data-content="<div class='btn-group btn-group-sm' role='group'><a class='btn btn-sm btn-danger' href='{{ path_for('adminDeleteTrack', {id: track.id}) }}'>Confirmer</a><a class='btn btn-sm btn-primary' href='#'>Annuler</a></div>">
+                                                        <i class="fas fa-times"></i>
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>
