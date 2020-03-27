@@ -70,7 +70,7 @@
                 <div class="tab-pane fade" id="createItem" role="tabpanel">
                     <div class="card bg-light">
                         <div class="card-header bg-gradient-primary text-white">
-                            Profil public
+                            Profil public (<a class="text-white" href="{{ path_for('showProfile', {username: auth.user.pseudo}) }}">Voir mon profil</a>)
                         </div>
                         <div class="card-body">
                             <form method="POST" action="{{ path_for("updateProfile") }}" enctype="multipart/form-data">

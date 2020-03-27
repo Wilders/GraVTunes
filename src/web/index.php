@@ -120,6 +120,7 @@ $app->group('', function() {
 
     $this->get('/home', AppController::class . ':showDashHome')->setName('showHome');
     $this->get('/braintree/token', AppController::class . ':btToken')->setName("braintreeToken");
+    $this->get('/u/{username}', AccountController::class . ':showProfile')->setName('showProfile');
 
     /**
      * Account
