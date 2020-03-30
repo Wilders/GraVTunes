@@ -28,7 +28,7 @@ class AppController extends Controller {
             $files[] = $track->file->size;
         }
         $stats = [
-            "tracks" => Auth::user()->tracks->count(),
+            "tracks" => Auth::user()->tracks()->where("archived", false)->get()->count(),
             "orders" => Auth::user()->commandes->count(),
             "tickets" => Auth::user()->tickets->count(),
             "diskSpace" => array_sum($files),
