@@ -103,7 +103,7 @@
                 <table class="table table-bordered">
                     <thead>
                     <tr>
-                        <th>#</th>
+                        <th></th>
                         <th>Nom</th>
                         <th>Description</th>
                         <th>Durée</th>
@@ -112,7 +112,7 @@
                     </thead>
                     <tfoot>
                     <tr>
-                        <th>#</th>
+                        <th></th>
                         <th>Nom</th>
                         <th>Description</th>
                         <th>Durée</th>
@@ -123,7 +123,7 @@
                     {% set i = 1 %}
                     {% for track in playlist.tracks %}
                         <tr>
-                            <td>{{ i }} {% set i = i + 1 %}</td>
+                            <td class="text-center"><a class="playBtn" href="#" data-file="{{ base_url() }}/uploads/tracks/{{ track.file.path }}" data-title="{{ track.nom }}" data-cover="{{ base_url() }}/public/assets/media/images/logo.png"><i class="far fa-play-circle fa-3x"></i></a></td>
                             <td>{{ track.nom }}</td>
                             <td>{{ track.description }}</td>
                             <td>{{ track.file.duree }} secondes</td>
