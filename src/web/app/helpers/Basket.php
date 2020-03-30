@@ -11,7 +11,7 @@ use app\models\Vinyle;
 class Basket {
 
     private static function init() {
-        if(!isset($_SESSION['cart'])) {
+        if (!isset($_SESSION['cart'])) {
             $_SESSION['cart'] = [];
         }
     }
@@ -23,7 +23,7 @@ class Basket {
 
     public static function add(Vinyle $vinyle, int $quantity) {
         self::init();
-        if(isset($_SESSION['cart'][$vinyle->id])) {
+        if (isset($_SESSION['cart'][$vinyle->id])) {
             $_SESSION['cart'][$vinyle->id] += $quantity;
         } else {
             $_SESSION['cart'][$vinyle->id] = $quantity;
@@ -64,7 +64,7 @@ class Basket {
         self::init();
         $total = 0;
 
-        foreach(Basket::all() as $item) {
+        foreach (Basket::all() as $item) {
             $total += $item->prix * $item->quantity;
         }
 
@@ -73,8 +73,8 @@ class Basket {
 
     public static function update(Vinyle $vinyle, int $quantity) {
         self::init();
-        if(isset($_SESSION['cart'][$vinyle->id])) {
-            if($quantity <= 0 ) {
+        if (isset($_SESSION['cart'][$vinyle->id])) {
+            if ($quantity <= 0) {
                 self::remove($vinyle);
             } else {
                 $_SESSION['cart'][$vinyle->id] = $quantity;

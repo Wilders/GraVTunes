@@ -7,8 +7,8 @@
 
 {% block scripts %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/dataTables.min.js"></script>
-    <script type="text/javascript" src='{{ base_url() }}/public/assets/js/datatables.bootstrap.min.js'></script>
+    <script src="{{ base_url() }}/public/assets/js/dataTables.min.js"></script>
+    <script src="{{ base_url() }}/public/assets/js/datatables.bootstrap.min.js"></script>
 {% endblock %}
 
 {% block appcontent %}
@@ -18,7 +18,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable">
+                <table class="table table-bordered">
                     <thead>
                     <tr>
                         <th>Référence</th>
@@ -44,7 +44,7 @@
                                     Commande reçue
                                 {% elseif order.statut is same as(2) %}
                                     Commande en préparation
-                                {% elseif order.statut is same as(3)  %}
+                                {% elseif order.statut is same as(3) %}
                                     Contrôle qualité
                                 {% elseif order.statut is same as(4) %}
                                     Commande expédiée

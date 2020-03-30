@@ -7,16 +7,18 @@
 
 {% block scripts %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/bootstrap-input-spinner.min.js"></script>
-    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/dataTables.min.js"></script>
-    <script type="text/javascript" src='{{ base_url() }}/public/assets/js/datatables.bootstrap.min.js'></script>
+    <script src="{{ base_url() }}/public/assets/js/bootstrap-input-spinner.min.js"></script>
+    <script src="{{ base_url() }}/public/assets/js/dataTables.min.js"></script>
+    <script src="{{ base_url() }}/public/assets/js/datatables.bootstrap.min.js"></script>
 {% endblock %}
 
 {% block appcontent %}
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Panier</h1>
         {% if basket.count > 0 %}
-            <a href="{{ path_for('clearCart') }}" class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm"><i class="fas fa-trash-alt fa-sm text-white-50"></i> Vider le panier</a>
+            <button type="submit" class="btn btn-danger" data-toggle="popover" title="<i class='fas fa-exclamation-triangle'></i> Êtes-vous sûr?" data-placement="bottom" data-trigger="focus" data-content="<div class='btn-group btn-group-sm' role='group'><a class='btn btn-sm btn-danger' href='{{ path_for('clearCart') }}'>Confirmer</a><a class='btn btn-sm btn-primary' href='#'>Annuler</a></div>">
+                <i class="fas fa-trash-alt fa-sm text-white-50"></i> Vider le panier
+            </button>
         {% endif %}
     </div>
 
@@ -35,68 +37,69 @@
                 </div>
             </div>
         {% else %}
-        <div class="col-9">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Votre panier ({{ basket.count }})</h6>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
+            <div class="col-9">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Votre panier ({{ basket.count }})</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
                                 <tr>
                                     <th>Nom</th>
                                     <th>Prix</th>
                                     <th>Quantité</th>
                                     <th>Action</th>
                                 </tr>
-                            </thead>
-                            <tbody>
-                            {% for item in basket.all %}
-                                <tr>
-                                    <td><a href="{{ path_for('showVinyle', {id: item.id}) }}">{{ item.nom }}</a></td>
-                                    <td>{{ item.prix | number_format(2) }} €</td>
-                                    <td>
-                                        <form action="{{ path_for("updateCart", {id: item.id}) }}" method="POST" class="form-inline">
-                                            <input type="number" min="0" class="form-control form-control-sm" value="{{ item.quantity }}" name="quantity">
-                                            {{ csrf() | raw }}
-                                            <button type="submit" class="btn btn-primary btn-sm ml-2"><i class="fas fa-sync"></i></button>
-                                        </form>
-                                    </td>
-                                    <td><a href="{{ path_for('deleteCart', {id: item.id}) }}" class="btn btn-danger btn-sm ml-2"> Supprimer <i class="fas fa-trash"></i></a></td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                {% for item in basket.all %}
+                                    <tr>
+                                        <td><a href="{{ path_for('showVinyle', {id: item.id}) }}">{{ item.nom }}</a>
+                                        </td>
+                                        <td>{{ item.prix | number_format(2) }} €</td>
+                                        <td>
+                                            <form action="{{ path_for("updateCart", {id: item.id}) }}" method="POST" class="form-inline">
+                                                <input type="number" min="0" class="form-control form-control-sm" value="{{ item.quantity }}" name="quantity">
+                                                {{ csrf() | raw }}
+                                                <button type="submit" class="btn btn-primary btn-sm ml-2"><i class="fas fa-sync"></i></button>
+                                            </form>
+                                        </td>
+                                        <td><a href="{{ path_for('deleteCart', {id: item.id}) }}" class="btn btn-danger btn-sm ml-2"> Supprimer <i class="fas fa-trash"></i></a></td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-3">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Récapitulatif</h6>
-                </div>
-                <div class="card-body">
-                    <ul class="list-group mb-3">
-                        <li class="list-group-item d-flex justify-content-between">
-                            <span>Sous-total</span>
-                            <strong>{{ basket.subtotal | number_format(2) }} €</strong>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between">
-                            <span>Livraison</span>
-                            <strong>5.00 €</strong>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between list-group-item-secondary">
-                            <span>Total</span>
-                            <strong>{{ (basket.subtotal + 5) | number_format(2) }} €</strong>
-                        </li>
-                    </ul>
-                    <a href="{{ path_for("showAddOrder") }}" class="btn btn-block btn-lg btn-primary">Commander</a>
-                    <small>Vous pourrez toujours annuler sur la page suivante.</small>
+            <div class="col-3">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Récapitulatif</h6>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group mb-3">
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Sous-total</span>
+                                <strong>{{ basket.subtotal | number_format(2) }} €</strong>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Livraison</span>
+                                <strong>5.00 €</strong>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between list-group-item-secondary">
+                                <span>Total</span>
+                                <strong>{{ (basket.subtotal + 5) | number_format(2) }} €</strong>
+                            </li>
+                        </ul>
+                        <a href="{{ path_for("showAddOrder") }}" class="btn btn-block btn-lg btn-primary">Commander</a>
+                        <small>Vous pourrez toujours annuler sur la page suivante.</small>
+                    </div>
                 </div>
             </div>
-        </div>
         {% endif %}
     </div>
 {% endblock %}

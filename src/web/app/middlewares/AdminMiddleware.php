@@ -2,8 +2,8 @@
 
 namespace app\middlewares;
 
-use app\helpers\Auth;
 use app\exceptions\AuthException;
+use app\helpers\Auth;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -22,7 +22,7 @@ class AdminMiddleware extends Middleware {
     public function __invoke(Request $request, Response $response, $next) {
         try {
             if (!Auth::check() && Auth::user()->role != 1) throw new AuthException();
-        } catch(AuthException $e) {
+        } catch (AuthException $e) {
             $this->container->flash->addMessage('error', 'Vous n\'être pas autorisé à accéder à cette page.');
             return $response->withRedirect($this->container->router->pathFor('showHome'));
         }

@@ -25,12 +25,12 @@ class ValidatorController extends Controller {
             if ($length < 3 || $length > 35) {
                 throw new ValidatorException("Votre pseudo doit contenir entre 3 et 35 caractères.");
             }
-            if(!self::match("/^[A-Za-z0-9]+(?:[._-][A-Za-z0-9]+)*$/", $input)) throw new ValidatorException("Votre pseudo est incorrect.");
+            if (!self::match("/^[A-Za-z0-9]+(?:[._-][A-Za-z0-9]+)*$/", $input)) throw new ValidatorException("Votre pseudo est incorrect.");
             if (User::where(['pseudo' => $input])->exists()) {
                 throw new ValidatorException("Ce pseudo est déjà pris.");
             }
             $response = self::VALID;
-        } catch(ValidatorException $e) {
+        } catch (ValidatorException $e) {
             $response = ['valid' => false, 'error' => $e->getMessage()];
         }
         return $response;
@@ -43,7 +43,7 @@ class ValidatorController extends Controller {
                 throw new ValidatorException("Votre nom doit contenir entre 2 et 50 caractères.");
             }
             $response = self::VALID;
-        } catch(ValidatorException $e) {
+        } catch (ValidatorException $e) {
             $response = ['valid' => false, 'error' => $e->getMessage()];
         }
         return $response;
@@ -56,7 +56,7 @@ class ValidatorController extends Controller {
                 throw new ValidatorException("Votre prénom doit contenir entre 2 et 50 caractères.");
             }
             $response = self::VALID;
-        } catch(ValidatorException $e) {
+        } catch (ValidatorException $e) {
             $response = ['valid' => false, 'error' => $e->getMessage()];
         }
         return $response;
@@ -71,7 +71,7 @@ class ValidatorController extends Controller {
                 throw new ValidatorException("Cette adresse e-mail est déjà utilisée.");
             }
             $response = self::VALID;
-        } catch(ValidatorException $e) {
+        } catch (ValidatorException $e) {
             $response = ['valid' => false, 'error' => $e->getMessage()];
         }
         return $response;
@@ -88,7 +88,7 @@ class ValidatorController extends Controller {
             }
             $input = trim(urldecode($request->getQueryParams()['input']));
             $response = $response->withJson(self::$method($input));
-        } catch(ValidatorException $e) {
+        } catch (ValidatorException $e) {
             $response = ['valid' => false, 'error' => $e->getMessage()];
         }
         return $response;

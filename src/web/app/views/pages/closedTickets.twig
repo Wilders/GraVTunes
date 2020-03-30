@@ -7,8 +7,8 @@
 
 {% block scripts %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/dataTables.min.js"></script>
-    <script type="text/javascript" src='{{ base_url() }}/public/assets/js/datatables.bootstrap.min.js'></script>
+    <script src="{{ base_url() }}/public/assets/js/dataTables.min.js"></script>
+    <script src="{{ base_url() }}/public/assets/js/datatables.bootstrap.min.js"></script>
 {% endblock %}
 
 {% block appcontent %}
@@ -26,7 +26,7 @@
                 <a class="btn btn-outline-primary float-left active" id="closedTickets" href="{{ path_for("showClosedTickets") }}">Tickets fermés</a>
             </div>
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered">
                     <thead>
                     <tr>
                         <th>ID</th>

@@ -8,10 +8,10 @@
 
 {% block scripts %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/bootstrap-select.min.js"></script>
-    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/bootstrap-select_fr_FR.min.js"></script>
-    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/dataTables.min.js"></script>
-    <script type="text/javascript" src='{{ base_url() }}/public/assets/js/datatables.bootstrap.min.js'></script>
+    <script src="{{ base_url() }}/public/assets/js/bootstrap-select.min.js"></script>
+    <script src="{{ base_url() }}/public/assets/js/bootstrap-select_fr_FR.min.js"></script>
+    <script src="{{ base_url() }}/public/assets/js/dataTables.min.js"></script>
+    <script src="{{ base_url() }}/public/assets/js/datatables.bootstrap.min.js"></script>
 {% endblock %}
 
 {% block appcontent %}
@@ -37,7 +37,7 @@
                             <input type="text" name="name" id="name" class="form-control" value="{{ playlist.nom }}" required autofocus>
                         </div>
                         <div class="form-group">
-                            <label for="descr">Description</label>
+                            <label for="description">Description</label>
                             <textarea class="form-control" id="description" rows="3" name="descr">{{ playlist.description }}</textarea>
                         </div>
 
@@ -75,7 +75,7 @@
                         <p>{{ playlist.tracks.count }} titres</p>
                     </div>
                     <div class="row">
-                        <p>Durée totale de {% set duree = 0 %}{% for track in playlist.tracks %}{% set duree = duree + track.file.duree %}{% endfor %}{{ duree }} secondes</p>
+                        <p>Durée totale de {% set duree = 0 %}{% for track in playlist.tracks %}{% set duree = duree + track.file.duree %}{% endfor %}{{ duree }}secondes</p>
                     </div>
                 </div>
             </div>
@@ -98,7 +98,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable">
+                <table class="table table-bordered">
                     <thead>
                     <tr>
                         <th>#</th>

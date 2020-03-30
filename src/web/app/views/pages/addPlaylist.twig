@@ -1,11 +1,6 @@
 {% extends "layouts/app-layout.twig" %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/datatables.bootstrap.min.css">
-{% endblock %}
-
-{%  block appcontent %}
+{% block appcontent %}
 
     {% include "layouts/flash.twig" %}
 
@@ -14,7 +9,7 @@
             <h6 class="m-0 font-weight-bold text-primary">Créer une playlist</h6>
         </div>
         <div class="card-body">
-            <form method="POST" action="{{ path_for("addPlaylist") }}" >
+            <form method="POST" action="{{ path_for("addPlaylist") }}">
                 <div class="form-group">
                     <label for="name">Nom de la playlist *</label>
                     <input type="text" name="name" id="name" class="form-control" value="{{ oldData.name }}" required autofocus>

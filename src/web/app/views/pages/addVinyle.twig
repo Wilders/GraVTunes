@@ -7,12 +7,11 @@
 
 {% block scripts %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/bootstrap-select.min.js"></script>
-    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/bootstrap-select_fr_FR.min.js"></script>
+    <script src="{{ base_url() }}/public/assets/js/bootstrap-select.min.js"></script>
+    <script src="{{ base_url() }}/public/assets/js/bootstrap-select_fr_FR.min.js"></script>
 {% endblock %}
 
-
-{%  block appcontent %}
+{% block appcontent %}
 
     {% include "layouts/flash.twig" %}
 

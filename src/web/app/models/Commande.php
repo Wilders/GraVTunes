@@ -21,6 +21,7 @@ class Commande extends Model {
         'statut',
         'creationDate'
     ];
+
     public function paiement(): HasOne {
         return $this->hasOne('\app\models\Paiement');
     }

@@ -1,16 +1,11 @@
 {% extends "layouts/app-layout.twig" %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/public/assets/css/datatables.bootstrap.min.css">
-{% endblock %}
-
-{%  block appcontent %}
+{% block appcontent %}
 
     {% include "layouts/flash.twig" %}
 
     <div class="card shadow mb-4">
-        <form method="POST" action="{{ path_for("updateTrack", {id:id}) }}" id="updateTrackForm">
+        <form method="POST" action="{{ path_for("updateTrack", {id:id}) }}">
             <div class="card-header py-3">
                 <h5>Modification d'une musique</h5>
             </div>
@@ -21,17 +16,15 @@
                 </div>
                 <div class="form-group">
                     <label for="descriptionUpdate">Description</label>
-                    <textarea class="form-control" name="descr" id="descriptionUpdate" rows="4" >{{ track.description }}</textarea>
+                    <textarea class="form-control" name="descr" id="descriptionUpdate" rows="4">{{ track.description }}</textarea>
                 </div>
             </div>
-
 
             {{ csrf() | raw }}
 
             <div class="card-footer">
                 <button type="submit" class="btn btn-primary btn-lg">Importer</button>
             </div>
-
         </form>
     </div>
 {% endblock %}

@@ -8,12 +8,12 @@
 
 {% block scripts %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/dataTables.min.js"></script>
-    <script type="text/javascript" src='{{ base_url() }}/public/assets/js/datatables.bootstrap.min.js'></script>
-    <script type="text/javascript" src='{{ base_url() }}/public/assets/js/stickyaudioplayerjquery.min.js'></script>
-    <script type="text/javascript" src='{{ base_url() }}/public/assets/js/player.js'></script>
+    <script src="{{ base_url() }}/public/assets/js/dataTables.min.js"></script>
+    <script src="{{ base_url() }}/public/assets/js/datatables.bootstrap.min.js"></script>
+    <script src="{{ base_url() }}/public/assets/js/stickyaudioplayerjquery.min.js"></script>
+    <script src="{{ base_url() }}/public/assets/js/player.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/places.js@1.17.1"></script>
-    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/places.js"></script>
+    <script src="{{ base_url() }}/public/assets/js/places.js"></script>
 {% endblock %}
 
 {% block appcontent %}
@@ -112,7 +112,7 @@
                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Stockage</div>
                             <div class="row no-gutters align-items-center">
                                 <div class="col-auto">
-                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ arroundDiskSpace }} Mo</div>
+                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ arroundDiskSpace }}Mo</div>
                                 </div>
                                 <div class="col">
                                     <div class="progress progress-sm mr-2">
@@ -164,24 +164,24 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable">
+                                <table class="table table-bordered">
                                     <thead>
-                                        <tr>
-                                            <th>Pseudo</th>
-                                            <th>Nom</th>
-                                            <th>Prénom</th>
-                                            <th>Email</th>
-                                            <th>Action</th>
-                                        </tr>
+                                    <tr>
+                                        <th>Pseudo</th>
+                                        <th>Nom</th>
+                                        <th>Prénom</th>
+                                        <th>Email</th>
+                                        <th>Action</th>
+                                    </tr>
                                     </thead>
                                     <tfoot>
-                                        <tr>
-                                            <th>Pseudo</th>
-                                            <th>Nom</th>
-                                            <th>Prénom</th>
-                                            <th>Email</th>
-                                            <th>Action</th>
-                                        </tr>
+                                    <tr>
+                                        <th>Pseudo</th>
+                                        <th>Nom</th>
+                                        <th>Prénom</th>
+                                        <th>Email</th>
+                                        <th>Action</th>
+                                    </tr>
                                     </tfoot>
                                     <tbody>
                                     {% for user in users %}
@@ -194,7 +194,6 @@
                                                 <div class="btn-group" role="group">
                                                     <a href="{{ path_for('showProfile', {username: user.pseudo}) }}" class="btn btn-success"><i class="fas fa-eye"></i></a>
                                                     <button class="btn btn-primary" data-toggle="modal" data-target="#userModal" data-pseudo="{{ user.pseudo }}" data-email="{{ user.email }}" data-nom="{{ user.nom }}" data-prenom="{{ user.prenom }}" data-adresse="{{ user.address }}" data-id="{{ user.id }}"><i class="fas fa-edit"></i></button>
-                                                    <a href="" class="btn btn-danger"><i class="fas fa-times"></i></a>
                                                 </div>
                                             </td>
                                         </tr>
@@ -212,7 +211,7 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable">
+                                <table class="table table-bordered">
                                     <thead>
                                     <tr>
                                         <th>Nom</th>
@@ -261,7 +260,7 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable">
+                                <table class="table table-bordered">
                                     <thead>
                                     <tr>
                                         <th>Référence</th>
@@ -292,7 +291,7 @@
                                                     Commande reçue
                                                 {% elseif order.statut is same as(2) %}
                                                     Commande en préparation
-                                                {% elseif order.statut is same as(3)  %}
+                                                {% elseif order.statut is same as(3) %}
                                                     Contrôle qualité
                                                 {% elseif order.statut is same as(4) %}
                                                     Commande expédiée
@@ -324,7 +323,7 @@
                             Tickets
                         </div>
                         <div class="card-body">
-                            <table class="table table-bordered" id="dataTable">
+                            <table class="table table-bordered">
                                 <thead>
                                 <tr>
                                     <th>Référence</th>

@@ -24,7 +24,7 @@ class Auth {
 
     public static function user() {
         $res = null;
-        if(self::check()) {
+        if (self::check()) {
             $_SESSION['user']->refresh();
             $res = $_SESSION['user'];
         }

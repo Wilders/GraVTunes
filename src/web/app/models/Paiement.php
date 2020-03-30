@@ -16,7 +16,7 @@ class Paiement extends Model {
     protected $fillable = [
         'success',
         'transaction_id'
-        ];
+    ];
 
     public $transaction_id = null;
 

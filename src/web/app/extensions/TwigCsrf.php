@@ -25,6 +25,7 @@ class TwigCsrf extends AbstractExtension {
     public function __construct(Guard $guard) {
         $this->guard = $guard;
     }
+
     /**
      * Nom de l'extension
      *

@@ -10,11 +10,11 @@
     <title>{% block title %}GraVTunes{% endblock %}</title>
 </head>
 <body class="bg-gradient-primary">
-{% block content %}{% endblock %}
+    {% block content %}{% endblock %}
 
-<script type="text/javascript" src="{{ base_url() }}/public/assets/js/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" src="{{ base_url() }}/public/assets/js/popper-1.16.0.min.js"></script>
-<script type="text/javascript" src="{{ base_url() }}/public/assets/js/bootstrap-4.4.1.min.js"></script>
-{% block scripts %}{% endblock %}
+    <script src="{{ base_url() }}/public/assets/js/jquery-3.4.1.min.js"></script>
+    <script src="{{ base_url() }}/public/assets/js/popper-1.16.0.min.js"></script>
+    <script src="{{ base_url() }}/public/assets/js/bootstrap-4.4.1.min.js"></script>
+    {% block scripts %}{% endblock %}
 </body>
 </html>

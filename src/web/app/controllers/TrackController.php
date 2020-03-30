@@ -14,7 +14,7 @@ use Slim\Http\Response;
  * Class TrackController
  * @package app\controllers
  */
-class TrackController extends Controller{
+class TrackController extends Controller {
 
     public function tracks(Request $request, Response $response, array $args): Response {
         $tracks = Auth::user()->tracks()->where("archived", false)->get();
@@ -52,7 +52,7 @@ class TrackController extends Controller{
         $ffmpeg = FFProbe::create();
         $trackInfo = $ffmpeg->format($endFilePath);
 
-        if(!File::where('hash', $hash)->exists()) {
+        if (!File::where('hash', $hash)->exists()) {
             $fichier = new File();
             $fichier->path = $name;
             $fichier->hash = $hash;

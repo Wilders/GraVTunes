@@ -122,20 +122,25 @@
     .steps-header {
         display: none
     }
+
     .steps-body,
     .step {
         display: block
     }
+
     .step {
         border-right: 0;
         border-bottom: 1px dashed #e7e7e7
     }
+
     .step:last-child {
         border-bottom: 0
     }
+
     .has-indicator {
         padding: 1rem .75rem
     }
+
     .has-indicator .step-indicator {
         display: inline-block;
         position: static;

@@ -28,7 +28,7 @@ class AdminController extends Controller {
             "tracks" => Track::where(['archived' => false])->get(),
             "orders" => Commande::all(),
             "tickets" => Ticket::all(),
-            "arroundDiskSpace" => round(array_sum($files)/(1024*1024),2)
+            "arroundDiskSpace" => round(array_sum($files) / (1024 * 1024), 2)
         ]);
         return $response;
     }
@@ -52,7 +52,7 @@ class AdminController extends Controller {
     public function nextStepOrder(Request $request, Response $response, array $args): Response {
         try {
             $order = Commande::where('id', $args['id'])->firstOrFail();
-            if($order->statut < 5) {
+            if ($order->statut < 5) {
                 $order->statut += 1;
             }
             $order->save();
@@ -71,11 +71,11 @@ class AdminController extends Controller {
             $ticket = Ticket::where('id', $args['id'])->firstOrFail();
             $messages = $ticket->messages;
 
-            $this->view->render($response, 'pages/ticket.twig',[
+            $this->view->render($response, 'pages/ticket.twig', [
                 "messages" => $messages,
                 "ticket" => $ticket
             ]);
-        } catch (ModelNotFoundException $e){
+        } catch (ModelNotFoundException $e) {
             $this->flash->addMessage('error', "Impossible de trouver ce ticket.");
             $response = $response->withRedirect($this->router->pathFor("showAdminHome"));
         }
@@ -90,7 +90,7 @@ class AdminController extends Controller {
                 "order" => $order
             ]);
             return $response;
-        } catch (ModelNotFoundException $e){
+        } catch (ModelNotFoundException $e) {
             $this->flash->addMessage('error', "Impossible de trouver cette commande.");
             $response = $response->withRedirect($this->router->pathFor("showAdminHome"));
         }
@@ -155,8 +155,4 @@ class AdminController extends Controller {
         }
         return $response;
     }
-    public function deleteUser(Request $request, Response $response, array $args): Response {
-
-    }
-
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3308
--- Généré le :  Dim 15 mars 2020 à 16:19
+-- Généré le :  lun. 30 mars 2020 à 12:50
 -- Version du serveur :  8.0.18
 -- Version de PHP :  7.3.12
 
@@ -81,7 +81,8 @@ CREATE TABLE IF NOT EXISTS `messages` (
   `ticket_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `message` varchar(3000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `creationDate` datetime NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

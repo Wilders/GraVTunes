@@ -3,17 +3,17 @@
 use app\controllers\AccountController;
 use app\controllers\AdminController;
 use app\controllers\AppController;
-use app\controllers\OrderController;
-use app\helpers\Auth;
-use app\controllers\CartController;
 use app\controllers\AuthController;
-use app\controllers\ValidatorController;
-use app\controllers\TrackController;
+use app\controllers\CartController;
+use app\controllers\OrderController;
 use app\controllers\PlaylistController;
-use app\controllers\VinyleController;
 use app\controllers\TicketController;
+use app\controllers\TrackController;
+use app\controllers\ValidatorController;
+use app\controllers\VinyleController;
 use app\extensions\TwigCsrf;
 use app\extensions\TwigMessages;
+use app\helpers\Auth;
 use app\helpers\Basket;
 use app\middlewares\AdminMiddleware;
 use app\middlewares\AuthMiddleware;
@@ -56,27 +56,18 @@ Braintree_Configuration::merchantId($_ENV['BT_MERCHANT_ID']);
 Braintree_Configuration::publicKey($_ENV['BT_PUBLIC_KEY']);
 Braintree_Configuration::privateKey($_ENV['BT_PRIVATE_KEY']);
 
-$config = [
-    'settings' => [
-        'displayErrorDetails' => 1,
-    ],
-];
+$app = new App();
 
-$app = new App($config);
 $container = $app->getContainer();
-
 $container['uploadsPath'] = __DIR__ . DIRECTORY_SEPARATOR . 'uploads';
-
 $container['csrf'] = function () {
     $guard = new Guard();
     $guard->setPersistentTokenMode(true);
     return $guard;
 };
-
 $container['flash'] = function () {
     return new Messages();
 };
-
 $container['view'] = function ($container) {
     $view = new Twig(__DIR__ . '/app/views', [
         'cache' => false
@@ -102,12 +93,10 @@ $container['view'] = function ($container) {
 $app->add(new OldInputMiddleware($container));
 $app->add($container->csrf);
 
-// Home
 $app->get('/', AppController::class . ':showHome')->setName('home');
 $app->get('/validator', ValidatorController::class . ':validator')->setName('validator');
 
-// Guest
-$app->group('', function() {
+$app->group('', function () {
     $this->get('/login', AuthController::class . ':showLogin')->setName('showLogin');
     $this->post('/login', AuthController::class . ':login')->setName('login');
 
@@ -115,16 +104,12 @@ $app->group('', function() {
     $this->post('/register', AuthController::class . ':register')->setName('register');
 })->add(new GuestMiddleware($container));
 
-// Authenticated
-$app->group('', function() {
-
+$app->group('', function () {
     $this->get('/home', AppController::class . ':showDashHome')->setName('showHome');
     $this->get('/braintree/token', AppController::class . ':btToken')->setName("braintreeToken");
     $this->get('/u/{username}', AccountController::class . ':showProfile')->setName('showProfile');
 
-    /**
-     * Account
-     */
+
     $this->get('/logout', AuthController::class . ':logout')->setName('logout');
     $this->get('/account', AccountController::class . ':account')->setName('showAccount');
 
@@ -132,9 +117,7 @@ $app->group('', function() {
     $this->post('/account/profile', AccountController::class . ':updateProfile')->setName('updateProfile');
     $this->post('/account/security', AccountController::class . ':updateSecurity')->setName('updateSecurity');
 
-    /**
-     * Cart
-     */
+
     $this->get('/cart', CartController::class . ':showCart')->setName("showCart");
     $this->get('/cart/add/{id:[0-9]+}[/{quantity:[0-9]+}]', CartController::class . ':addCart')->setName("addCart");
     $this->get('/cart/clear', CartController::class . ':clearCart')->setName("clearCart");
@@ -142,18 +125,14 @@ $app->group('', function() {
 
     $this->post('/cart/update/{id:[0-9]+}', CartController::class . ':updateCart')->setName("updateCart");
 
-    /**
-     * Order
-     */
+
     $this->get('/order/confirm', OrderController::class . ':showAddOrder')->setName("showAddOrder");
     $this->get('/orders', OrderController::class . ':orders')->setName("showOrders");
     $this->get('/order/{id:[0-9]+}', OrderController::class . ':order')->setName("showOrder");
 
     $this->post('/order/place', OrderController::class . ':addOrder')->setName("addOrder");
 
-    /**
-     * Tracks
-     */
+
     $this->get('/tracks', TrackController::class . ':tracks')->setName("showTracks");
     $this->get('/tracks/add', TrackController::class . ':showAddTrack')->setName("showAddTrack");
     $this->get('/track/{id:[0-9]+}/update', TrackController::class . ':showUpdateTrack')->setName("showUpdateTrack");
@@ -162,9 +141,6 @@ $app->group('', function() {
     $this->post('/tracks/add', TrackController::class . ':addTrack')->setName("addTrack");
     $this->post('/track/{id:[0-9]+}/update', TrackController::class . ':updateTrack')->setName("updateTrack");
 
-    /**
-     * Playlists
-     */
 
     $this->get('/playlists', PlaylistController::class . ':playlists')->setName("showPlaylists");
     $this->get('/playlists/add', PlaylistController::class . ':showAddPlaylist')->setName("showAddPlaylist");
@@ -176,9 +152,7 @@ $app->group('', function() {
     $this->post('/playlist/{id:[0-9]+}/add', PlaylistController::class . ':addTracksPlaylist')->setName("addTracksPlaylist");
     $this->post('/playlist/{id:[0-9]+}/update', PlaylistController::class . ':updatePlaylist')->setName("updatePlaylist");
 
-    /**
-     * Vinyles
-     */
+
     $this->get('/vinyles', VinyleController::class . ':vinyles')->setName("showVinyles");
     $this->get('/vinyles/add', VinyleController::class . ':showAddVinyle')->setName("showAddVinyle");
     $this->get('/vinyle/{id:[0-9]+}', VinyleController::class . ':vinyle')->setName("showVinyle");
@@ -189,18 +163,13 @@ $app->group('', function() {
     $this->post('/vinyle/{id:[0-9]+}/add', VinyleController::class . ':addTracks')->setName("addTracksVinyle");
     $this->post('/vinyle/{id:[0-9]+}/update', VinyleController::class . ':updateVinyle')->setName("updateVinyle");
 
-    /**
-     * Collaborations
-     */
 
     $this->get('/collab/{shareKey:[a-zA-Z0-9]+}', VinyleController::class . ':vinyleCollab')->setName("showCollab");
     $this->post('/collab/{shareKey:[a-zA-Z0-9]+}/add', VinyleController::class . ':addTracksCollab')->setName("addTracksVinyleCollab");
     $this->post('/collab', VinyleController::class . ':getVinyleCollab')->setName("getCollab");
     $this->post('/collab/{shareKey:[a-zA-Z0-9]+}/sendInvitCollab', VinyleController::class . ':sendInvitCollab')->setName("sendInvitCollab");
 
-    /**
-     * Tickets
-     */
+
     $this->get('/tickets', TicketController::class . ':tickets')->setName("showTickets");
     $this->get('/tickets/closed', TicketController::class . ':closedTickets')->setName("showClosedTickets");
     $this->get('/tickets/add', TicketController::class . ':showAddTicket')->setName("showAddTicket");
@@ -209,12 +178,9 @@ $app->group('', function() {
 
     $this->post('/tickets/add', TicketController::class . ':addTicket')->setName("addTicket");
     $this->post('/ticket/{id:[0-9]+}/add', TicketController::class . ':addMessage')->setName("addMessage");
-
 })->add(new AuthMiddleware($container));
 
-// Admin
-$app->group('/admin', function() {
-
+$app->group('/admin', function () {
     $this->get('/home', AdminController::class . ':showHome')->setName('showAdminHome');
 
     $this->post('/user/update', AdminController::class . ':updateUser')->setName('adminUpdateUser');
@@ -226,7 +192,6 @@ $app->group('/admin', function() {
 
     $this->get('/ticket/{id:[0-9]+}', AdminController::class . ':showTicket')->setName("adminShowTicket");
     $this->get('/ticket/{id:[0-9]+}/close', AdminController::class . ':closeTicket')->setName("adminCloseTicket");
-
 })->add(new AdminMiddleware($container));
 
 $app->run();

@@ -37,10 +37,10 @@ class OrderController extends Controller {
 
     public function showAddOrder(Request $request, Response $response, array $args): Response {
         try {
-            if(Basket::count() === 0) throw new Exception("Votre panier est vide.");
+            if (Basket::count() === 0) throw new Exception("Votre panier est vide.");
 
             $this->view->render($response, 'pages/addOrder.twig');
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $this->flash->addMessage('error', $e->getMessage());
             $response = $response->withRedirect($this->router->pathFor("showCart"));
         }
@@ -49,8 +49,8 @@ class OrderController extends Controller {
 
     public function addOrder(Request $request, Response $response, array $args): Response {
         try {
-            if(Basket::count() === 0) throw new Exception("Votre panier est vide.");
-            if(is_null($request->getParsedBodyParam('payment_method_nonce'))) throw new Exception("Une erreur est survenue lors du paiement. Vous n'avez pas été débité.");
+            if (Basket::count() === 0) throw new Exception("Votre panier est vide.");
+            if (is_null($request->getParsedBodyParam('payment_method_nonce'))) throw new Exception("Une erreur est survenue lors du paiement. Vous n'avez pas été débité.");
 
             $order = new Commande();
             $order->user_id = Auth::user()->id;
@@ -69,7 +69,7 @@ class OrderController extends Controller {
                 ]
             ]);
 
-            if($result->success) {
+            if ($result->success) {
                 Basket::clear();
                 $order->paiement()->create([
                     'success' => true,
@@ -86,7 +86,7 @@ class OrderController extends Controller {
 
             $this->flash->addMessage('success', "Votre paiement a été accepté et votre commande a été créée.");
             $response = $response->withRedirect($this->router->pathFor("showOrder", ['id' => $order->id]));
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $this->flash->addMessage('error', $e->getMessage());
             $response = $response->withRedirect($this->router->pathFor("showAddOrder"));
         }

@@ -82,11 +82,13 @@ $(function () {
         fieldset.appendChild(legMail);
     });
 });
+
 function clipboard(item) {
     let copyText = document.getElementById(item.id);
     copyText.select();
     document.execCommand("copy");
 }
+
 $('#userModal').on('show.bs.modal', function (event) {
     let button = $(event.relatedTarget);
     let id = button.data('id');

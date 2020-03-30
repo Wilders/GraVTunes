@@ -7,8 +7,8 @@
 
 {% block scripts %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ base_url() }}/public/assets/js/dataTables.min.js"></script>
-    <script type="text/javascript" src='{{ base_url() }}/public/assets/js/datatables.bootstrap.min.js'></script>
+    <script src="{{ base_url() }}/public/assets/js/dataTables.min.js"></script>
+    <script src="{{ base_url() }}/public/assets/js/datatables.bootstrap.min.js"></script>
 {% endblock %}
 
 {% block appcontent %}
@@ -17,7 +17,7 @@
 
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <a class="btn btn-outline-primary float-right" href="{{ path_for("showAddTicket") }}">Nouveau ticket</a>
+            <a class="btn btn-sm btn-outline-primary float-right" href="{{ path_for("showAddTicket") }}">Nouveau ticket</a>
             <h6 class="m-0 font-weight-bold text-primary">Mes tickets</h6>
         </div>
         <div class="card-body">
@@ -26,7 +26,7 @@
                 <a class="btn btn-outline-primary float-left" id="closedTickets" href="{{ path_for("showClosedTickets") }}">Tickets fermés</a>
             </div>
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered">
                     <thead>
                     <tr>
                         <th>Référence</th>
@@ -64,10 +64,10 @@
 
                         <div class="modal fade" id="closeTicketModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
-                                <form method="POST" action="{{ path_for("closeTicket", {id: ticket.id}) }}" id="closeTicketForm" >
+                                <form method="POST" action="{{ path_for("closeTicket", {id: ticket.id}) }}" id="closeTicketForm">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" >Êtes-vous sûr de vouloir clore le ticket ?</h5>
+                                            <h5 class="modal-title">Êtes-vous sûr de vouloir clore le ticket ?</h5>
                                             <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">×</span>
                                             </button>

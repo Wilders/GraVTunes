@@ -22,7 +22,7 @@ class GuestMiddleware extends Middleware {
     public function __invoke(Request $request, Response $response, $next) {
         try {
             if (Auth::check()) throw new AuthException();
-        } catch(AuthException $e) {
+        } catch (AuthException $e) {
             $this->container->flash->addMessage('error', 'Vous ne pouvez pas effectuer cette action en étant connecté.');
             return $response->withRedirect($this->container->router->pathFor('showHome'));
         }

@@ -43,7 +43,7 @@ class AccountController extends Controller {
             if (mb_strlen($name, 'utf8') < 2 || mb_strlen($name, 'utf8') > 50) throw new AuthException("Votre nom doit contenir entre 2 et 50 caractères.");
             if (mb_strlen($forename, 'utf8') < 2 || mb_strlen($forename, 'utf8') > 50) throw new AuthException("Votre prénom doit contenir entre 2 et 50 caractères.");
 
-            if(Auth::user()->email != $email) {
+            if (Auth::user()->email != $email) {
                 if (User::where('email', '=', $email)->exists()) throw new AuthException("Cet email est déjà utilisée.");
             }
 
@@ -56,7 +56,7 @@ class AccountController extends Controller {
 
             $this->flash->addMessage('success', "Les modifications apportées à votre compte ont été enregistrées !");
             $response = $response->withRedirect($this->router->pathFor('showAccount'));
-        } catch(AuthException $e) {
+        } catch (AuthException $e) {
             $this->flash->addMessage('error', $e->getMessage());
             $response = $response->withRedirect($this->router->pathFor("showAccount"));
         }
@@ -104,7 +104,7 @@ class AccountController extends Controller {
             $newPassword = filter_var($request->getParsedBodyParam('newpassword'), FILTER_SANITIZE_STRING);
             $confNewPassword = filter_var($request->getParsedBodyParam('conf_newpassword'), FILTER_SANITIZE_STRING);
 
-            if(!password_verify($actualPassword, Auth::user()->password)) throw new AuthException("Le mot de passe actuel n'est pas bon.");
+            if (!password_verify($actualPassword, Auth::user()->password)) throw new AuthException("Le mot de passe actuel n'est pas bon.");
             if (mb_strlen($newPassword, 'utf8') < 8) throw new AuthException("Votre nouveau mot de passe doit contenir au moins 8 caractères.");
             if ($newPassword != $confNewPassword) throw new AuthException("La confirmation du mot de passe n'est pas bonne.");
 

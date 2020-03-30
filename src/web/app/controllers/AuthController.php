@@ -31,7 +31,7 @@ class AuthController extends Controller {
             $login = filter_var($request->getParsedBodyParam('id'), FILTER_SANITIZE_STRING);
             $password = filter_var($request->getParsedBodyParam('password'), FILTER_SANITIZE_STRING);
 
-            if(!Auth::attempt($login, $password)) throw new AuthException();
+            if (!Auth::attempt($login, $password)) throw new AuthException();
 
             $response = $response->withRedirect($this->router->pathFor('showHome'));
         } catch (AuthException $e) {

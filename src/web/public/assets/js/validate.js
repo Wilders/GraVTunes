@@ -1,6 +1,6 @@
 'use strict';
-$(function() {
-    $(".user").submit(function() {
+$(function () {
+    $(".user").submit(function () {
         var form = $(this);
         if (form[0].checkValidity() === false) {
             event.preventDefault();
@@ -98,7 +98,7 @@ function check(method, valueElement, feedbackElement) {
         type: 'GET',
         dataType: 'json',
         success: function (res) {
-            if(res.valid) {
+            if (res.valid) {
                 valueElement.className = 'form-control form-control-user is-valid';
             } else {
                 valueElement.className = 'form-control form-control-user is-invalid';

@@ -47,14 +47,14 @@ class VinyleController extends Controller {
 
     public function vinyleCollab(Request $request, Response $response, array $args): Response {
         try {
-            $vinyle = Vinyle::where(["shareKey" => $args['shareKey']] )->firstOrFail();
+            $vinyle = Vinyle::where(["shareKey" => $args['shareKey']])->firstOrFail();
             $tracks = Auth::user()->tracks->diff($vinyle->tracks);
 
-            $this->view->render($response, 'pages/vinyleCollab.twig',[
+            $this->view->render($response, 'pages/vinyleCollab.twig', [
                 "vinyle" => $vinyle,
                 "tracks" => $tracks
             ]);
-        } catch(ModelNotFoundException $e) {
+        } catch (ModelNotFoundException $e) {
             $this->flash->addMessage('error', "Ce vinyle n'existe pas.");
             $response = $response->withRedirect($this->router->pathFor('showHome'));
         }
@@ -76,7 +76,7 @@ class VinyleController extends Controller {
 
             $vinyle = Vinyle::where(["shareKey" => $key])->firstOrFail();
             $response = $response->withRedirect($this->router->pathFor('showCollab', ['shareKey' => $vinyle->shareKey]));
-        } catch(ModelNotFoundException $e) {
+        } catch (ModelNotFoundException $e) {
             $this->flash->addMessage('error', "Ce vinyle n'existe pas.");
             $response = $response->withRedirect($this->router->pathFor('showVinyles'));
         }
@@ -102,7 +102,7 @@ class VinyleController extends Controller {
             $vinyle->prix = random_int(10, 50);
             $vinyle->creationDate = new DateTime();
 
-            if(isset($files['cover'])) {
+            if (isset($files['cover'])) {
                 $cover = $files['cover'];
                 if ($cover->getError() === UPLOAD_ERR_OK) {
                     $coversPath = $this->uploadsPath . DIRECTORY_SEPARATOR . "covers";
@@ -144,7 +144,7 @@ class VinyleController extends Controller {
 
     public function addTracksCollab(Request $request, Response $response, array $args): Response {
         try {
-            $vinyle = Vinyle::where([ "shareKey" => $args['shareKey'] ])->firstOrFail();
+            $vinyle = Vinyle::where(["shareKey" => $args['shareKey']])->firstOrFail();
             $tracks = $request->getParsedBodyParam('tracks');
 
             $vinyle->tracks()->saveMany(Auth::user()->tracks->find($tracks));
@@ -178,7 +178,7 @@ class VinyleController extends Controller {
 
             foreach ($_POST['mailsDest'] as $m) {
 
-                if(filter_var($m,FILTER_VALIDATE_EMAIL)){
+                if (filter_var($m, FILTER_VALIDATE_EMAIL)) {
 
                     $m = filter_var($m, FILTER_SANITIZE_EMAIL);
                     $user = User::where(['email' => $m])->firstOrFail();
@@ -206,7 +206,7 @@ EOD;
                         $this->flash->addMessage('success', "Le mail d'invitation à collaborer a bien été envoyer à " . $m . " ! ");
                         $response = $response->withRedirect($this->router->pathFor('showVinyles'));
                     }
-                }else{
+                } else {
                     $this->flash->addMessage('error', $m . " n'est pas une adresse email valide ! ");
                     $response = $response->withRedirect($this->router->pathFor('showVinyles'));
                 }
@@ -236,7 +236,7 @@ EOD;
             $vinyle->nom = $name;
             $vinyle->description = $description;
 
-            if(isset($files['cover'])) {
+            if (isset($files['cover'])) {
                 $cover = $files['cover'];
                 if ($cover->getError() === UPLOAD_ERR_OK) {
                     $coversPath = $this->uploadsPath . DIRECTORY_SEPARATOR . "covers";
@@ -287,7 +287,7 @@ EOD;
         try {
             $vinyle = Vinyle::where(["id" => $args['id'], "user_id" => Auth::user()->id])->firstOrFail();
 
-            if(!$vinyle->tracks->contains($args['trackId'])) throw new ModelNotFoundException();
+            if (!$vinyle->tracks->contains($args['trackId'])) throw new ModelNotFoundException();
 
             $vinyle->tracks()->detach($args['trackId']);
 

@@ -19,6 +19,7 @@ class File extends Model {
         'duree',
         'size'
     ];
+
     public function tracks(): HasMany {
         return $this->hasMany("\app\models\Track");
     }

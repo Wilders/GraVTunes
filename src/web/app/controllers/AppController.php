@@ -14,7 +14,7 @@ use Slim\Http\Response;
 class AppController extends Controller {
 
     public function showHome(Request $request, Response $response, array $args): Response {
-        if(Auth::check()) {
+        if (Auth::check()) {
             $response = $response->withRedirect($this->router->pathFor('showHome'));
         } else {
             $response = $response->withRedirect($this->router->pathFor('login'));
@@ -24,7 +24,7 @@ class AppController extends Controller {
 
     public function showDashHome(Request $request, Response $response, array $args): Response {
         $files = [];
-        foreach (Auth::user()->tracks as $track) {
+        foreach (Auth::user()->tracks()->where("archived", false)->get() as $track) {
             $files[] = $track->file->size;
         }
         $stats = [
@@ -32,7 +32,7 @@ class AppController extends Controller {
             "orders" => Auth::user()->commandes->count(),
             "tickets" => Auth::user()->tickets->count(),
             "diskSpace" => array_sum($files),
-            "arroundDiskSpace" => round(array_sum($files)/(1024*1024),2)
+            "arroundDiskSpace" => round(array_sum($files) / (1024 * 1024), 2)
         ];
         $this->view->render($response, 'pages/home.twig', [
             "stats" => $stats,

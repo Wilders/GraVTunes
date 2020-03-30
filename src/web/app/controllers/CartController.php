@@ -29,9 +29,9 @@ class CartController extends Controller {
 
             Basket::add($vinyle, $quantity);
 
-            $this->flash->addMessage('success',"Votre vinyle a été ajouté au panier.");
+            $this->flash->addMessage('success', "Votre vinyle a été ajouté au panier.");
             $response = $response->withRedirect($this->router->pathFor("showCart"));
-        } catch(ModelNotFoundException $e) {
+        } catch (ModelNotFoundException $e) {
             $this->container->flash->addMessage('error', 'Impossible d\'ajouter ce vinyle.');
             $response = $response->withRedirect($this->router->pathFor('appHome'));
         }
@@ -49,7 +49,7 @@ class CartController extends Controller {
 
             $this->container->flash->addMessage('success', "Votre panier à été mis à jour!");
             $response = $response->withRedirect($this->router->pathFor('showCart'));
-        } catch(ModelNotFoundException $e) {
+        } catch (ModelNotFoundException $e) {
             $this->container->flash->addMessage('error', 'Impossible de modifier la quantité de ce vinyle.');
             $response = $response->withRedirect($this->router->pathFor('appHome'));
         }
@@ -74,7 +74,7 @@ class CartController extends Controller {
 
             $this->container->flash->addMessage('success', "Votre panier à été mis à jour!");
             $response = $response->withRedirect($this->router->pathFor('showCart'));
-        } catch(ModelNotFoundException $e) {
+        } catch (ModelNotFoundException $e) {
             $this->container->flash->addMessage('error', 'Impossible de modifier la quantité de ce vinyle.');
             $response = $response->withRedirect($this->router->pathFor('appHome'));
         }

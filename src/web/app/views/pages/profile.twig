@@ -1,19 +1,16 @@
 {% extends "layouts/app-layout.twig" %}
+
 {% block appcontent %}
     <div class="my-3 my-md-5">
         <div class="container">
             <div class="card mb-4">
                 <div class="card-body text-center">
-                    <img class="img-profile rounded-circle" src="{{ base_url() }}/uploads/avatars/{{ auth.user.avatar }}" height="60">
-                    <h3 class="mb-1">{{ user.pseudo }}</h3>
-                    <h5 class="mb-3">
+                    <img class="img-profile rounded-circle" src="{{ base_url() }}/uploads/avatars/{{ auth.user.avatar }}" height="60" alt="Avatar">
+                    <h3>{{ user.pseudo }}</h3>
                         {% if user.role is same as(1) %}
-                            <span class="badge badge-dark">ADMIN</span>
+                            <span class="badge badge-dark mb-2">ADMIN</span>
                         {% endif %}
-                    </h5>
-                    <p class="mb-4">
-                        {{ user.description }}
-                    </p>
+                        <p>{{ user.description }}</p>
                 </div>
             </div>
             <div class="card">
