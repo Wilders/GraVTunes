@@ -165,7 +165,9 @@
             <form action="{{ path_for('addTracksVinyle', {id: vinyle.id}) }}" class="float-right" method="POST">
                 <select name="tracks[]" class="selectpicker" id="tracks" data-live-search="true" title="Ajouter des titres" multiple>
                     {% for track in addableTracks %}
-                        <option value="{{ track.id }}">{{ track.nom }}</option>
+                        {% if track.archived is same as(0) %}
+                            <option value="{{ track.id }}">{{ track.nom }}</option>
+                        {% endif %}
                     {% endfor %}
                 </select>
 

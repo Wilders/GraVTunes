@@ -37,7 +37,9 @@
                         <label for="tracks">Sélection des titres</label>
                         <select name="tracks[]" class="form-control selectpicker" id="tracks" data-live-search="true" multiple>
                             {% for track in tracks %}
-                                <option value="{{ track.id }}">{{ track.nom }}</option>
+                                {% if track.archived is same as(0) %}
+                                    <option value="{{ track.id }}">{{ track.nom }}</option>
+                                {% endif %}
                             {% endfor %}
                         </select>
                     </div>
