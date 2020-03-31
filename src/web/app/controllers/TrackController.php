@@ -6,7 +6,6 @@ use app\helpers\Auth;
 use app\models\File;
 use app\models\Playlist;
 use app\models\Track;
-use app\models\Vinyle;
 use FFMpeg\FFProbe;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Slim\Http\Request;
@@ -39,7 +38,7 @@ class TrackController extends Controller {
 
         $uploadedTrack = $files['file'];
         $extension = pathinfo($uploadedTrack->getClientFilename(), PATHINFO_EXTENSION);
-        if($extension == "mp3" | $extension == "wav" ){
+        if ($extension == "mp3" || $extension == "wav") {
             if ($uploadedTrack->getError() === UPLOAD_ERR_OK) {
                 $path = $this->uploadsPath . DIRECTORY_SEPARATOR . "tracks";
                 $hash = hash_file("md5", $uploadedTrack->file);
@@ -71,7 +70,7 @@ class TrackController extends Controller {
 
             $this->flash->addMessage('success', "Votre titre a bien été importé.");
             $response = $response->withRedirect($this->router->pathFor("showTracks"));
-        }else{
+        } else {
             $this->flash->addMessage('error', "Votre titre n'a pas bien été importé.");
             $response = $response->withRedirect($this->router->pathFor("showTracks"));
         }
@@ -86,7 +85,7 @@ class TrackController extends Controller {
             $track->archived = true;
             $track->save();
 
-            foreach ($playlists as $playlist){
+            foreach ($playlists as $playlist) {
                 $playlist->tracks()->detach($track->id);
             }
 
