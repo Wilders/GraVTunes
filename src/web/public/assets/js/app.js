@@ -38,7 +38,7 @@ $(function () {
         let fieldset = document.getElementById(String("fieldsetMails" + e.dataset.value));
 
         e.addEventListener('click', function () {
-            let mail = document.getElementById(String("inputMail" + e.dataset.value));
+            let mail = document.getElementById(String("emailInput" + e.dataset.value));
             let divInput = document.createElement("div");
             let divDelete = document.createElement("div");
             let buttonDelete = document.createElement("button");
@@ -48,7 +48,7 @@ $(function () {
                 if (legMail.textContent === "") {
                     if (document.querySelectorAll("#buttonAddMail").length !== 0) {
                         legMail.setAttribute("class", "lead");
-                        legMail.textContent = "Adresses mails ajoutÃ©s :";
+                        legMail.textContent = "Adresses mails ajout‚s :";
                     } else {
                         legMail.textContent = "";
                     }
