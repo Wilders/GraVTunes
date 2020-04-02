@@ -48,7 +48,7 @@ $(function () {
                 if (legMail.textContent === "") {
                     if (document.querySelectorAll("#buttonAddMail").length !== 0) {
                         legMail.setAttribute("class", "lead");
-                        legMail.textContent = "Adresses mails ajout‚s :";
+                        legMail.textContent = "Adresses mails ajoutés :";
                     } else {
                         legMail.textContent = "";
                     }
