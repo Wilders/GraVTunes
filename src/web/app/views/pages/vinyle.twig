@@ -96,7 +96,7 @@
                         <p><small>Vous avez la possibilité d'envoyer un mail au collaborateur que vous souhaitez. Il contiendra la clé du vinyle correspondant avec son lien</small></p>
                         <label for="emailInput"><strong>Insérez l'adresse mail du collaborateur que vous souhaitez : </strong></label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" id="emailInput" name="mailDest">
+                            <input type="text" class="form-control" id="emailInput{{ vinyle.id }}" name="mailDest">
                             <div class="input-group-append">
                                 <button class="btn btn-secondary" type="button" id="buttonAddMail" data-value="{{ vinyle.id }}"><i class="fas fa-plus"></i></button>
                             </div>
